@@ -10,17 +10,17 @@
     <None Remove="Functions\DuelHub\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="ChallengeDbFunction.cs" />
+    <Compile Remove="CompileChallenge.cs" />
+    <Compile Remove="CompileCode.cs" />
+    <Compile Remove="CompileConsole.cs" />
+    <Compile Remove="CompileResources.cs" />
     <Compile Remove="Data\ArenaDbClient.cs" />
     <Compile Remove="Data\CSharpDuelsDbContext.cs" />
-    <Compile Remove="Functions\ChallengeFunctions\ChallengeDbFunction.cs" />
     <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
-    <Compile Remove="Functions\ChallengeFunctions\UserDbFunction.cs" />
-    <Compile Remove="Functions\Compile\CompileChallenge.cs" />
-    <Compile Remove="Functions\Compile\CompileCode.cs" />
-    <Compile Remove="Functions\Compile\CompileConsole.cs" />
-    <Compile Remove="Functions\Compile\CompileResources.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
+    <Compile Remove="UserDbFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
@@ -47,8 +47,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Functions\Compile\" />
-    <Folder Include="Functions\ChallengeFunctions\" />
     <Folder Include="Functions\Duels\" />
     <Folder Include="Functions\ShareHub\" />
   </ItemGroup>

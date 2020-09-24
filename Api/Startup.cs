@@ -15,14 +15,14 @@ namespace BlazorApp.Api
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            string connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
-            builder.Services.AddDbContext<ChallengeContext>(
-                options => options.UseSqlServer(connectionString)
-                    .EnableDetailedErrors()
-                    .EnableSensitiveDataLogging());
-            string connectionStringCosmos = Environment.GetEnvironmentVariable("ConnectionString");
-            builder.Services.AddSingleton(s => new CosmosClient(connectionString));
-            builder.Services.AddHttpContextAccessor();
+            //string connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
+            //builder.Services.AddDbContext<ChallengeContext>(
+            //    options => options.UseSqlServer(connectionString)
+            //        .EnableDetailedErrors()
+            //        .EnableSensitiveDataLogging());
+            //string connectionStringCosmos = Environment.GetEnvironmentVariable("ConnectionString");
+            //builder.Services.AddSingleton(s => new CosmosClient(connectionString));
+            //builder.Services.AddHttpContextAccessor();
             builder.Services.AddSingleton<CompilerService>();
         }
     }
