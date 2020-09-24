@@ -16,11 +16,8 @@
     <Compile Remove="CompileConsole.cs" />
     <Compile Remove="CompileResources.cs" />
     <Compile Remove="Data\ArenaDbClient.cs" />
-    <Compile Remove="Data\ChallengeContext.cs" />
     <Compile Remove="Data\CSharpDuelsDbContext.cs" />
-    <Compile Remove="Functions\ChallengeFunctions\ChallengeDbFunction.cs" />
     <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
-    <Compile Remove="Functions\ChallengeFunctions\UserDbFunction.cs" />
     <Compile Remove="Functions\Duels\ActiveArenaFunction.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
@@ -30,6 +27,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.6.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
     <!--<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
@@ -50,14 +50,16 @@
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="local.settings.properties.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Functions\ChallengeFunctions\" />
     <Folder Include="Functions\Duels\" />
     <Folder Include="Functions\ShareHub\" />
   </ItemGroup>
