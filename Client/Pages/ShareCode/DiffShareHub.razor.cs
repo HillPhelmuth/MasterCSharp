@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlazorApp.Shared.CodeServices;
+using BlazorApp.Shared.StaticAuth.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -14,9 +15,10 @@ namespace BlazorApp.Client.Pages.ShareCode
         public PublicClient PublicClient { get; set; }
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        //[Inject]
-        //private ICustomAuthenticationStateProvider AuthProvider { get; set; }
-
+        [Inject]
+        private ICustomAuthenticationStateProvider AuthProvider { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         [Parameter]
         public string UserName { get; set; }
         [Parameter]
@@ -36,11 +38,13 @@ namespace BlazorApp.Client.Pages.ShareCode
         private bool isCodeCompiling;
         protected override async Task OnInitializedAsync()
         {
-            //var authInfo = await AuthProvider.GetAuthenticationStateAsync();
-            //var authUser = authInfo.User.Identity;
-
+            var authInfo = await AuthProvider.GetAuthenticationStateAsync();
+            var authUser = authInfo.User.Identity;
+            UserName ??= authUser.Name;
+            var hubUri = $"{NavigationManager.BaseUri}api";
+            //must use API port for local host: "http://localhost:7071/api";
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{FunctionBaseUrl}/", options =>
+                .WithUrl($"{hubUri}/", options =>
                 {
                     options.Headers.Add("x-ms-client-principal-id", UserName);
                 })
