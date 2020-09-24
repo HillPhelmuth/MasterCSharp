@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
 using BlazorApp.Shared.StaticAuth.Interfaces;
@@ -14,12 +15,15 @@ namespace BlazorApp.Client.Pages
         protected PublicClient PublicClient { get; set; }
         [Inject]
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
+        [Inject]
+        private HttpClient Http { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
-        
+        private string istempstring;
 
         protected override async Task OnInitializedAsync()
         {
+            istempstring = await Http.GetStringAsync("api/CompilerFunction");
             var authInfo = await AuthProvider.GetAuthenticationStateAsync();
             if (authInfo?.User?.Identity?.IsAuthenticated ?? false)
             {
