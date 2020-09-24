@@ -28,8 +28,8 @@ namespace BlazorApp.Client.Pages.ShareCode
         [Parameter]
         public EventCallback<string> OnNewMessage { get; set; }
 
-        private const string FunctionBaseUrl = "https://csharprealtimefunction.azurewebsites.net/api";
-        //private const string FunctionBaseUrl = "http://localhost:7071/api";
+        private const string FunctionBaseUrl = "api";
+        //private const string FunctionBaseUrl = "http://localhost:7071/api"; or https://csharprealtimefunction.azurewebsites.net/api
         private HubConnection hubConnection;
         private List<string> messages = new List<string>();
         private string messageInput;
