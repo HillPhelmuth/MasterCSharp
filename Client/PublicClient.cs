@@ -16,11 +16,11 @@ namespace BlazorApp.Client
     public class PublicClient
     {
         //local http://localhost:7071/api
-        private const string CHALLENGE_FUNCTION_URL = "http://localhost:7071/api";
-        private const string COMPILE_FUNCTION_URL = "http://localhost:7071/api";
-        private const string REALTIME_FUNCTION_URL = "http://localhost:7071/api";
-        private const string DUELS_COSMOS_FUNCTION_URL = "http://localhost:7071/api";
-        //private const string DUELS_COSMOS_FUNCTION_URL = "http://localhost:7071/api";
+        private const string CHALLENGE_FUNCTION_URL = "api";
+        private const string COMPILE_FUNCTION_URL = "api";
+        private const string REALTIME_FUNCTION_URL = "api";
+        private const string DUELS_COSMOS_FUNCTION_URL = "api";
+        //private const string DUELS_COSMOS_FUNCTION_URL = "api";
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)

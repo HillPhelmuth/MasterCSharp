@@ -19,10 +19,10 @@ namespace BlazorApp.Client
             builder.RootComponents.Add<App>("app");
             var baseAddress = builder.Configuration["BaseAddress"] ?? builder.HostEnvironment.BaseAddress;
             builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(baseAddress) });
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }); 
-            builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-            builder.Services.AddHttpClient<PublicGithubClient>(client =>
-                client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(baseAddress) }); 
+            builder.Services.AddHttpClient<PublicClient>(clnt => clnt.BaseAddress = new Uri(baseAddress));
+            builder.Services.AddHttpClient<PublicGithubClient>(clnt =>
+                clnt.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
             builder.Services.AddAuthentication();
             builder.Services.AddMasterSharpServices();
             builder.Services.InjectClipboard();
