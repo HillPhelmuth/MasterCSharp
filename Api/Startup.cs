@@ -1,10 +1,11 @@
 ﻿using System;
 using BlazorApp.Api;
-using BlazorApp.Api.Data;
+//using BlazorApp.Api.Data;
 using BlazorApp.Api.Services;
-using Microsoft.Azure.Cosmos;
+//using BlazorApp.Api.Services;
+//using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 

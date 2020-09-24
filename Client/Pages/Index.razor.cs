@@ -19,11 +19,9 @@ namespace BlazorApp.Client.Pages
         private HttpClient Http { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
-        private string istempstring;
-
+        
         protected override async Task OnInitializedAsync()
         {
-            istempstring = await Http.GetStringAsync("api/CompilerFunction");
             var authInfo = await AuthProvider.GetAuthenticationStateAsync();
             if (authInfo?.User?.Identity?.IsAuthenticated ?? false)
             {

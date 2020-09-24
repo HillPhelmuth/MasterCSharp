@@ -16,14 +16,23 @@
     <Compile Remove="CompileConsole.cs" />
     <Compile Remove="CompileResources.cs" />
     <Compile Remove="Data\ArenaDbClient.cs" />
+    <Compile Remove="Data\ChallengeContext.cs" />
     <Compile Remove="Data\CSharpDuelsDbContext.cs" />
+    <Compile Remove="Functions\ChallengeFunctions\ChallengeDbFunction.cs" />
     <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
+    <Compile Remove="Functions\ChallengeFunctions\UserDbFunction.cs" />
+    <Compile Remove="Functions\Duels\ActiveArenaFunction.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
+    <Compile Remove="Functions\ShareHub\ShareHub.cs" />
     <Compile Remove="UserDbFunction.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.6.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.8" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
+    <!--<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Direct" Version="3.13.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
@@ -32,7 +41,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.7.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.CosmosDB" Version="3.0.5" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SignalRService" Version="1.2.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />-->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
@@ -47,6 +56,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Functions\ChallengeFunctions\" />
     <Folder Include="Functions\Duels\" />
     <Folder Include="Functions\ShareHub\" />
   </ItemGroup>
