@@ -1,0 +1,14 @@
+﻿<div class="@CssClass">
+    <MatButton OnClick="UpdateUser">Sign-in</MatButton>
+    <MatButton OnClick="MoveWindow">Move window</MatButton>
+    <MatButton OnClick="HideChat">Hide</MatButton>
+    
+    
+    @if (userSubmitted)
+    {
+        <HubSource UserName="@userName" OtherUser="@otherUser" GroupName="@teamname" />
+    }
+</div>
+@code {
+
+}

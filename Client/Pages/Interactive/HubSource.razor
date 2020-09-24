@@ -1,0 +1,22 @@
+﻿@if (IsConnected)
+{
+    <label>
+        Message:
+        <input @bind-value="messageInput" size="50" @onkeyup="HandleKeyUp" />
+    </label><MatButton OnClick="@(async() => await Send())">Send</MatButton>
+    <div class="mat-elevation-z18" style="min-height: 1rem; max-height: 85%; overflow: scroll;">
+        @foreach (var message in messages)
+        {
+            <div style="font-family: 'Lucida Console', Courier, monospace;">@message</div>
+        }
+    </div>
+
+
+}
+else
+{
+    <MatH4 Class="text-center" Style="color: blue">Connecting...</MatH4>
+    <SpinKitFadingCircle />
+}
+
+

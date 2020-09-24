@@ -1,0 +1,15 @@
+﻿
+<MatTable Items="@CodeOutput.Outputs" class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>Test #</th>
+        <th>Test Output</th>
+        <th>Expected Result</th>
+        <th>Passed</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td class="@context.CssClass">@context.TestIndex</td>
+        <td>@context.Codeout</td>
+        <td>@context.Test.TestAgainst</td>
+        <td class="@context.CssClass">@context.TestResult</td>
+    </MatTableRow>
+</MatTable>

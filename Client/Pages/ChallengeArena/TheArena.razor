@@ -1,0 +1,41 @@
+﻿
+<MatButton Raised="true" OnClick="ShowArenas">Create or Join Arena</MatButton>
+
+<br />
+
+@if (isChallengeSucceed)
+{
+    <div class="blink_me">
+        <MatH3 Style="color:blue">Success!</MatH3>
+    </div>
+}
+@if (isChallengeFail && !isChallengeSucceed)
+{
+    <div>
+        <MatH3 Class="blink_me" Style="color:red">You Lost this challenge to @lostToUser!</MatH3>
+        <MatButton OnClick="GoToChallenges">Keep practicing in the 'Challenges' section</MatButton>
+    </div>
+}
+@if (CurrentArena != null)
+{
+    <MatButton OnClick="ShowChallengeInfo">Show Challenge Info</MatButton>
+}
+
+@if ((CurrentArena != null && CurrentArena.IsFull) || isChallengeReady)
+{
+    @if (isCodeCompiling)
+    {
+        <hr />
+        <MatH4 Class="text-center" Style="color:blue">Executing...</MatH4>
+        <SpinKitFadingCircle />
+    }
+    
+    <ArenaEditor Arena="@CurrentArena" CodeSnippet="@CurrentArena.CurrentChallenge.Snippet" OnCodeSubmit="HandleSubmit" />
+}
+@if (CurrentArena != null && !CurrentArena.IsFull)
+{
+    <MatH4>Waiting for a challenger to join...</MatH4>
+    <SpinKitCubeGrid />
+}
+<MatButton Style="bottom:1px; left:0; position:sticky" OnClick="GoHome">Home</MatButton>
+

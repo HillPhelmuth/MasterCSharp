@@ -1,0 +1,20 @@
+﻿<div class="text-center" style="max-width: 600px; margin-left: auto; margin-right:auto">
+    <hr />
+    <p>If you found a helpful c# related YouTube video that should be included, provide the YouTube Title and Url below and add it to our database. It will remain in the "User Videos" section temporarily. I will periodically reorganize them into appropriate categories. </p>
+
+    <div>@((MarkupString)userMessage)</div>
+
+    <MatTextField Style="width:100%" @bind-Value="title" Label="YouTube Video Title"></MatTextField><br />
+    <MatTextField Style="width:100%" @bind-Value="videoUrl" Label="Paste video URL here"></MatTextField><br />
+    <MatSelectItem Style="width: 120%"  @bind-Value="selectedSection" Items="@VideoSections" Label="Topic section" >
+        <ItemTemplate><span>@context.Name -- @context.SubHeader</span></ItemTemplate>
+    </MatSelectItem><br />
+    <MatButton Raised="true" OnClick="SubmitVideo">View the video above</MatButton><br />
+
+    @if (isSubmitReady)
+    {
+        <MatH6>If the the video played successfully, add it to the database. If not, check that the Url contains the video's ID value</MatH6><br />
+        <MatH4>@apiResponse</MatH4>
+        <MatButton Raised="true" OnClick="AddVideoToDb">Add to Database</MatButton>
+    }
+</div>

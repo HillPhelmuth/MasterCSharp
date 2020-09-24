@@ -1,0 +1,133 @@
+﻿@page "/codeHome"
+@using MasterSharpOpen.Shared.CodeModels
+<MatH4 Class="text-center">Practice your c#</MatH4>
+@*<MatButton OnClick="GetCodeFromGitHubFile">Try Get Gihub</MatButton>*@
+<MatAccordion>
+
+    <MatExpansionPanel Expanded="true">
+        <MatExpansionPanelSummary>
+            <MatExpansionPanelHeader>
+                Code Editor - <span style="font-style:italic">Click to begin</span>
+            </MatExpansionPanelHeader>
+            <MatExpansionPanelSubHeader>
+                Add or select and modify a full c# code block, then execute
+            </MatExpansionPanelSubHeader>
+        </MatExpansionPanelSummary>
+        <MatExpansionPanelDetails>
+            <MatTabGroup>
+
+                <MatTab Label="Collections">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.CollectionSamples.Samples))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                    }
+
+                </MatTab>
+                <MatTab Label="Strings">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.StringSamples.Samples))
+                    {
+                        var tooltip = snippet.ToolTip;
+                        <MatTooltip Tooltip="@tooltip">
+                             <MatButton RefBack="@context" Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        </MatTooltip>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                    }
+
+                </MatTab>
+                <MatTab Label="Conditionals and Loops">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.ConditionalSamples.Samples))
+                    {
+
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+
+                    }
+
+                </MatTab>
+                <MatTab Label="Linq Examples">
+                    <hr />
+                    @foreach (var snippet in CodeSnippets.LinqFromGithubSamples.Samples)
+                    {
+                        var toolTip = snippet.ToolTip;
+                        <MatTooltip Tooltip="@toolTip">
+                            <MatButton RefBack="@context" Label="@snippet.Key" OnClick="@(() => GetCodeFromGitHubFile(snippet.Value))"></MatButton>
+                            <MatIconButton RefBack="@context" Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        </MatTooltip>
+                    }
+                </MatTab>
+                <MatTab Label="Extension Methods">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.ExtensionSamples.Samples))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                    }
+
+                </MatTab>
+                <MatTab Label="Console App">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.ConsoleSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value, true))"></MatButton>
+
+                    }
+                </MatTab>
+
+                <AuthorizeView>
+                    <Authorized>
+                        @if (AppStateService.UserAppData?.Snippets?.Any() ?? false)
+                        {
+                            <MatTab Label="Your Snippets">
+                                <hr />
+                                @foreach (var snippet in AppStateService.UserAppData.Snippets)
+                                {
+                                    <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Snippet))"></MatButton>
+                                }
+                            </MatTab>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+                <hr />
+            </MatTabGroup>
+            @if (!string.IsNullOrEmpty(codeSnippet) && isMonacoOpen)
+            {
+                <div class="mat-layout-grid">
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+
+                            @if (isCodeCompiling)
+                            {
+                                <hr />
+                                <MatH4 Class="text-center" Style="color: blue">Executing...</MatH4>
+                                <SpinKitFadingCircle />
+                            }
+                            <MonacoEdit OnSaveUserSnippet="HandleSaveSnippet" CodeSnippet="@codeSnippet" OnCodeSubmit="HandeSubmit" />
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                            <div class="text-center">
+                                <div style="font-size:1.3em">Output</div>
+                                <MatButton Style="font-size:.8em" OnClick="ClearOutput" Label="Clear"></MatButton>
+                                @if (isSnippetSaving)
+                                {
+                                    <hr />
+                                    <MatH4 Class="text-center" Style="color: green">Saving...</MatH4>
+                                    <SpinKitFadingCircle />
+                                }
+                                <p>@message</p>
+                            </div>
+                            <div class="console">
+                                @((MarkupString) codeOutput)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </MatExpansionPanelDetails>
+    </MatExpansionPanel>
+
+</MatAccordion>
+<div class="mainIcon" style="background-image: url('Icons/practiceIcon.png')"></div>

@@ -1,0 +1,74 @@
+﻿@page "/videoHome"
+<MatH4 Class="text-center">Learn from popular YouTube videos</MatH4>
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            @if (IsPageVideosReady)
+            {
+                <MatAccordion Multi="true">
+                    @foreach (var videos in Videos.VideoSections)
+                    {
+                        <div @onmouseover="@(e => videos.IsVisible = true)" @onmouseout="@(e => videos.IsVisible = false)">
+                            <MatExpansionPanel Expanded="videos.IsVisible">
+                                <MatExpansionPanelSummary>
+                                    <MatExpansionPanelHeader Style="font-weight:600">@videos.Name</MatExpansionPanelHeader>
+                                    <MatExpansionPanelSubHeader>
+                                        @videos.SubHeader
+
+                                    </MatExpansionPanelSubHeader>
+                                </MatExpansionPanelSummary>
+                                <MatExpansionPanelDetails Class="text-center">
+                                    <MatH4>@videos.Name</MatH4>
+                                    @foreach (var video in videos.Videos)
+                                    {
+                                        <MatButton Icon="ondemand_video" Style="font-weight:600;height:auto" @onmousedown="@(() => selectedVideoId = video.VideoId)" @onmouseup="PlayVideos">@video.Title</MatButton>
+                                        <br />
+                                    }
+                                </MatExpansionPanelDetails>
+                            </MatExpansionPanel>
+                        </div>
+                    }
+                </MatAccordion>
+            }
+            else
+            {
+                <SpinKitCubeGrid />
+            }
+        </div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+            <div style="margin: auto" class="text-center">
+
+                @if (IsVideoReady)
+                {
+                    <MatButton Raised="true" Style="margin-left: auto; margin-right: auto; margin-top: -46px" @onclick="@(() => HandleVideoEnd(true))">Close</MatButton>
+                    <VideoPlayer VideoId="@selectedVideoId" VideoEnded="HandleVideoEnd" />
+                }
+                else
+                {
+                    <MatH4>Select a video</MatH4>
+                    <div class="mainIcon" style="background-image: url('Icons/videoIcon.png')"></div>
+
+                }
+                <hr />
+                <div class="text-center">
+                    <AuthorizeView>
+                        <Authorized>
+                            <MatButton OnClick="@(() => IsAddVideo = !IsAddVideo)">Add Video</MatButton>
+                        </Authorized>
+                        <NotAuthorized>
+                            <MatButton Link="/login-providers">Log in to add videos</MatButton>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                   
+                </div>
+                @if (IsAddVideo)
+                {
+                    <AddVideo TryPlayVideo="HandleTryPlay" />
+                }
+            </div>
+
+        </div>
+
+    </div>
+</div>

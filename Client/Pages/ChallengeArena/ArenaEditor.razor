@@ -1,0 +1,7 @@
+﻿<br />
+<MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
+<span style="margin-left:70%; font-size:1.4em">@stopWatch</span>
+<hr />
+<MonacoEditor CssClass="editor" @ref="Editor" Id="puzzleCsharp"
+              ConstructionOptions="EditorOptionsPuzzle"
+              OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />

@@ -1,0 +1,31 @@
+{
+  "name": "Master CSharp App",
+  "short_name": "MastercSharp",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#03173d",
+  "icons": [
+    {
+      "src": "seo-and-web.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "Icons/newChallengeIcon-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "Icons/main-app-icon-196.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "Icons/maskable_icon.png",
+      "type": "image/png",
+      "sizes": "196x196",
+      "purpose": "any maskable"
+    }
+  ]
+}

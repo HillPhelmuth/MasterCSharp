@@ -1,0 +1,12 @@
+﻿
+<div id="outer-screen" style="width:1100px">
+    <div id="inner-screen">
+        <div id="output-outer"><div id="output">@((MarkupString)InfoOutput)</div></div>
+        <div id="blank-line">&nbsp;</div>
+        <div id="input-row">
+            <span>&gt;&nbsp;</span><input id="input" @bind-value="Input" type="text" @onkeydown="OnKeyDown" @onkeyup="@Run" autofocus />
+        </div>
+        <br /><MatButton Style="font-size:.7em" Icon="file_copy" OnClick="CopyHistoryToClipboard">Copy History to clipboard</MatButton>
+    </div>
+</div>
+

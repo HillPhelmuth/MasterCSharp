@@ -1,0 +1,171 @@
+﻿@using BlazorApp.Shared.CodeModels
+
+@if (CodeChallenges != null)
+{
+    <div class="text-center">
+        <div>
+            <MatAccordion Multi="true">
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Easiest</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easiest"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton>
+                                    @if (easy.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Easier</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easier"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton>
+                                    @if (easy.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Easy</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easy"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight: 600" @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton>
+                                    @if (easy.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Medium</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var medium in CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight: 600" @onclick="@(() => SelectChallenge(medium))">@medium.Name</MatButton>
+                                    @if (medium.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Hard</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight: 600" @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton>
+                                    @if (hard.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Harder</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Harder"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight: 600" @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton>
+                                    @if (hard.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Hardest</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                    <MatExpansionPanelDetails>
+                        <MatList SingleSelection="true">
+                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hardest"))
+                            {
+                                <MatListDivider></MatListDivider>
+                                <MatListItem>
+                                    <MatButton Style="font-weight: 600" @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton>
+                                    @if (hard.UserCompleted)
+                                    {
+                                        <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                    }
+                                </MatListItem>
+
+                            }
+                        </MatList>
+                    </MatExpansionPanelDetails>
+
+                </MatExpansionPanel>
+            </MatAccordion>
+
+        </div>
+    </div>
+}
+else
+{
+    <MatH4 Class="text-center" Style="color:blue">Loading Challenges...</MatH4>
+    <SpinKitFadingCircle />
+}
