@@ -37,7 +37,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         public string GithubName { get; set; }
         [Required]
         public string RepoName { get; set; }
-        [Required]
+       
         public string FilePath { get; set; }
         [Required]
         public string FileName { get; set; }

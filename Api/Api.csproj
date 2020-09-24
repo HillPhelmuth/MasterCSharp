@@ -21,11 +21,11 @@
     <Compile Remove="Functions\Duels\ActiveArenaFunction.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
-    <Compile Remove="Functions\ShareHub\ShareHub.cs" />
     <Compile Remove="UserDbFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SignalRService" Version="1.2.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
@@ -61,6 +61,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Functions\Duels\" />
-    <Folder Include="Functions\ShareHub\" />
   </ItemGroup>
 </Project>
