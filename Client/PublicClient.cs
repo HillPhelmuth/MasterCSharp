@@ -98,7 +98,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"{CHALLENGE_FUNCTION_URL}/challenges");
+            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"api/GetChallenges");
             sw.Stop();
             Console.WriteLine($"challenges from function: {sw.ElapsedMilliseconds}ms");
             var codeChallenges = new CodeChallenges { Challenges = codeChallengeList };

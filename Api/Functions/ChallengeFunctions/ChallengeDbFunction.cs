@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace BlazorApp.Api.Functions.ChallengeFunctions
 
         [FunctionName("GetChallenges")]
         public async Task<IActionResult> GetChallenges(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "challenges")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP GET/challenges trigger function processed a request.");
