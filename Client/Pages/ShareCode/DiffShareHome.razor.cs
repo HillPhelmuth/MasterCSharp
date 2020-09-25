@@ -1,4 +1,5 @@
-﻿using Blazor.ModalDialog;
+﻿using System.Threading.Tasks;
+using Blazor.ModalDialog;
 using BlazorApp.Client.Pages.Interactive;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeServices;
@@ -24,6 +25,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         private string teamname;
         private bool userSubmitted;
         private bool isSelectSnippet;
+        private bool isNewChat;
 
         private async void UpdateUser()
         {
@@ -54,7 +56,7 @@ namespace BlazorApp.Client.Pages.ShareCode
             var userMessage = message.Split("::");
             ChatContent +=
                 $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'>{userMessage[1]}</div><br/>";
-
+            isNewChat = true;
             InvokeAsync(StateHasChanged);
         }
         protected async void UpdateCodeSnippet()
@@ -73,17 +75,41 @@ namespace BlazorApp.Client.Pages.ShareCode
 
         protected async void UpdateFromPublicRepo()
         {
-            var modalResult =
-                await ModalService.ShowDialogAsync<GitHubForm>("Work with code from a public Github Repository");
-            if (modalResult.Success)
+            var option = new ModalDialogOptions
             {
-                string code = modalResult.ReturnParameters.Get<string>("FileCode");
+                Style = "modal-dialog-githubform"
+            };
+            var result = await ModalService.ShowDialogAsync<GitHubForm>("Get code from a public Github Repo", option);
+            if (result.Success)
+            {
+                string code = result.ReturnParameters.Get<string>("FileCode");
                 CodeSnippet = code;
                 CodeEditorService.UpdateSnippet(code);
                 isSelectSnippet = true;
             }
 
             await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task ShowChatContent()
+        {
+            isNewChat = false;
+            var parameters = new ModalDialogParameters
+            {
+                {"ChatContent", ChatContent}
+            };
+            var options = new ModalDialogOptions
+            {
+                Position = ModalDialogPositionOptions.TopRight
+            };
+            bool isClear = false;
+            var result = await ModalService.ShowDialogAsync<ChatDisplay>("Chat Messages", options, parameters);
+            if (result.Success)
+            {
+                isClear = result.ReturnParameters.Get<bool>("IsClear");
+            }
+
+            ChatContent = isClear ? string.Empty : ChatContent;
         }
     }
 }

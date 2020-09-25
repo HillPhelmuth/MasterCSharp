@@ -1,0 +1,5 @@
+﻿
+<MatH4>Chat Output Window</MatH4>
+<MatButton OnClick="@(() => Close(true))">Clear Chat And Close</MatButton>
+<MatButton Raised="true" OnClick="@(() => Close())">Close</MatButton>
+<div class="chat-window">@((MarkupString) ChatContent)</div>

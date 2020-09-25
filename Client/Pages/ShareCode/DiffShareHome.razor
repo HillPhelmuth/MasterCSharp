@@ -12,6 +12,7 @@
     <MatButton OnClick="UpdateCodeSnippet">Code Snippet Menu</MatButton>
     <MatButton OnClick="UpdateFromPublicRepo">Get Code From Github Repo</MatButton>
     <br />
+    <MatButton Raised="isNewChat" Icon="chat" Outlined="isNewChat" Unelevated="!isNewChat" OnClick="ShowChatContent">Show Chat</MatButton>
    
 }
 @if (isSelectSnippet)
@@ -23,10 +24,7 @@
             <DiffShareHub UserName="@userName" OtherUser="@otherUser" Snippet="@CodeSnippet"
                           GroupName="@teamname" OnNewMessage="HandleNewMessage"/>
         </div>
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-            <MatH6>Chat/Output Window</MatH6>
-            <div class="chat-window">@((MarkupString) ChatContent)</div>
-        </div>
+       
     </div>
 </div>
 }

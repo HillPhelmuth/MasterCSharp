@@ -29,8 +29,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         public string Snippet { get; set; }
         [Parameter]
         public EventCallback<string> OnNewMessage { get; set; }
-
-        private const string FunctionBaseUrl = "api";
+        
         //private const string FunctionBaseUrl = "http://localhost:7071/api"; or https://csharprealtimefunction.azurewebsites.net/api
         private HubConnection hubConnection;
         private List<string> messages = new List<string>();
@@ -42,6 +41,8 @@ namespace BlazorApp.Client.Pages.ShareCode
             var authUser = authInfo.User.Identity;
             UserName ??= authUser.Name;
             var hubUri = $"{NavigationManager.BaseUri}api";
+            if (NavigationManager.BaseUri.Contains("localhost"))
+                hubUri = "http://localhost:7071/api";
             //must use API port for local host: "http://localhost:7071/api";
             hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{hubUri}/", options =>
@@ -85,42 +86,26 @@ namespace BlazorApp.Client.Pages.ShareCode
             await JoinGroup();
         }
 
-        private async Task Send()
-        {
-            await PublicClient.Client.PostAsJsonAsync($"{FunctionBaseUrl}/messages/{UserName}", messageInput);
-        }
+        private async Task Send() => await PublicClient.SendMessage(UserName, messageInput);
 
-        private async void SendSnippet(string snippet)
-        {
-            await PublicClient.Client.PostAsJsonAsync($"{FunctionBaseUrl}/sendCode/{OtherUser}", snippet);
-        }
+        private async void SendSnippet(string snippet) => await PublicClient.SendSnippet(snippet, OtherUser);
 
-        private async Task JoinGroup()
-        {
+        private async Task JoinGroup() => await PublicClient.JoinGroup(GroupName, UserName);
 
-            await PublicClient.Client.PostAsJsonAsync($"{FunctionBaseUrl}/joinGroup/{GroupName}/{UserName}", UserName);
-        }
+        private async void MessageGroup() => await PublicClient.MessageGroup(GroupName, messageInput);
 
-        private async void MessageGroup()
-        {
-            await PublicClient.Client.PostAsJsonAsync($"{FunctionBaseUrl}/groupMessage/{GroupName}", messageInput);
-        }
         private async void SubmitCode(string code)
         {
             isCodeCompiling = true;
             await InvokeAsync(StateHasChanged);
             var output = await PublicClient.SubmitCode(code);
-            await PublicClient.Client.PostAsJsonAsync($"{FunctionBaseUrl}/sendOut/{GroupName}", output);
+            await PublicClient.SendCodeOutput(GroupName, output);
             isCodeCompiling = false;
             await InvokeAsync(StateHasChanged);
 
         }
-        public bool IsConnected =>
-            hubConnection?.State == HubConnectionState.Connected;
+        public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
-        public void Dispose()
-        {
-            _ = hubConnection.DisposeAsync();
-        }
+        public void Dispose() => _ = hubConnection.DisposeAsync();
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,25 +12,23 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json; //using CSharpDuels.DataContext;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json; 
 
 namespace BlazorApp.Api.Functions.Duels
 {
     public class ActiveArenaFunction
     {
-        //private readonly CSharpDuelsDbContext _context;
+        private readonly HttpClient _client;
         private readonly Container _database;
-        public ActiveArenaFunction(CosmosClient client)
+        public ActiveArenaFunction(CosmosClient cosmosClient, HttpClient client)
         {
-            //_context = context;
-            _database = client.GetContainer("ActiveArenasDb", "ActiveArenas");
+            _client = client;
+            _database = cosmosClient.GetContainer("ActiveArenasDb", "ActiveArenas");
         }
 
         [FunctionName("GetActiveArenas")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getAllArenas")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request for GetActiveArenas.");
@@ -45,7 +45,7 @@ namespace BlazorApp.Api.Functions.Duels
         }
         [FunctionName("AddActiveArenas")]
         public async Task<IActionResult> AddArena(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "addArena")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request for AddActiveArenas.");
@@ -89,10 +89,11 @@ namespace BlazorApp.Api.Functions.Duels
         private async Task SendAppHubAlert(string action)
         {
             const string FunctionBaseUrl = "https://csharpduelshubfunction.azurewebsites.net/api";
-            using var client = new HttpClient();
             var url = $"{FunctionBaseUrl}/alert/";
             var message = $"";
-            await client.PostAsJsonAsync(url, message);
+            var response = await _client.PostAsJsonAsync(url, message);
+           
+            Debug.WriteLine($"response for external Hub service:\r\n IsSuccess: {response.IsSuccessStatusCode} Code: {response.StatusCode} \r\n Content:{response.Content}");
         }
 
     }

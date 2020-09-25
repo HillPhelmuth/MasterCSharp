@@ -16,11 +16,12 @@ namespace BlazorApp.Client
     public class PublicClient
     {
         //local http://localhost:7071/api or https://challengefunction.azurewebsites.net/api
-        private const string CHALLENGE_FUNCTION_URL = "api";
-        private const string COMPILE_FUNCTION_URL = "api";
-        private const string REALTIME_FUNCTION_URL = "https://csharprealtimefunction.azurewebsites.net/api";
-        private const string DUELS_COSMOS_FUNCTION_URL = "https://csharpduels.azurewebsites.net/api";
-        //private const string DUELS_COSMOS_FUNCTION_URL = "api";
+        private const string ChallengeFunctionUrl = "api";
+        private const string CompileFunctionUrl = "api";
+        private const string DuelsCosmosFunctionUrl = "api";
+        private const string RealtimeFunctionUrl = "https://csharprealtimefunction.azurewebsites.net/api";
+        //private const string DUELS_COSMOS_FUNCTION_URL = "https://csharpduels.azurewebsites.net/api";
+        
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)
@@ -32,7 +33,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var activeArenas = await Client.GetFromJsonAsync<List<Arena>>($"{DUELS_COSMOS_FUNCTION_URL}/getAllArenas");
+            var activeArenas = await Client.GetFromJsonAsync<List<Arena>>($"{DuelsCosmosFunctionUrl}/GetActiveArenas");
             var challenges = await GetChallenges();
             foreach (var activeArena in activeArenas)
             {
@@ -44,19 +45,9 @@ namespace BlazorApp.Client
             return activeArenas;
         }
 
-        //public async Task<List<Arena>> GetUserActiveArenas(int userId)
-        //{
-        //    var sw = new Stopwatch();
-        //    sw.Start();
-        //    var activeArenas = await Client.GetFromJsonAsync<List<Arena>>($"{DUELS_COSMOS_FUNCTION_URL}//{userId}");
-
-        //    sw.Stop();
-        //    Console.WriteLine($"GetUserActiveArenas {sw.ElapsedMilliseconds}ms");
-        //}
-
         public async Task<bool> UpdateActiveArena(Arena arena)
         {
-            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/joinArena/{arena.Id}/{arena.Name}", arena);
+            var apiResult = await Client.PostAsJsonAsync($"{DuelsCosmosFunctionUrl}/joinArena/{arena.Id}/{arena.Name}", arena);
             return apiResult.IsSuccessStatusCode;
         }
 
@@ -66,7 +57,7 @@ namespace BlazorApp.Client
             var id = random.Next(1, 999999);
             arena.Id = id.ToString();
             arena.ChallengeName = arena.CurrentChallenge.Name;
-            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/addArena", arena);
+            var apiResult = await Client.PostAsJsonAsync($"{DuelsCosmosFunctionUrl}/AddActiveArenas", arena);
             return apiResult.IsSuccessStatusCode;
         }
 
@@ -74,7 +65,7 @@ namespace BlazorApp.Client
         {
             var arenaId = arena.Id;
             var arenaName = arena.Name;
-            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/removeArena/{arenaId}/{arenaName}", arenaId);
+            var apiResult = await Client.PostAsJsonAsync($"{DuelsCosmosFunctionUrl}/removeArena/{arenaId}/{arenaName}", arenaId);
             return  apiResult.IsSuccessStatusCode;
         }
         public async Task<bool> AddCompleteDuel(Arena arena, bool isWon)
@@ -89,7 +80,7 @@ namespace BlazorApp.Client
                 TimeCompleted = DateTime.Now
             };
             
-            var result = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addDuel/{arena.Creator}/{arena.Name}", completedDuel);
+            var result = await Client.PostAsJsonAsync($"{ChallengeFunctionUrl}/addDuel/{arena.Creator}/{arena.Name}", completedDuel);
 
             return result.IsSuccessStatusCode;
         }
@@ -98,7 +89,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"{CHALLENGE_FUNCTION_URL}/challenges");
+            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"{ChallengeFunctionUrl}/GetChallenges");
             sw.Stop();
             Console.WriteLine($"challenges from function: {sw.ElapsedMilliseconds}ms");
             var codeChallenges = new CodeChallenges { Challenges = codeChallengeList };
@@ -110,7 +101,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var videos = await Client.GetFromJsonAsync<List<VideoSection>>($"{CHALLENGE_FUNCTION_URL}/videos");
+            var videos = await Client.GetFromJsonAsync<List<VideoSection>>($"{ChallengeFunctionUrl}/videos");
             sw.Stop();
             Console.WriteLine($"videos from function: {sw.ElapsedMilliseconds}ms");
             return new Videos { VideoSections = videos };
@@ -119,7 +110,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var userstring = await Client.GetStringAsync($"{CHALLENGE_FUNCTION_URL}/users/{userName}");
+            var userstring = await Client.GetStringAsync($"{ChallengeFunctionUrl}/users/{userName}");
             Console.WriteLine($"userData = {userstring}");
             var userData = JsonConvert.DeserializeObject<UserAppData>(userstring);
            
@@ -129,31 +120,31 @@ namespace BlazorApp.Client
         }
         public async Task<bool> AddUserSnippet(string userName, UserSnippet snippet)
         {
-            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addSnippet/{userName}", snippet);
+            var apiResult = await Client.PostAsJsonAsync($"{ChallengeFunctionUrl}/addSnippet/{userName}", snippet);
             return apiResult.IsSuccessStatusCode;
         }
 
         public async Task<bool> AddSuccessfulChallenge(string userName, int challengeId)
         {
-            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addSnippet/{userName}/{challengeId}","");
+            var apiResult = await Client.PostAsJsonAsync($"{ChallengeFunctionUrl}/addSnippet/{userName}/{challengeId}","");
             return apiResult.IsSuccessStatusCode;
         }
         public async Task<bool> PostChallenge(Challenge challenge)
         {
-            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/challenge", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{ChallengeFunctionUrl}/challenge", challenge);
             return apiResult.IsSuccessStatusCode;
         }
 
         public async Task<bool> PostVideo(Video video)
         {
-            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);
+            var apiResult = await Client.PostAsJsonAsync($"{ChallengeFunctionUrl}/video", video);
             return apiResult.IsSuccessStatusCode;
         }
         public async Task<CodeOutputModel> SubmitChallenge(Challenge challenge)
         {
             var sw = new Stopwatch();
             sw.Start();
-            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/challenge", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{CompileFunctionUrl}/challenge", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             sw.Stop();
             Console.WriteLine($"challenge submit too {sw.ElapsedMilliseconds}ms");
@@ -166,7 +157,7 @@ namespace BlazorApp.Client
             var sw = new Stopwatch();
             sw.Start();
             var challenge = new Challenge { Solution = code };
-            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/code", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{CompileFunctionUrl}/code", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
@@ -177,11 +168,34 @@ namespace BlazorApp.Client
             var sw = new Stopwatch();
             sw.Start();
             var challenge = new Challenge { Solution = code };
-            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/console", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{CompileFunctionUrl}/console", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
         }
+        public async Task SendMessage(string userName, string messageInput)
+        {
+            await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/messages/{userName}", messageInput);
+        }
 
+        public async Task SendSnippet(string snippet, string otherUser)
+        {
+            await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/sendCode/{otherUser}", snippet);
+        }
+
+        public async Task JoinGroup(string groupName, string userName)
+        {
+            await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/joinGroup/{groupName}/{userName}", userName);
+        }
+
+        public async Task MessageGroup(string groupName, string messageInput)
+        {
+            await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/groupMessage/{groupName}", messageInput);
+        }
+
+        public async Task SendCodeOutput(string group, string output)
+        {
+            await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/sendOut/{group}", output);
+        }
     }
 }

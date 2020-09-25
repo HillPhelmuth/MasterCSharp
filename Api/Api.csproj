@@ -18,12 +18,13 @@
     <Compile Remove="Data\ArenaDbClient.cs" />
     <Compile Remove="Data\CSharpDuelsDbContext.cs" />
     <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
-    <Compile Remove="Functions\Duels\ActiveArenaFunction.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
     <Compile Remove="UserDbFunction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Direct" Version="3.13.2" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SignalRService" Version="1.2.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.6.0" />
@@ -58,8 +59,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Functions\Duels\" />
   </ItemGroup>
 </Project>
