@@ -6,22 +6,23 @@
     <p>github user or organization:</p>
     <div class="mat-layout-grid">
         <div class="mat-layout-grid-inner">
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                 <p>Github User or Organization</p>
                 <MatTextField TValue="string" @bind-Value="FormModel.GithubName" Label="github user or organization"></MatTextField>
-                <p>Repository name:</p>
-                <MatTextField TValue="string" @bind-Value="FormModel.RepoName" Label="Repo name"></MatTextField>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>Repository name:</p>
+                    <MatTextField TValue="string" @bind-Value="FormModel.RepoName" Label="Repo name"></MatTextField>
+                </div>
             </div>
-            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-                <p>Filepath (Not including FileName)</p>
-                <MatTextField TValue="string" @bind-Value="FormModel.FilePath" Label="Path" PlaceHolder="Folder/SubFolder" HelperTextPersistent="true" HelperText="Required unless file is in the root of the repository (this is uncommon)"></MatTextField>
-                <p>File name:</p>
-                <MatTextField TValue="string" @bind-Value="FormModel.FileName" Label="file name" PlaceHolder="FileName.cs"></MatTextField>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <p>Filepath (including FileName)</p>
+                <MatTextField Style="max-width:95%" TValue="string" @bind-Value="FormModel.FilePath" Label="Path" PlaceHolder="Folder/SubFolder/File.cs"></MatTextField>
+                
             </div>
         </div>
     </div>
     <br/> <hr /><br />
     <MatH5>GitHub Api Url:</MatH5>
-    <div style="margin-bottom:1.5em">https://api.github.com/repos/@FormModel.GithubName/@FormModel.RepoName/contents/@FormModel.FilePath/@FormModel.FileName</div>
+    <div style="margin-bottom:1.5em">https://api.github.com/repos/@FormModel.GithubName/@FormModel.RepoName/contents/@FormModel.FilePath</div>
     <MatButton Type="submit" Raised="true">Pull in code file contents</MatButton>
 </EditForm>

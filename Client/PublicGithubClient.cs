@@ -27,15 +27,15 @@ namespace BlazorApp.Client
             return code;
         }
 
-        public async Task<string> CodeFromPublicRepo(string githubName, string repoName, string filepath, string filename)
+        public async Task<string> CodeFromPublicRepo(string githubName, string repoName, string filepath)
         {
-            if (!filename.Contains("."))
+            if (!filepath.Contains("."))
             {
                 return "Nope!, provide a file extension. I suggest '.cs'";
             }
             var sw = new Stopwatch();
             sw.Start();
-            var code = await client.GetStringAsync($"{baseUrl}/{githubName}/{repoName}/contents/{filepath}/{filename}");
+            var code = await client.GetStringAsync($"{baseUrl}/{githubName}/{repoName}/contents/{filepath}");
             sw.Stop();
             Console.WriteLine($"Retrieved code from Github in {sw.ElapsedMilliseconds}ms");
             return code;

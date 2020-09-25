@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
 using BlazorApp.Client.ExtensionMethods;
+using BlazorApp.Client.Pages.ShareCode;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.UserModels;
@@ -171,16 +172,27 @@ namespace BlazorApp.Client.Pages.Practice
             StateHasChanged();
         }
 
-        public async Task GetCodeFromGitHubFile(string filename)
+        public async Task GetCodeFromGitHubFile(string filename = "", bool isFromPublic = false)
         {
             var sw = new Stopwatch();
             sw.Start();
-            var code = await GithubClient.CodeFromGithub(filename);
+            string code = isFromPublic ? await UpdateFromPublicRepo() : await GithubClient.CodeFromGithub(filename);
             sw.Stop();
             Console.WriteLine($"GitHub file content retrieved in {sw.ElapsedMilliseconds}ms \r\n Returned: {code}");
             await UpdateCodeSnippet(code);
         }
+        protected async Task<string> UpdateFromPublicRepo()
+        {
+            var option = new ModalDialogOptions
+            {
+                Style = "modal-dialog-githubform"
+            };
+            var result = await ModalService.ShowDialogAsync<GitHubForm>("Get code from a public Github Repo", option);
+            if (!result.Success) return null;
+            string code = result.ReturnParameters.Get<string>("FileCode");
+            return code;
 
+        }
         public async Task DisplayCodeDescription(string content)
         {
             var parameters = new ModalDialogParameters

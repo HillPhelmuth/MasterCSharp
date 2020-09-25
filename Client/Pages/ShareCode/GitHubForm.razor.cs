@@ -22,7 +22,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         private async Task Submit()
         {
             var codeFile = await GithubClient.CodeFromPublicRepo(FormModel.GithubName, FormModel.RepoName,
-                FormModel.FilePath, FormModel.FileName);
+                FormModel.FilePath);
             var parameters = new ModalDialogParameters
             {
                 {"FileCode", codeFile}
@@ -37,9 +37,8 @@ namespace BlazorApp.Client.Pages.ShareCode
         public string GithubName { get; set; }
         [Required]
         public string RepoName { get; set; }
-       
-        public string FilePath { get; set; }
         [Required]
-        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        
     }
 }

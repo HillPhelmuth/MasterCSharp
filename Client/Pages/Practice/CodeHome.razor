@@ -69,6 +69,11 @@
                     }
 
                 </MatTab>
+                <MatTab Label="Get Code From Github">
+                    <hr />
+                    <MatH3 Class="text-center">Pull the contents of any public repository file into the Editor</MatH3><br />
+                    <MatButton Raised="true" OnClick="@(() => GetCodeFromGitHubFile(isFromPublic:true))">Get code from GitHub.com</MatButton>
+                </MatTab>
                 <MatTab Label="Console App">
                     <hr />
                     @foreach (var snippet in (CodeSnippets.ConsoleSnippets))
