@@ -1,6 +1,4 @@
-﻿using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.UserModels;
-using BlazorApp.Shared.VideoModels;
+﻿using BlazorApp.Api.Models;
 using Microsoft.EntityFrameworkCore;
 //using ArenaDuel = ChallengeFunction.Models.ArenaDuel;
 

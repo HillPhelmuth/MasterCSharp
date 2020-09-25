@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using BlazorApp.Api.Data;
-using BlazorApp.Shared.VideoModels;
+using BlazorApp.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -51,7 +51,7 @@ namespace BlazorApp.Api.Functions.ChallengeFunctions
         {
             log.LogInformation("C# HTTP POST/challenge trigger function processed a request.");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var challenge = JsonConvert.DeserializeObject<Shared.CodeModels.Challenge>(requestBody);
+            var challenge = JsonConvert.DeserializeObject<Challenge>(requestBody);
             if (challenge.ID > 0)
             {
                 return new BadRequestErrorMessageResult("Challenge already exists in database");
