@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Scripting.Hosting; //using Microsoft.AspNetCore.Components;
+using Microsoft.CodeAnalysis.CSharp.Scripting.Hosting; 
 
 namespace BlazorApp.Api.Services
 {
     public partial class CompilerService
     {
-        protected CSharpCompilation runningCompilation;
-        protected IEnumerable<MetadataReference> _references;
-        protected object[] submissionStates = { null, null };
-        protected int submissionIndex = 0;
+        private CSharpCompilation runningCompilation;
+        private IEnumerable<MetadataReference> _references;
+        private object[] submissionStates = { null, null };
+        private int submissionIndex = 0;
         
         public string CodeOutput { get; set; }
         
@@ -90,7 +90,7 @@ namespace BlazorApp.Api.Services
         }
 
         //Tries to compile, if successful, it outputs the DLL Assembly. If unsuccessful, it will output the error message
-        protected bool TryCompile(string source, out Assembly assembly, out IEnumerable<Diagnostic> errorDiagnostics)
+        private bool TryCompile(string source, out Assembly assembly, out IEnumerable<Diagnostic> errorDiagnostics)
         {
             assembly = null;
             var scriptCompilation = CSharpCompilation.CreateScriptCompilation(

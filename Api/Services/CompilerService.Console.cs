@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Scripting;
+//using Microsoft.CodeAnalysis.Scripting;
 
 namespace BlazorApp.Api.Services
 {
@@ -56,7 +56,7 @@ namespace BlazorApp.Api.Services
             compilation.Emit(outputAssembly);
             return (true, Assembly.Load(outputAssembly.ToArray()));
         }
-        private static ScriptState scriptState = null;
+        //private static ScriptState scriptState = null;
         private async Task RunInternal(string code)
         {
             Output = "";

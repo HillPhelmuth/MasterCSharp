@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Blazor.ModalDialog;
 using BlazorApp.Client.ExtensionMethods;
 using BlazorApp.Client.Pages.ShareCode;
+using BlazorApp.Client.Shared;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.UserModels;
@@ -108,6 +109,7 @@ namespace BlazorApp.Client.Pages.Practice
                 result = await PublicClient.SubmitConsole(code);
 
                 codeOutput += $"<p>{result}</p>";
+                CodeEditorService.CurrentOutput = codeOutput;
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
@@ -119,6 +121,7 @@ namespace BlazorApp.Client.Pages.Practice
                 sw.Start();
                 result = await PublicClient.SubmitCode(codeInput);
                 codeOutput += $"<p>{result}</p>";
+                CodeEditorService.CurrentOutput = codeOutput;
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
@@ -128,6 +131,7 @@ namespace BlazorApp.Client.Pages.Practice
             sw.Start();
             result = await PublicClient.SubmitConsole(codeInput);
             codeOutput += $"<p>{result}</p>";
+            CodeEditorService.CurrentOutput = codeOutput;
             sw.Stop();
             Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
             isCodeCompiling = false;
@@ -200,6 +204,16 @@ namespace BlazorApp.Client.Pages.Practice
                 {"Description", content}
             };
             await ModalService.ShowDialogAsync<CodeDescription>("More about this code", parameters: parameters);
+        }
+
+        public async Task DisplayCodeOutput()
+        {
+            var content = CodeEditorService.CurrentOutput;
+            var parameters = new ModalDialogParameters
+            {
+                {"CodeOutput", content}
+            };
+            await ModalService.ShowDialogAsync<CodeOutModal>("Current code output is displayed here.",parameters: parameters);
         }
         public void Dispose()
         {

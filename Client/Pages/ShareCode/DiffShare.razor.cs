@@ -31,7 +31,11 @@ namespace BlazorApp.Client.Pages.ShareCode
             CodeEditorService.OnSharedSnippetChange += UpdateSharedSnippet;
             return base.OnInitializedAsync();
         }
-
+        private async Task ChangeTheme(ChangeEventArgs e)
+        {
+            Console.WriteLine($"setting theme to: {e.Value.ToString()}");
+            await MonacoEditorBase.SetTheme(e.Value.ToString());
+        }
         private DiffEditorConstructionOptions DiffEditorConstructionOptions(MonacoDiffEditor editor)
         {
             return new DiffEditorConstructionOptions

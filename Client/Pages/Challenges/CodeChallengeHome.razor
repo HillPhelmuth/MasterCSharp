@@ -50,7 +50,14 @@
                 }
                 @if (takeChallenge)
                 {
-
+                    <div class="text-right">
+                        Theme:
+                        <select @onchange="ChangeTheme">
+                            <option value="vs">Visual Studio</option>
+                            <option value="vs-dark">Visual Studio Dark</option>
+                            <option value="hc-black">High Contrast Black</option>
+                        </select>
+                    </div>
                     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
                     <MatButton Style="font-size:.7em" @onclick="ShowAnswer">Give Up? Get a solution</MatButton>
                     <MatButton Style="margin-left:30%" Icon="file_copy" OnClick="CopyCodeToClipboard">Copy to clipboard</MatButton>
