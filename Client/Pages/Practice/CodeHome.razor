@@ -103,7 +103,7 @@
             {
                 <div class="mat-layout-grid">
                     <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-10">
 
                             @if (isCodeCompiling)
                             {
@@ -113,21 +113,15 @@
                             }
                             <MonacoEdit OnSaveUserSnippet="HandleSaveSnippet" CodeSnippet="@codeSnippet" OnCodeSubmit="HandeSubmit" />
                         </div>
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                            <div class="text-center">
-                                <div style="font-size:1.3em">Output</div>
-                                <MatButton Style="font-size:.8em" OnClick="ClearOutput" Label="Clear"></MatButton>
-                                @if (isSnippetSaving)
-                                {
-                                    <hr />
-                                    <MatH4 Class="text-center" Style="color: green">Saving...</MatH4>
-                                    <SpinKitFadingCircle />
-                                }
-                                <p>@message</p>
-                            </div>
-                            <div class="console">
-                                @((MarkupString) codeOutput)
-                            </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
+                            @if (isSnippetSaving)
+                            {
+                                <hr />
+                                <MatH4 Class="text-center" Style="color: green">Saving...</MatH4>
+                                <SpinKitFadingCircle />
+                            }
+                            <button class="mat-elevation-z24" style="width: 100%; height:5em; background-color: darkblue; color: white; outline-color:red" @onclick="DisplayCodeOutput">Click to view code output so far.</button>
+                            
                         </div>
                     </div>
                 </div>

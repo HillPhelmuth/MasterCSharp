@@ -180,7 +180,11 @@ namespace BlazorApp.Client.Pages.Challenges
         {
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
         }
-
+        private async Task ChangeTheme(ChangeEventArgs e)
+        {
+            Console.WriteLine($"setting theme to: {e.Value.ToString()}");
+            await MonacoEditorBase.SetTheme(e.Value.ToString());
+        }
         #endregion
         public void Dispose()
         {

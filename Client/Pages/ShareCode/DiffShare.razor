@@ -1,4 +1,11 @@
-﻿
+﻿<div class="text-right">
+    Theme:
+    <select @onchange="ChangeTheme">
+        <option value="vs">Visual Studio</option>
+        <option value="vs-dark">Visual Studio Dark</option>
+        <option value="hc-black">High Contrast Black</option>
+    </select>
+</div><hr />
 <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Compile and run</MatButton>
 <MatButton Icon="save" OnClick="AddSnippetToUser">Share code</MatButton>
 <MatButton Icon="find_replace" OnClick="TakeDiff">Replace code with Diff</MatButton>

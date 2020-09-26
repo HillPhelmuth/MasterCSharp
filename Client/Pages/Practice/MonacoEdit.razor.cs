@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeServices;
@@ -30,32 +31,36 @@ namespace BlazorApp.Client.Pages.Practice
         [Parameter]
         public EventCallback<string> OnCodeSubmit { get; set; }
        
-        private string currentCode = "";
+        //private string currentCode = "";
         protected override Task OnInitializedAsync()
         {
             Editor = new MonacoEditor();
-            CodeEditorService.OnSnippetChange += UpdateSnippet;
+            CodeEditorService.PropertyChanged += UpdateSnippet;
             return base.OnInitializedAsync();
         }
         public async Task SubmitCode()
         {
-            currentCode = await Editor.GetValue();
+            var currentCode = await Editor.GetValue();
             await OnCodeSubmit.InvokeAsync(currentCode);
         }
 
-        protected async Task UpdateSnippet()
+        protected async void UpdateSnippet(object sender, PropertyChangedEventArgs args)
         {
+            if (!args.PropertyName.Contains("CodeSnippet")) return;
             CodeSnippet = CodeEditorService.CodeSnippet;
-            currentCode = CodeSnippet;
+            //var currentCode = CodeSnippet;
             await Editor.SetValue(CodeSnippet);
             Console.WriteLine("Snippet Updated");
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
         private async Task AddSnippetToUser()
         {
             var snippetClip = await Editor.GetValue();
             await OnSaveUserSnippet.InvokeAsync(snippetClip);
         }
+
+        #region Monaco Editor
+
         protected StandaloneEditorConstructionOptions EditorOptionsRoslyn(MonacoEditor editor)
         {
             return new StandaloneEditorConstructionOptions
@@ -63,6 +68,12 @@ namespace BlazorApp.Client.Pages.Practice
                 AutomaticLayout = true,
                 AutoIndent = true,
                 HighlightActiveIndentGuide = true,
+                ColorDecorators = true,
+                Minimap = new MinimapOptions{Enabled = false},
+                Hover = new HoverOptions { Delay = 400 },
+                Find = new FindOptions{AutoFindInSelection = true,SeedSearchStringFromSelection = true,AddExtraSpaceOnTop = true},
+                Lightbulb = new LightbulbOptions{Enabled = true},
+                AcceptSuggestionOnEnter = "smart",
                 Language = "csharp",
                 Value = CodeSnippet ?? "private string MyProgram() \n" +
                         "{\n" +
@@ -80,31 +91,60 @@ namespace BlazorApp.Client.Pages.Practice
             {
                 Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
             });
-        }
+            await Editor.AddAction("testAction", "Test Action", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_B }, null, null, "navigation", 1.5, (editor, keyCodes) =>
+            {
 
+                Console.WriteLine("Ctrl+D : Editor action is triggered.");
+            });
+            var newDecorations = new[]
+            {
+                new ModelDeltaDecoration
+                {
+                    Range = new BlazorMonaco.Bridge.Range(3,1,3,1),
+                    Options = new ModelDecorationOptions
+                    {
+                        IsWholeLine = true,
+                        ClassName = "decorationContentClass",
+                        GlyphMarginClassName = "decorationGlyphMarginClass"
+                    }
+                }
+            };
+
+            decorationIds = await Editor.DeltaDecorations(null, newDecorations);
+        }
+        private string[] decorationIds;
         protected void OnContextMenu(EditorMouseEvent eventArg)
         {
+            
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
         }
+        private async Task ChangeTheme(ChangeEventArgs e)
+        {
+            Console.WriteLine($"setting theme to: {e.Value.ToString()}");
+            await MonacoEditorBase.SetTheme(e.Value.ToString());
+        }
+        private async Task AddAction()
+        {
+            await Editor.AddAction("testAction", "Test Action", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_B }, null, null, "navigation", 1.5, (editor, keyCodes) =>
+            {
 
+                Console.WriteLine("Ctrl+D : Editor action is triggered.");
+            });
+        }
         public async Task CopyCodeToClipboard()
         {
             var snippetClip = await Editor.GetValue();
             await Clipboard.SetTextAsync(snippetClip);
         }
 
-        public async Task ReadCodeFromClipboard()
-        {
-            var content = await Clipboard.GetTextAsync();
-            await Editor.SetValue(content);
-            StateHasChanged();
-        }
+        #endregion
+
 
         public void Dispose()
         {
             Console.WriteLine("MonacoEdit.razor Disposed");
             //CodeEditorService.OnChange -= StateHasChanged;
-            CodeEditorService.OnSnippetChange -= UpdateSnippet;
+            CodeEditorService.PropertyChanged -= UpdateSnippet;
         }
     }
 }
