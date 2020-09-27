@@ -111,7 +111,7 @@
                                 <MatH4 Class="text-center" Style="color: blue">Executing...</MatH4>
                                 <SpinKitFadingCircle />
                             }
-                            <MonacoEdit OnSaveUserSnippet="HandleSaveSnippet" CodeSnippet="@codeSnippet" OnCodeSubmit="HandeSubmit" />
+                            <MonacoEdit OnSaveUserSnippet="HandleSaveSnippet" CodeSnippet="@codeSnippet" OnCodeSubmit="HandeSubmit" ButtonLabel="Compile and Run" />
                         </div>
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
                             @if (isSnippetSaving)
@@ -120,7 +120,7 @@
                                 <MatH4 Class="text-center" Style="color: green">Saving...</MatH4>
                                 <SpinKitFadingCircle />
                             }
-                            <button class="mat-elevation-z24" style="width: 100%; height:5em; background-color: darkblue; color: white; outline-color:red" @onclick="DisplayCodeOutput">Click to view code output so far.</button>
+                            <button class="mat-elevation-z24 @buttonCss" style="width: 100%; height:5em; background-color: darkblue; color: white; outline-color:red" @onclick="DisplayCodeOutput">Click to view code output so far.</button>
                             
                         </div>
                     </div>

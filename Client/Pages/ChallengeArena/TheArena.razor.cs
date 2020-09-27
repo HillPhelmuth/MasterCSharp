@@ -90,16 +90,13 @@ namespace BlazorApp.Client.Pages.ChallengeArena
                 Style = "modal-dialog-arena"
             };
             var result = await ModalService.ShowDialogAsync<ActiveArenas>("Select an Arena", options);
-            if (result.Success)
-            {
-                CurrentArena = result.ReturnParameters.Get<Arena>("SelectedArena");
-                isCreate = result.ReturnParameters.Get<bool>("CreatedArena");
-                if (isCreate)
-                    await OnArenaCreate.InvokeAsync(CurrentArena);
-                else
-                    await OnArenaJoin.InvokeAsync(CurrentArena);
-            }
-
+            if (!result.Success) return;
+            CurrentArena = result.ReturnParameters.Get<Arena>("SelectedArena");
+            isCreate = result.ReturnParameters.Get<bool>("CreatedArena");
+            if (isCreate)
+                await OnArenaCreate.InvokeAsync(CurrentArena);
+            else
+                await OnArenaJoin.InvokeAsync(CurrentArena);
             CurrentArena.CurrentChallenge ??= SelectedChallenge;
             await InvokeAsync(StateHasChanged);
         }

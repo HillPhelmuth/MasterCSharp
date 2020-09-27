@@ -37,11 +37,11 @@ namespace BlazorApp.Client.Pages.Practice
         private string codeSnippet;
         private string message;
         private string ReadlinePattern { get; } = "Console.ReadLine()";
-        
+        private string buttonCss = "";
         protected async Task UpdateCodeSnippet(string snippet, bool isConsole = false)
         {
             isConsoleOpen = isConsole;
-            CodeEditorService.UpdateSnippet(snippet);
+            CodeEditorService.CodeSnippet = snippet;
             StateHasChanged();
             await Task.Delay(50);
             isMonacoOpen = true;
@@ -113,6 +113,7 @@ namespace BlazorApp.Client.Pages.Practice
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
+                buttonCss = "alert_output";
                 StateHasChanged();
                 return;
             }
@@ -125,6 +126,7 @@ namespace BlazorApp.Client.Pages.Practice
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
+                buttonCss = "alert_output";
                 StateHasChanged();
                 return;
             }
@@ -135,6 +137,7 @@ namespace BlazorApp.Client.Pages.Practice
             sw.Stop();
             Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
             isCodeCompiling = false;
+            buttonCss = "alert_output";
             StateHasChanged();
         }
 
@@ -208,6 +211,8 @@ namespace BlazorApp.Client.Pages.Practice
 
         public async Task DisplayCodeOutput()
         {
+            buttonCss = "";
+            await InvokeAsync(StateHasChanged);
             var content = CodeEditorService.CurrentOutput;
             var parameters = new ModalDialogParameters
             {
