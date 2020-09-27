@@ -66,7 +66,8 @@ namespace BlazorApp.Client.Pages.ShareCode
             {
                 string snippet = result.ReturnParameters.Get<string>("CodeSnippet");
                 CodeSnippet = snippet;
-                CodeEditorService.UpdateSnippet(snippet);
+                CodeEditorService.CodeSnippet = snippet;
+                //CodeEditorService.UpdateSnippet(snippet);
                 isSelectSnippet = true;
             }
 
@@ -84,7 +85,8 @@ namespace BlazorApp.Client.Pages.ShareCode
             {
                 string code = result.ReturnParameters.Get<string>("FileCode");
                 CodeSnippet = code;
-                CodeEditorService.UpdateSnippet(code);
+                CodeEditorService.CodeSnippet = code;
+                //CodeEditorService.UpdateSnippet(code);
                 isSelectSnippet = true;
             }
 

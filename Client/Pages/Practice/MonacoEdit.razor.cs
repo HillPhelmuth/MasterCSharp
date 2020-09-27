@@ -30,6 +30,8 @@ namespace BlazorApp.Client.Pages.Practice
         public string CodeSnippet { get; set; }
         [Parameter]
         public EventCallback<string> OnCodeSubmit { get; set; }
+        [Parameter]
+        public string ButtonLabel { get; set; }
        
         //private string currentCode = "";
         protected override Task OnInitializedAsync()
@@ -75,7 +77,7 @@ namespace BlazorApp.Client.Pages.Practice
                 Lightbulb = new LightbulbOptions{Enabled = true},
                 AcceptSuggestionOnEnter = "smart",
                 Language = "csharp",
-                Value = CodeSnippet ?? "private string MyProgram() \n" +
+                Value = CodeEditorService.CodeSnippet ?? "private string MyProgram() \n" +
                         "{\n" +
                         "    string input = \"this does not\"; \n" +
                         "    string modify = input + \" suck!\"; \n" +
@@ -91,11 +93,19 @@ namespace BlazorApp.Client.Pages.Practice
             {
                 Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
             });
-            await Editor.AddAction("testAction", "Test Action", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_B }, null, null, "navigation", 1.5, (editor, keyCodes) =>
+            await Editor.AddAction("saveAction", "Save Snippet?", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_S }, null, null, "navigation", 1.5, async (editor, keyCodes) =>
             {
-
+                await AddSnippetToUser();
                 Console.WriteLine("Ctrl+D : Editor action is triggered.");
             });
+            await Editor.AddAction("executeAction", "Execute Code",
+                new int[] {(int) KeyMode.CtrlCmd | (int) KeyCode.Enter}, null, null, "navigation", 2.5,
+                async (editor, keyCodes) =>
+                {
+                    await SubmitCode();
+                    Console.WriteLine("Code Executed from Editor Command");
+                });
+            await Editor.SetValue(CodeEditorService.CodeSnippet);
             var newDecorations = new[]
             {
                 new ModelDeltaDecoration
@@ -123,14 +133,7 @@ namespace BlazorApp.Client.Pages.Practice
             Console.WriteLine($"setting theme to: {e.Value.ToString()}");
             await MonacoEditorBase.SetTheme(e.Value.ToString());
         }
-        private async Task AddAction()
-        {
-            await Editor.AddAction("testAction", "Test Action", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_B }, null, null, "navigation", 1.5, (editor, keyCodes) =>
-            {
-
-                Console.WriteLine("Ctrl+D : Editor action is triggered.");
-            });
-        }
+       
         public async Task CopyCodeToClipboard()
         {
             var snippetClip = await Editor.GetValue();

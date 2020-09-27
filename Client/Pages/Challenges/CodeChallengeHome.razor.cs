@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Blazor.ModalDialog;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.CodeServices;
@@ -19,9 +20,9 @@ namespace BlazorApp.Client.Pages.Challenges
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
-        public IClipboard Clipboard { get; set; }
-        [Inject]
         public PublicClient PublicClient { get; set; }
+        [Inject]
+        public IModalDialogService ModalService { get; set; }
 
         public CodeChallenges CodeChallenges { get; set; }
         public Challenge SelectedChallenge { get; set; }
@@ -41,7 +42,6 @@ namespace BlazorApp.Client.Pages.Challenges
         protected override async Task OnInitializedAsync()
         {
             CodeChallenges = AppStateService.CodeChallenges ?? await PublicClient.GetChallenges();
-            //CodeChallenges ??= await PublicClient.GetChallenges();
             UserAppData = AppStateService.UserAppData;
             foreach (var challenge in CodeChallenges.Challenges)
             {
@@ -58,22 +58,24 @@ namespace BlazorApp.Client.Pages.Challenges
             isChallengeReady = true;
         }
 
+        private async void HandleSaveSnippet(string code)
+        {
+            await ModalService.ShowMessageBoxAsync("Save Fail", "If you want to save a code snippet, navigate to the 'Practice C#' tab");
+        }
         private void SolveChallenge() => takeChallenge = !takeChallenge;
 
-        public async Task SubmitCode()
+        public async Task SubmitCode(string code)
         {
             isCodeCompiling = true;
             StateHasChanged();
             await Task.Run(() =>
             {
-                _ = HandleCodeSubmit();
+                _ = HandleCodeSubmit(code);
             });
             
         }
-        public async Task HandleCodeSubmit()
+        public async Task HandleCodeSubmit(string code)
         {
-            var code = await Editor.GetValue();
-
             var submitChallenge = new Challenge
             {
                 Solution = code,
@@ -114,31 +116,17 @@ namespace BlazorApp.Client.Pages.Challenges
         {
             var challenge = SelectedChallenge;
             codeSnippet = challenge.Snippet;
-            CodeEditorService.UpdateSnippet(codeSnippet);
-            Editor.SetValue(codeSnippet);
+            CodeEditorService.CodeSnippet = codeSnippet;
             return Task.CompletedTask;
         }
 
         protected Task ShowAnswer()
         {
             codeSnippet = SelectedChallenge.Solution;
-            Editor.SetValue(codeSnippet);
-            CodeEditorService.UpdateSnippet(codeSnippet);
+            CodeEditorService.CodeSnippet = codeSnippet;
             return Task.CompletedTask;
         }
 
-        public async Task CopyCodeToClipboard()
-        {
-            var snippetClip = await Editor.GetValue();
-            await Clipboard.SetTextAsync(snippetClip);
-        }
-
-        public async Task ReadCodeFromClipboard()
-        {
-            var content = await Clipboard.GetTextAsync();
-            await Editor.SetValue(content);
-            StateHasChanged();
-        }
         protected void UpdateUserChallenges()
         {
             CodeChallenges = AppStateService.CodeChallenges;
@@ -146,46 +134,6 @@ namespace BlazorApp.Client.Pages.Challenges
             StateHasChanged();
         }
 
-        #region Monaco Editor
-
-        // Monaco Editor Settings
-        protected MonacoEditor Editor { get; set; }
-        protected StandaloneEditorConstructionOptions EditorOptionsPuzzle(MonacoEditor editor)
-        {
-            return new StandaloneEditorConstructionOptions
-            {
-                AutomaticLayout = true,
-                AutoIndent = true,
-                HighlightActiveIndentGuide = true,
-                Language = "csharp",
-                Value = codeSnippet ?? "private string MyProgram() \n" +
-                    "{\n" +
-                    "    string input = \"this does not\"; \n" +
-                    "    string modify = input + \" suck!\"; \n" +
-                    "    return modify;\n" +
-                    "}\n" +
-                    "return MyProgram();"
-            };
-        }
-
-        protected async Task EditorOnDidInit(MonacoEditorBase editor)
-        {
-            await Editor.AddCommand((int)KeyMode.CtrlCmd | (int)KeyCode.KEY_H, (editor, keyCode) =>
-            {
-                Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
-            });
-        }
-
-        protected void OnContextMenu(EditorMouseEvent eventArg)
-        {
-            Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
-        }
-        private async Task ChangeTheme(ChangeEventArgs e)
-        {
-            Console.WriteLine($"setting theme to: {e.Value.ToString()}");
-            await MonacoEditorBase.SetTheme(e.Value.ToString());
-        }
-        #endregion
         public void Dispose()
         {
             Console.WriteLine("CodeChallengeHome.razor Disposed");

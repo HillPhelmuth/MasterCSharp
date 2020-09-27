@@ -68,7 +68,7 @@ namespace BlazorApp.Client.Pages.ShareCode
             hubConnection.On<object>("newCode", code =>
             {
                 Console.WriteLine($"code received: {code}");
-                CodeEditorService.CodeSnippet = code.ToString();
+                CodeEditorService.SharedCodeSnippet = code.ToString();
             });
             hubConnection.On<object>("privateMessage", message =>
             {
