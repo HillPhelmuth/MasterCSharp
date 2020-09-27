@@ -68,11 +68,7 @@ namespace BlazorApp.Client.Pages.Challenges
         {
             isCodeCompiling = true;
             StateHasChanged();
-            await Task.Run(() =>
-            {
-                _ = HandleCodeSubmit(code);
-            });
-            
+            await HandleCodeSubmit(code);
         }
         public async Task HandleCodeSubmit(string code)
         {

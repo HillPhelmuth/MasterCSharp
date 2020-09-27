@@ -13,8 +13,8 @@ namespace BlazorApp.Client.Pages.Practice
 {
     public partial class MonacoEdit : ComponentBase, IDisposable
     {
-        [Inject]
-        public IJSRuntime jsRuntime { get; set; }
+        //[Inject]
+        //public IJSRuntime jsRuntime { get; set; }
 
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
@@ -50,7 +50,6 @@ namespace BlazorApp.Client.Pages.Practice
         {
             if (!args.PropertyName.Contains("CodeSnippet")) return;
             CodeSnippet = CodeEditorService.CodeSnippet;
-            //var currentCode = CodeSnippet;
             await Editor.SetValue(CodeSnippet);
             Console.WriteLine("Snippet Updated");
             await InvokeAsync(StateHasChanged);
@@ -93,7 +92,7 @@ namespace BlazorApp.Client.Pages.Practice
             {
                 Console.WriteLine("Ctrl+H : Initial editor command is triggered.");
             });
-            await Editor.AddAction("saveAction", "Save Snippet?", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_S }, null, null, "navigation", 1.5, async (editor, keyCodes) =>
+            await Editor.AddAction("saveAction", "Save Snippet", new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_S }, null, null, "navigation", 1.5, async (editor, keyCodes) =>
             {
                 await AddSnippetToUser();
                 Console.WriteLine("Ctrl+D : Editor action is triggered.");

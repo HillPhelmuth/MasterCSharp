@@ -51,7 +51,7 @@
                 @if (takeChallenge)
                 {
                     <MatButton Style="font-size:.7em" @onclick="ShowAnswer">Give Up? Get a solution</MatButton><br />
-                    <MonacoEdit OnCodeSubmit="SubmitCode" CodeSnippet="@CodeEditorService.CodeSnippet" ButtonLabel="Submit Solution"></MonacoEdit>
+                    <MonacoEdit OnSaveUserSnippet="HandleSaveSnippet" OnCodeSubmit="SubmitCode" CodeSnippet="@CodeEditorService.CodeSnippet" ButtonLabel="Submit Solution"></MonacoEdit>
                   
                 }
             </div>
