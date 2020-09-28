@@ -2,20 +2,26 @@
 @namespace BlazorApp.Client.Pages
 @if (!isPageReady)
 {
-    <MatH4 Class="text-center">Loading required assemblies</MatH4>
-    <MatH6 Class="text-center">In order to dynamically compile and execute any c# code you write, we have to load several assemblies. Almost done...</MatH6>
+    <MatH4 Class="text-center">Loading App Services</MatH4>
+    @*<MatH6 Class="text-center">In order to dynamically compile and execute any c# code you write, we have to load several assemblies. Almost done...</MatH6>*@
     <SpinKitFadingCircle />
-    <div class="mainIcon" style="background-image: url('indexRvrLoad.png')"></div>
+    @*<div class="mainIcon" style="background-image: url('indexRvrLoad.png')"></div>*@
 }
-else
-{
-    <MatTabGroup @bind-ActiveIndex="tabIndex">
+@*<div>
+    else if(isPageReady || !isPageReady)
+    {
+
+
+    }
+</div>*@
+<CascadingValue Name="AppStateService" Value="AppStateService">
+    <MatTabGroup @bind-ActiveIndex="tabIndex" disabled="@(!isPageReady)">
         <MatTab Label="Home">
             <div>
                 <MatH4>Check out some c# learning tools, including:</MatH4>
                 <div class="backgroundIcon">
                     <MatList SingleSelection="true" TwoLine="true">
-                        <MatListItem OnClick="@(() => tabIndex = 1)">
+                        <MatListItem OnClick="@(() => SetTab(1))">
                             <MatListItemText>
                                 <MatListItemPrimaryText Class="listPrimary">c# Challenges</MatListItemPrimaryText>
                                 <MatListItemSecondaryText>
@@ -24,7 +30,7 @@ else
                             </MatListItemText>
                         </MatListItem>
                         <MatListDivider></MatListDivider>
-                        <MatListItem OnClick="@(() => tabIndex = 2)">
+                        <MatListItem OnClick="@(() => SetTab(2))">
                             <MatListItemText>
                                 <MatListItemPrimaryText Class="listPrimary">Practice c#</MatListItemPrimaryText>
                                 <MatListItemSecondaryText>
@@ -33,7 +39,7 @@ else
                             </MatListItemText>
                         </MatListItem>
                         <MatListDivider></MatListDivider>
-                        <MatListItem OnClick="@(() => tabIndex = 3)">
+                        <MatListItem OnClick="@(() =>  SetTab(3))">
                             <MatListItemText>
                                 <MatListItemPrimaryText Class="listPrimary">Watch c# Videos</MatListItemPrimaryText>
                                 <MatListItemSecondaryText Class="listSecondary">
@@ -44,7 +50,7 @@ else
                         <MatListDivider></MatListDivider>
                         <AuthorizeView>
                             <Authorized>
-                                <MatListItem OnClick="@(() => tabIndex = 4)">
+                                <MatListItem OnClick="@(() =>  SetTab(4))">
                                     <MatListItemText>
                                         <MatListItemPrimaryText Class="listPrimary">Create c# Challenge</MatListItemPrimaryText>
                                         <MatListItemSecondaryText>
@@ -74,7 +80,7 @@ else
                                 </MatListItem>
                             </Authorized>
                             <NotAuthorized>
-                                <MatListItem OnClick="@(() => tabIndex = 4)">
+                                <MatListItem OnClick="@(() =>  SetTab(4))">
                                     <MatListItemText>
                                         <MatListItemPrimaryText Class="listPrimary">Log-in for more</MatListItemPrimaryText>
                                         <MatListItemSecondaryText>
@@ -88,7 +94,7 @@ else
                 </div>
             </div>
         </MatTab>
-       
+
         <MatTab Label="Code Challenges">
             <CodeChallengeHome />
         </MatTab>
@@ -106,19 +112,10 @@ else
             </Authorized>
             <NotAuthorized>
                 <MatTab Label="Sign in">
-                    <LoginProvider/>
+                    <LoginProvider />
                 </MatTab>
             </NotAuthorized>
         </AuthorizeView>
     </MatTabGroup>
-
-    @*@if (isShowChat)
-    {
-        <HubStart ToggleChat="HandleToggle"/>
-    }
-    else
-    {
-        <MatFAB Class="app-fab-absolute" OnClick="ShowChat" Label="Start Interactive" Icon="chat"></MatFAB>
-    }*@
-}
+</CascadingValue>
 <div style="font-size: .7rem; bottom:0; right:100%; position: sticky; margin-top:10em">Icons made by <a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a><a href="https://icons8.com/icon/67343/checkmark">Checkmark icon by Icons8</a></div>

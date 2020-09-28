@@ -1,58 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.UserModels;
 using BlazorApp.Shared.VideoModels;
 
 namespace BlazorApp.Shared
 {
-    public class AppStateService
+    public class AppStateService : INotifyPropertyChanged
     {
-        public CodeChallenges CodeChallenges { get; private set; }
-        public Videos Videos { get; private set; }
-        public UserAppData UserAppData { get; private set; }
-        public string UserName { get; private set; }
-        public CodeOutputModel CodeOutput { get; private set; }
-        public bool HasUser { get; private set; }
-        public string ShareUser { get; private set; }
-        public string OtherUser { get; private set; }
-        public string ShareTeam { get; private set; }
-        public event Action OnChange;
-        public event Action<int> OnTabChange;
+        private CodeChallenges codeChallenges;
+        private Videos videos;
+        private UserAppData userAppData;
+        private string userName;
+        private CodeOutputModel codeOutput;
+        private string shareUser;
+        private string otherUser;
+        private string shareTeam;
+        private int tabIndex;
 
-        public void SetCodeChallenges(CodeChallenges codeChallenges)
+        public CodeChallenges CodeChallenges
         {
-            CodeChallenges = codeChallenges;
-            NotifyStateHasChanged();
-        }
-        public void SetVideos(Videos videos)
-        {
-            Videos = videos;
-            NotifyStateHasChanged();
+            get => codeChallenges;
+            set { codeChallenges = value; OnPropertyChanged(); }
         }
 
-        public void UpdateShareUser(string userName)
+        public Videos Videos
         {
-            ShareUser = userName;
-            NotifyStateHasChanged();
+            get => videos;
+            set { videos = value; OnPropertyChanged(); }
         }
-        public void UpdateShareUser(string shareUser, string otherUser)
+
+        public UserAppData UserAppData
         {
-            ShareUser = shareUser;
-            OtherUser = otherUser;
-            NotifyStateHasChanged();
+            get => userAppData;
+            set { userAppData = value; OnPropertyChanged(); }
         }
-        public void UpdatePrivateUser(string otherUser)
+
+        public string UserName
         {
-            OtherUser = otherUser;
-            NotifyStateHasChanged();
+            get => userName;
+            set { userName = value; OnPropertyChanged(); }
         }
-        public void UpdateShareTeam(string teamName)
+
+        public CodeOutputModel CodeOutput
         {
-            ShareTeam = teamName;
-            NotifyStateHasChanged();
+            get => codeOutput;
+            set { codeOutput = value; OnPropertyChanged();}
         }
+
+        public bool HasUser { get; set; }
+
+        public string ShareUser
+        {
+            get => shareUser;
+            set { shareUser = value; OnPropertyChanged();}
+        }
+
+        public string OtherUser
+        {
+            get => otherUser;
+            set { otherUser = value; OnPropertyChanged();}
+        }
+
+        public string ShareTeam
+        {
+            get => shareTeam;
+            set { shareTeam = value; OnPropertyChanged();}
+        }
+
+        public int TabIndex
+        {
+            get => tabIndex;
+            set
+            {
+                var tab = value;
+                if (tab < 0 || tab > 4)
+                    tabIndex = 0;
+                else
+                    tabIndex = tab;
+                OnPropertyChanged();
+            }
+        }
+
         public void AddVideo(Video video)
         {
             if (video.VideoSectionID == 0) return;
@@ -62,18 +94,17 @@ namespace BlazorApp.Shared
                 section.Videos?.Add(video);
             }
             Videos = videos;
-            NotifyStateHasChanged();
+            OnPropertyChanged(nameof(Videos));
         }
         public void UpdateChallenges(Challenge challenge)
         {
             CodeChallenges.Challenges.Add(challenge);
-            NotifyStateHasChanged();
+            OnPropertyChanged(nameof(CodeChallenges));
         }
         public void UpdateUserName(string name)
         {
             UserName = name;
             HasUser = true;
-            NotifyStateHasChanged();
         }
 
         public void UpdateUserAppData(UserAppData userData)
@@ -81,20 +112,14 @@ namespace BlazorApp.Shared
             UserAppData = userData;
             UserName = userData.Name;
             HasUser = true;
-            NotifyStateHasChanged();
         }
-        public void UpdateCodeOutput(CodeOutputModel codeOutput)
-        {
-            foreach (var output in codeOutput.Outputs ?? new List<Output>())
-            {
-                output.CssClass = output.TestResult ? "testPass" : "testFail";
-            }
-            CodeOutput = codeOutput;
-            Console.WriteLine($"Output State Updated");
-            NotifyStateHasChanged();
-        }
+       
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void UpdateTabNavigation(int tab) => OnTabChange?.Invoke(tab);
-        private void NotifyStateHasChanged() => OnChange?.Invoke();
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+       
     }
 }

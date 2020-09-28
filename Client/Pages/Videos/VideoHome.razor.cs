@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
 using Microsoft.AspNetCore.Components;
@@ -10,7 +11,7 @@ namespace BlazorApp.Client.Pages.Videos
     {
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        [Inject]
+        [CascadingParameter(Name = nameof(AppStateService))]
         protected AppStateService AppStateService { get; set; }
         public VideoModels Videos { get; set; }
         protected string selectedVideoId { get; set; }
@@ -19,10 +20,10 @@ namespace BlazorApp.Client.Pages.Videos
         protected bool IsAddVideo;
         protected override async Task OnInitializedAsync()
         {
-            Videos = AppStateService.Videos;
-            Videos ??= await PublicClient.GetVideos();
-            AppStateService.SetVideos(Videos);
-            AppStateService.OnChange += UpdateVideos;
+
+            Videos = AppStateService.Videos ?? await PublicClient.GetVideos();
+            AppStateService.Videos = Videos;
+            AppStateService.PropertyChanged += UpdateVideos;
             IsPageVideosReady = true;
         }
         protected void HandleVideoEnd(bool isEnd)
@@ -47,7 +48,7 @@ namespace BlazorApp.Client.Pages.Videos
             return PlayVideos();
         }
 
-        private void UpdateVideos()
+        private void UpdateVideos(object sender, PropertyChangedEventArgs args)
         {
             Videos = AppStateService.Videos;
             StateHasChanged();
@@ -55,7 +56,7 @@ namespace BlazorApp.Client.Pages.Videos
         public void Dispose()
         {
             Console.WriteLine("VideoHome.razor disposed");
-            AppStateService.OnChange -= UpdateVideos;
+            AppStateService.PropertyChanged -= UpdateVideos;
         }
     }
 }
