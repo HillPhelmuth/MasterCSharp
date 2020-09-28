@@ -118,7 +118,7 @@ namespace BlazorApp.Client.Pages.Challenges
             sw.Start();
 
             var output = await PublicClient.SubmitChallenge(Challenge);
-            AppStateService.UpdateCodeOutput(output);
+            AppStateService.CodeOutput = output;
             isSolved = output.Outputs.All(x => x.TestResult);
             foreach (var result in output.Outputs)
             {
@@ -144,7 +144,7 @@ namespace BlazorApp.Client.Pages.Challenges
             }
             StateHasChanged();
         }
-        private void GoToChallenges() => AppStateService.UpdateTabNavigation(1);
+        private void GoToChallenges() => AppStateService.TabIndex = 1;
         private bool AreTestsValid()
         {
             if (InputTests.Count < 2)

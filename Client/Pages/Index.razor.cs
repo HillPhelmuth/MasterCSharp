@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
@@ -19,32 +20,47 @@ namespace BlazorApp.Client.Pages
         private HttpClient Http { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
-        
-        protected override async Task OnInitializedAsync()
+
+        protected override Task OnInitializedAsync()
         {
-            var authInfo = await AuthProvider.GetAuthenticationStateAsync();
-            if (authInfo?.User?.Identity?.IsAuthenticated ?? false)
+            AppStateService.PropertyChanged += HandleTabNavigation;
+            return base.OnInitializedAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
             {
-                var userName = authInfo.User.Identity.Name;
-                Console.WriteLine($"user {userName} found");
-                var currentUser = await PublicClient.GetOrAddUserAppData(userName);
-                Console.WriteLine($"retrieved user profile for {currentUser.Name}");
-                AppStateService.UpdateUserAppData(currentUser);
+                var authInfo = await AuthProvider.GetAuthenticationStateAsync();
+                if (authInfo?.User?.Identity?.IsAuthenticated ?? false)
+                {
+                    var userName = authInfo.User.Identity.Name;
+                    Console.WriteLine($"user {userName} found");
+                    var currentUser = await PublicClient.GetOrAddUserAppData(userName);
+                    //Console.WriteLine($"retrieved user profile for {currentUser.Name}");
+                    AppStateService.UpdateUserAppData(currentUser);
+                    isPageReady = true;
+                    await InvokeAsync(StateHasChanged);
+                }
             }
-           
-            AppStateService.OnTabChange += HandleTabNavigation;
             isPageReady = true;
-            StateHasChanged();
+
+            await base.OnAfterRenderAsync(firstRender);
         }
 
-        protected void HandleTabNavigation(int tab)
+        private void SetTab(int tab)
         {
-            if (tab < 0 || tab > 4)
-                return;
-            tabIndex = tab;
+            if (!isPageReady) return;
+            AppStateService.TabIndex = tab;
+            //InvokeAsync(StateHasChanged);
+        }
+        protected void HandleTabNavigation(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName != "TabIndex") return;
+            tabIndex = AppStateService.TabIndex;
             StateHasChanged();
         }
 
-       
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
@@ -17,8 +18,8 @@ namespace BlazorApp.Client.Pages.Challenges
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        [Inject]
-        public AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppStateService))]
+        protected AppStateService AppStateService { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
         [Inject]
@@ -51,10 +52,8 @@ namespace BlazorApp.Client.Pages.Challenges
                     challenge.UserCompleted = true;
                 }
             }
-
-            AppStateService.SetCodeChallenges(CodeChallenges);
-            AppStateService.OnChange += UpdateUserChallenges;
-           
+            AppStateService.CodeChallenges ??= CodeChallenges;
+            AppStateService.PropertyChanged += UpdateUserChallenges;
             isChallengeReady = true;
         }
 
@@ -78,7 +77,7 @@ namespace BlazorApp.Client.Pages.Challenges
                 Tests = SelectedChallenge.Tests
             };
             var output = await PublicClient.SubmitChallenge(submitChallenge);
-            AppStateService.UpdateCodeOutput(output);
+            AppStateService.CodeOutput = output;
             foreach (var result in output.Outputs)
             {
                 Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
@@ -123,8 +122,10 @@ namespace BlazorApp.Client.Pages.Challenges
             return Task.CompletedTask;
         }
 
-        protected void UpdateUserChallenges()
+        protected void UpdateUserChallenges(object sender, PropertyChangedEventArgs args)
         {
+            if (args.PropertyName != "CodeChallenges" && args.PropertyName != "UserAppData")
+                return;
             CodeChallenges = AppStateService.CodeChallenges;
             UserAppData = AppStateService.UserAppData;
             StateHasChanged();
@@ -133,7 +134,7 @@ namespace BlazorApp.Client.Pages.Challenges
         public void Dispose()
         {
             Console.WriteLine("CodeChallengeHome.razor Disposed");
-            AppStateService.OnChange -= UpdateUserChallenges;
+            AppStateService.PropertyChanged -= UpdateUserChallenges;
         }
     }
 }

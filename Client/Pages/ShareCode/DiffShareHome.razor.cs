@@ -35,11 +35,11 @@ namespace BlazorApp.Client.Pages.ShareCode
                 userName = result.ReturnParameters.Get<string>("UserName");
                 otherUser = result.ReturnParameters.Get<string>("OtherUser");
                 teamname = result.ReturnParameters.Get<string>("TeamName");
-                AppStateService.UpdateShareUser(userName);
+                AppStateService.ShareUser = userName;
                 if (!string.IsNullOrEmpty(otherUser))
-                    AppStateService.UpdatePrivateUser(otherUser);
+                    AppStateService.OtherUser = otherUser;
                 if (!string.IsNullOrEmpty(teamname))
-                    AppStateService.UpdateShareUser(teamname);
+                    AppStateService.ShareUser = teamname;
                 userSubmitted = true;
 
             }

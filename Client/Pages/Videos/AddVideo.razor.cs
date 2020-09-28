@@ -10,7 +10,7 @@ namespace BlazorApp.Client.Pages.Videos
 {
     public partial class AddVideo
     {
-        [Inject]
+        [CascadingParameter(Name = nameof(AppStateService))]
         protected AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }

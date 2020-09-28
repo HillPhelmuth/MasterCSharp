@@ -133,11 +133,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
 
         }
         
-        private void GoToChallenges()
-        {
-            AppStateService.UpdateTabNavigation(1);
-            NavigationManager.NavigateTo("/");
-        }
+        private void GoToChallenges() => NavigationManager.NavigateTo("/");
 
         private async void GoHome()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
 using BlazorApp.Shared.CodeModels;
@@ -8,20 +9,23 @@ namespace BlazorApp.Client.Pages.Challenges
 {
     public partial class ChallengeOutput : IDisposable
     {
-        [Inject]
-        public AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppStateService))]
+        protected AppStateService AppStateService { get; set; }
 
-        protected CodeOutputModel CodeOutput => AppStateService.CodeOutput;
+        protected CodeOutputModel CodeOutput { get; set; } = new CodeOutputModel();
 
         protected override Task OnInitializedAsync()
         {
-            AppStateService.OnChange += StateHasChanged;
+            CodeOutput = AppStateService.CodeOutput;
+            AppStateService.PropertyChanged += UpdatePropertyState;
             return base.OnInitializedAsync();
         }
 
-        public void Dispose()
+        private void UpdatePropertyState(object sender, PropertyChangedEventArgs args)
         {
-            AppStateService.OnChange -= StateHasChanged;
+            if (args.PropertyName != "CodeOutput") return;
+            CodeOutput = AppStateService.CodeOutput;
         }
+        public void Dispose() => AppStateService.PropertyChanged -= UpdatePropertyState;
     }
 }
