@@ -85,36 +85,6 @@ namespace BlazorApp.Shared
             }
         }
 
-        public event Action OnChange;
-        public event Action<int> OnTabChange;
-
-        //public void SetCodeChallenges(CodeChallenges codeChallenges)
-        //{
-        //    CodeChallenges = codeChallenges;
-        //    //NotifyStateHasChanged();
-        //}
-        //public void SetVideos(Videos videos)
-        //{
-        //    Videos = videos;
-        //    //NotifyStateHasChanged();
-        //}
-
-        //public void UpdateShareUser(string userName)
-        //{
-        //    ShareUser = userName;
-        //    //NotifyStateHasChanged();
-        //}
-       
-        //public void UpdatePrivateUser(string otherUser)
-        //{
-        //    OtherUser = otherUser;
-        //    //NotifyStateHasChanged();
-        //}
-        //public void UpdateShareTeam(string teamName)
-        //{
-        //    ShareTeam = teamName;
-        //    NotifyStateHasChanged();
-        //}
         public void AddVideo(Video video)
         {
             if (video.VideoSectionID == 0) return;
@@ -143,23 +113,13 @@ namespace BlazorApp.Shared
             UserName = userData.Name;
             HasUser = true;
         }
-        //public void UpdateCodeOutput(CodeOutputModel codeOutput)
-        //{
-        //    foreach (var output in codeOutput.Outputs ?? new List<Output>())
-        //    {
-        //        output.CssClass = output.TestResult ? "testPass" : "testFail";
-        //    }
-        //    CodeOutput = codeOutput;
-        //    Console.WriteLine($"Output State Updated");
-        //   // NotifyStateHasChanged();
-        //}
+       
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public void UpdateTabNavigation(int tab) => OnTabChange?.Invoke(tab);
-        //private void NotifyStateHasChanged() => OnChange?.Invoke();
+       
     }
 }

@@ -16,8 +16,6 @@ namespace BlazorApp.Client.Pages
         protected PublicClient PublicClient { get; set; }
         [Inject]
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
-        [Inject]
-        private HttpClient Http { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
 
@@ -37,7 +35,6 @@ namespace BlazorApp.Client.Pages
                     var userName = authInfo.User.Identity.Name;
                     Console.WriteLine($"user {userName} found");
                     var currentUser = await PublicClient.GetOrAddUserAppData(userName);
-                    //Console.WriteLine($"retrieved user profile for {currentUser.Name}");
                     AppStateService.UpdateUserAppData(currentUser);
                     isPageReady = true;
                     await InvokeAsync(StateHasChanged);
@@ -52,7 +49,6 @@ namespace BlazorApp.Client.Pages
         {
             if (!isPageReady) return;
             AppStateService.TabIndex = tab;
-            //InvokeAsync(StateHasChanged);
         }
         protected void HandleTabNavigation(object sender, PropertyChangedEventArgs args)
         {
@@ -60,7 +56,5 @@ namespace BlazorApp.Client.Pages
             tabIndex = AppStateService.TabIndex;
             StateHasChanged();
         }
-
-
     }
 }
