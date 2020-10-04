@@ -1,4 +1,5 @@
 ﻿@page "/diffShare"
+@layout MainLayout
 <MatH4 Class="text-center">Share code</MatH4>
 <MatButton Link="/">Home</MatButton>
 @if (!userSubmitted)
@@ -13,20 +14,20 @@
     <MatButton OnClick="UpdateFromPublicRepo">Get Code From Github Repo</MatButton>
     <br />
     <MatButton Raised="isNewChat" Icon="chat" Outlined="isNewChat" Unelevated="!isNewChat" OnClick="ShowChatContent">Show Chat</MatButton>
-   
+
 }
 @if (isSelectSnippet)
 {
-<div class="mat-layout-grid">
-    <div class="mat-layout-grid-inner">
-       
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-            <DiffShareHub UserName="@userName" OtherUser="@otherUser" Snippet="@CodeSnippet"
-                          GroupName="@teamname" OnNewMessage="HandleNewMessage"/>
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-inner">
+
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <DiffShareHub UserName="@userName" OtherUser="@otherUser" Snippet="@CodeSnippet"
+                              GroupName="@teamname" OnNewMessage="HandleNewMessage" />
+            </div>
+
         </div>
-       
     </div>
-</div>
 }
 @if (!isSelectSnippet && userSubmitted)
 {
@@ -34,6 +35,6 @@
 }
 
 @*<div style="bottom:2em; right:1em; position:fixed; max-height:1.5em; max-width:8.5em">
-    <MatButton OnClick="AddToNewDb">Test</MatButton>
-    <p>@TempMessage</p>
-</div>*@
+        <MatButton OnClick="AddToNewDb">Test</MatButton>
+        <p>@TempMessage</p>
+    </div>*@

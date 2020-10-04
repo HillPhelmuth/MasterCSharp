@@ -5,7 +5,9 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>BlazorApp.Client</RootNamespace>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Pages\Interactive\HubSource.razor.cs" />
     <Compile Remove="Pages\Interactive\HubStart.razor.cs" />
@@ -38,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OutputRCL\OutputRCL.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 

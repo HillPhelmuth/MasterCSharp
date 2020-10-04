@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
+using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.StaticAuth.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -15,7 +16,10 @@ namespace BlazorApp.Client.Pages
         [Inject]
         protected PublicClient PublicClient { get; set; }
         [Inject]
+        protected BrowserClient BrowserClient { get; set; }
+        [Inject]
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
+       
         private int tabIndex = 0;
         private bool isPageReady;
 
@@ -39,6 +43,7 @@ namespace BlazorApp.Client.Pages
                     isPageReady = true;
                     await InvokeAsync(StateHasChanged);
                 }
+                await RazorCompile.InitAsync(BrowserClient.Client);
             }
             isPageReady = true;
 

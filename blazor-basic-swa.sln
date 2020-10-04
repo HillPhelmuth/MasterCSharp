@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{3DC4D146-5318-4FB7-B96D-91E6DFD7AEBA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutputRCL", "OutputRCL\OutputRCL.csproj", "{5D40921C-3703-4397-85F2-74F5F59256D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3DC4D146-5318-4FB7-B96D-91E6DFD7AEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DC4D146-5318-4FB7-B96D-91E6DFD7AEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DC4D146-5318-4FB7-B96D-91E6DFD7AEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D40921C-3703-4397-85F2-74F5F59256D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D40921C-3703-4397-85F2-74F5F59256D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D40921C-3703-4397-85F2-74F5F59256D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D40921C-3703-4397-85F2-74F5F59256D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

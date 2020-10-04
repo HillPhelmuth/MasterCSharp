@@ -111,7 +111,7 @@ namespace BlazorApp.Client
             var sw = new Stopwatch();
             sw.Start();
             var userstring = await Client.GetStringAsync($"{ChallengeFunctionUrl}/users/{userName}");
-            Console.WriteLine($"userData = {userstring}");
+            //Console.WriteLine($"userData = {userstring}");
             var userData = JsonConvert.DeserializeObject<UserAppData>(userstring);
            
             sw.Stop();

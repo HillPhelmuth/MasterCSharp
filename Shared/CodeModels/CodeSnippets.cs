@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BlazorApp.Shared.CodeModels
 {
@@ -100,6 +101,10 @@ namespace BlazorApp.Shared.CodeModels
             {"Extend String to Index list", StringToCharIndexList}, {"Extend Generic and Shuffle", ShuffleGeneric}
 
         };
+        public static readonly Dictionary<string, string> RazorSnippets = new Dictionary<string, string>
+        {
+            {"RazorSample",RazorSnippet}, {"RazorChild", RazorChild}, {"RazorParent", RazorParent}, {"RazorActive", RazorActive}
+        };
         private const string ARRAYLIST =
             "ArrayList al = new ArrayList();\nal.Add(1);\nal.Add(\"Example\");\nal.Add(true);\nreturn al;";
 
@@ -150,5 +155,80 @@ namespace BlazorApp.Shared.CodeModels
 
         private const string StringToCharIndexList =
             "public static List<int> AllIndexesOf(this string str, string value)\n{\n\tif (string.IsNullOrEmpty(value))\n\t\treturn new List<int>();\n\tvar indexes = new List<int>();\n\tfor (int index = 0; ; index += value.Length)\n\t{\n\t\tindex = str.IndexOf(value, index, StringComparison.Ordinal);\n\t\tif (index == -1)\n\t\t\treturn indexes;\n\t\tindexes.Add(index);\n\t}\n}\nreturn \"i like it\".AllIndexesOf(\"i\");";
+        private const string RazorSnippet = @"<h1>Hello World</h1>
+<h3>@testString</h3>
+@code
+{
+    string testString = ""I Am Here!"";
+}";
+        private const string RazorChild = @"<h1>Hello World</h1>
+<h3>@testString</h3>
+@code
+{
+    string testString = ""I Am Child!"";
+}";
+        private const string RazorParent = @"<h1>Hello World</h1>
+<h3>@testString</h3>
+<RazorChild></RazorChild>
+@code
+{
+    string testString = ""I Am Parent!"";
+}";
+
+        private const string RazorActive = @"<h1 class=""@cssClass1"">Hello World</h1>
+        <h3 class=""@cssClass2"">@testString</h3>
+        <style>
+        .redBlue {
+            color:#d50000;
+            background-color:#4fc3f7;
+        }
+        .blueRed {
+            color:#4fc3f7;
+            background-color:#d50000;
+        }
+        .big
+        {
+
+        }
+        .small
+        {
+
+        }
+        </style >
+        <button @onclick = ""GetRandom"" > Click </button >
+        <button @onclick = ""ChangeColor"" > @labelText </button >
+        @if(randomVal > 50)
+        {
+            <p > Value @randomVal is greater than 50 </p >
+        }
+        @if(randomVal <= 50)
+        {
+            <p > Value @randomVal is less than 50 </p >
+        }
+        @code
+        {
+            string blueRed = ""blueRed"";
+            string redBlue = ""redBlue"";
+            string cssClass1 = "" "";
+            string cssClass2 = """";
+            string testString = ""I Am here!"";
+            Random random = new Random();
+            int randomVal = 0;
+            string labelText = ""START COLOR"";
+
+            private void GetRandom()
+            {
+                randomVal = random.Next(1, 111);
+                StateHasChanged();
+            }
+            private void ChangeColor()
+            {
+                labelText = ""Change Color"";
+                cssClass1 = cssClass1 == redBlue ? blueRed : redBlue;
+                cssClass2 = cssClass2 == blueRed ? redBlue : blueRed;
+
+            }
+
+        }";
     }
 }
