@@ -10,10 +10,10 @@ namespace BlazorApp.Client.ExtensionMethods
     {
         public static List<CodeFile> PagifyMainComponent(this List<CodeFile> codeFiles)
         {
-            var mainComponent = codeFiles.FirstOrDefault(x => x.Path == CoreConstants.MainComponentFilePath);
+            var mainComponent = codeFiles.FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath);
             if (!mainComponent.Content.Contains("@page"))
             {
-                mainComponent.Content = CoreConstants.MainComponentCodePrefix + mainComponent.Content;
+                mainComponent.Content = DefaultStrings.MainComponentCodePrefix + mainComponent.Content;
             }
 
             return codeFiles;
@@ -21,7 +21,7 @@ namespace BlazorApp.Client.ExtensionMethods
 
         public static List<CodeFile> UnPagifyMainComponent(this List<CodeFile> codeFiles, string originalContent)
         {
-            var mainComponent = codeFiles.FirstOrDefault(x => x.Path == CoreConstants.MainComponentFilePath);
+            var mainComponent = codeFiles.FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath);
             if (mainComponent.Content.Contains("@page"))
             {
                 mainComponent.Content = originalContent;

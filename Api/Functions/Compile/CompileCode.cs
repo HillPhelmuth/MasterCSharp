@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using BlazorApp.Api.Services;
 using BlazorApp.Shared.CodeModels;
+using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace BlazorApp.Api.Functions.Compile
     public class CompileCode
     {
         private readonly CompilerService _compilerService;
+      
         public CompileCode(CompilerService compilerService)
         {
             _compilerService = compilerService;
@@ -37,63 +39,63 @@ namespace BlazorApp.Api.Functions.Compile
             
             return new OkObjectResult(result);
         }
-        [FunctionName("CompileRazorText")]
-        public async Task<IActionResult> RunRazorText(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP/code trigger function processed a request.");
+        //[FunctionName("CompileRazorText")]
+        //public async Task<IActionResult> RunRazorText(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        //    ILogger log)
+        //{
+        //    log.LogInformation("C# HTTP/code trigger function processed a request.");
 
-            var executableReferences = CompileResources.PortableExecutableReferences;
-            var engine = _compilerService.CreateRazorProjectEngine(executableReferences);
-            string fileName = Path.GetRandomFileName();
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var codeInput = JsonConvert.DeserializeObject<CodeInputModel>(requestBody);
-            var testCode = codeInput.Solution;
-           
-            RazorSourceDocument document = RazorSourceDocument.Create(testCode, fileName);
+        //    var executableReferences = CompileResources.PortableExecutableReferences;
+        //    var engine = _compilerService.CreateRazorProjectEngine(executableReferences);
+        //    string fileName = Path.GetRandomFileName();
+        //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        //    var codeInput = JsonConvert.DeserializeObject<CodeInputModel>(requestBody);
+        //    var testCode = codeInput.Solution;
 
-            RazorCodeDocument codeDocument = engine.Process(
-                document,
-                null,
-                new List<RazorSourceDocument>(),
-                new List<TagHelperDescriptor>());
+        //    RazorSourceDocument document = RazorSourceDocument.Create(testCode, fileName);
 
-            RazorCSharpDocument razorCSharpDocument = codeDocument.GetCSharpDocument();
+        //    RazorCodeDocument codeDocument = engine.Process(
+        //        document,
+        //        null,
+        //        new List<RazorSourceDocument>(),
+        //        new List<TagHelperDescriptor>());
 
-            var resultCode = razorCSharpDocument.GeneratedCode;
-            //var result = await _compilerService.SubmitCode(testCode, executableReferences);
+        //    RazorCSharpDocument razorCSharpDocument = codeDocument.GetCSharpDocument();
 
-            return new OkObjectResult(resultCode);
-        }
-        [FunctionName("CompileRazorCode")]
-        public async Task<IActionResult> RunRazor(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP/code trigger function processed a request.");
+        //    var resultCode = razorCSharpDocument.GeneratedCode;
+        //    //var result = await _compilerService.SubmitCode(testCode, executableReferences);
 
-            var executableReferences = CompileResources.PortableExecutableReferences;
-            var engine = _compilerService.CreateRazorProjectEngine(executableReferences);
-            string fileName = Path.GetRandomFileName();
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var codeInput = JsonConvert.DeserializeObject<CodeFile>(requestBody);
-            var testCode = codeInput.Content;
-            CodeAssemblyModel assemblyModel = await _compilerService.GetRazorAssembly(codeInput, executableReferences);
-            //RazorSourceDocument document = RazorSourceDocument.Create(testCode, fileName);
+        //    return new OkObjectResult(resultCode);
+        //}
+        //[FunctionName("CompileRazorCode")]
+        //public async Task<IActionResult> RunRazor(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        //    ILogger log)
+        //{
+        //    log.LogInformation("C# HTTP/code trigger function processed a request.");
+        //    var executableReferences = CompileResources.PortableExecutableReferences;
+        //    var razorexecutableReferences = CompileResources.PortableRazorReferences;
+        //    executableReferences.AddRange(razorexecutableReferences);
+        //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        //    var codeInput = JsonConvert.DeserializeObject<List<CodeFile>>(requestBody);
+        //    //var testCode = codeInput.Content;
+        //    var assemblyModel = await _razorCompile.GetRazorAssembly(codeInput, executableReferences);
+        //    //CodeAssemblyModel assemblyModel = await _compilerService.GetRazorAssembly(codeInput, executableReferences);
+        //    //RazorSourceDocument document = RazorSourceDocument.Create(testCode, fileName);
 
-            //RazorCodeDocument codeDocument = engine.Process(
-            //    document,
-            //    null,
-            //    new List<RazorSourceDocument>(),
-            //    new List<TagHelperDescriptor>());
+        //    //RazorCodeDocument codeDocument = engine.Process(
+        //    //    document,
+        //    //    null,
+        //    //    new List<RazorSourceDocument>(),
+        //    //    new List<TagHelperDescriptor>());
 
-            //RazorCSharpDocument razorCSharpDocument = codeDocument.GetCSharpDocument();
+        //    //RazorCSharpDocument razorCSharpDocument = codeDocument.GetCSharpDocument();
 
-            //var resultCode = razorCSharpDocument.GeneratedCode;
-            //var result = await _compilerService.SubmitCode(testCode, executableReferences);
+        //    //var resultCode = razorCSharpDocument.GeneratedCode;
+        //    //var result = await _compilerService.SubmitCode(testCode, executableReferences);
 
-            return new OkObjectResult(assemblyModel);
-        }
+        //    return new OkObjectResult(assemblyModel);
+        //}
     }
 }

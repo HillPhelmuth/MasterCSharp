@@ -35,8 +35,6 @@ namespace BlazorApp.Client.Pages.Practice
         [Inject]
         public RazorCompile RazorCompile { get; set; }
         [Inject]
-        public PublicGithubClient GithubClient { get; set; }
-        [Inject]
         protected IModalDialogService ModalService { get; set; }
 
         private const string MainComponentCodePrefix = "@page \"/__razorOutput\"\n";
@@ -44,21 +42,16 @@ namespace BlazorApp.Client.Pages.Practice
         public const string MainComponentFilePath = "__RazorOutput.razor";
         public List<CodeFile> Files { get; set; } = new List<CodeFile>();
         private DotNetObjectReference<RazorCodeHome> dotNetInstance;
-        public RenderFragment ResultFragment { get; set; }
         private string language = "razor";
         private bool isready;
         private static string sampleSnippet = CodeSnippets.RazorSnippets["RazorSample"];
-        public string InputSnippet { get; set; }
-        private string srcString;
-        private IDictionary<string, CodeFile> CodeFiles { get; set; } = new Dictionary<string, CodeFile>();
-        private string Output;
+       
         private List<string> Diagnostics { get; set; } = new List<string>();
         private bool isCodeCompiling;
         protected override async Task OnInitializedAsync()
         {
             CodeEditorService.CodeSnippet = sampleSnippet;
             var mainCodeFile = new CodeFile { Path = MainComponentFilePath, Content = MainComponentCodePrefix + sampleSnippet };
-            //CodeFiles.Add(MainComponentFilePath, mainCodeFile);
             CodeEditorService.ActiveCodeFile = mainCodeFile;
             CodeEditorService.SaveCode(mainCodeFile);
             CodeEditorService.PropertyChanged += HandlePropertyChanged;
@@ -74,24 +67,12 @@ namespace BlazorApp.Client.Pages.Practice
                 CodeEditorService.CodeSnippet = sampleSnippet;
                 dotNetInstance = DotNetObjectReference.Create(this);
 
-                await JsRuntime.InvokeVoidAsync("App.Repl.init", dotNetInstance);
+                await JsRuntime.InvokeVoidAsync("App.Razor.init", dotNetInstance);
             }
             await base.OnAfterRenderAsync(firstRender);
         }
-
-        protected async void HandleExecuteProject(string input)
-        {
-            isCodeCompiling = true;
-            StateHasChanged();
-            await Task.Delay(100);
-            InputSnippet = input;
-            HandleSave(input);
-            await ExecuteProject();
-            isCodeCompiling = false;
-            await InvokeAsync(StateHasChanged);
-        }
-
-        protected async void HandleSave(string content)
+        
+        protected void HandleSave(string content)
         {
             CodeEditorService.ActiveCodeFile.Content = content;
             var currentFile = CodeEditorService.ActiveCodeFile;
@@ -155,13 +136,14 @@ namespace BlazorApp.Client.Pages.Practice
         protected async Task ExecuteProject()
         {
             isCodeCompiling = true;
+            Diagnostics = new List<string>();
             StateHasChanged();
             CodeAssemblyModel compilationResult = null;
             CodeFile mainComponent = null;
             string originalMainComponentContent = null;
             originalMainComponentContent = CodeEditorService.CodeFiles
-                .FirstOrDefault(x => x.Path == CoreConstants.MainComponentFilePath)
-                ?.Content ?? CoreConstants.MainComponentDefaultFileContent;
+                .FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath)
+                ?.Content ?? DefaultStrings.MainComponentDefaultFileContent;
             var codeFiles = CodeEditorService.CodeFiles.PagifyMainComponent();
             
             compilationResult = await RazorCompile.CompileToAssemblyAsync(codeFiles);
@@ -169,7 +151,7 @@ namespace BlazorApp.Client.Pages.Practice
            
             if (compilationResult?.AssemblyBytes?.Length > 0)
             {
-                await JsRuntime.InvokeVoidAsync("App.Repl.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
+                await JsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
 
                 await JsRuntime.InvokeVoidAsync("App.reloadIFrame", "user-page-window", MainUserPagePath);
             }
@@ -199,14 +181,6 @@ namespace BlazorApp.Client.Pages.Practice
 
         }
 
-        private void ValidateFilesNames()
-        {
-            foreach (var codeFile in CodeEditorService.CodeFiles.Where(x => !x.Path.Contains(".razor")))
-            {
-                codeFile.Path = $"{codeFile.Path}.razor";
-            }
-        }
-
         #region TextExecution
         private async Task ExecuteProjectTest()
         {
@@ -233,7 +207,7 @@ namespace BlazorApp.Client.Pages.Practice
             Diagnostics.AddRange(compilationResult?.Diagnostics?.Select(x => x.ToString()) ?? new List<string> { "None" });
             if (compilationResult?.AssemblyBytes?.Length > 0)
             {
-                await JsRuntime.InvokeVoidAsync("App.Repl.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
+                await JsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
 
                 await JsRuntime.InvokeVoidAsync("App.reloadIFrame", "user-page-window", MainUserPagePath);
                 isCodeCompiling = false;
@@ -249,7 +223,7 @@ namespace BlazorApp.Client.Pages.Practice
         {
             dotNetInstance?.Dispose();
             CodeEditorService.PropertyChanged -= HandlePropertyChanged;
-            _ = JsRuntime.InvokeVoidAsync("App.Repl.dispose");
+            _ = JsRuntime.InvokeVoidAsync("App.Razor.dispose");
             Console.WriteLine("RazorCodeHome.razor disposed");
         }
     }

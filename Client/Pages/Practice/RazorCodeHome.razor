@@ -1,6 +1,7 @@
 ﻿@page "/razorHome"
 @layout MainLayout
-<MatH3 Class="text-center">Practice Razor Components</MatH3>
+<MatH4 Class="text-center">Build a project with Razor Components</MatH4>
+<MatButton Link="/">Home</MatButton>
 @*<button @onclick="@(() => isready = true)">Ready</button>*@
 @if (isready)
 {
@@ -14,10 +15,10 @@
                 <MatButton OnClick="SelectActiveFile">Select and Modify Component</MatButton>
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-                <MatH5>@CodeEditorService.ActiveCodeFile.Path</MatH5>
-                <MonacoEdit ButtonLabel="Execute Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="@language" OnCodeSubmit="HandleExecuteProject"></MonacoEdit>
+                <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="@language" OnCodeSubmit="HandleSave"></MonacoEdit>
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <MatH5>Active Component: @CodeEditorService.ActiveCodeFile.Path</MatH5>
                 @if (isCodeCompiling)
                 {
                     <hr />
@@ -25,7 +26,7 @@
                     <SpinKitFadingCircle />
                     <hr />
                 }
-                <iframe style="height: 500px; width: 100%" id="user-page-window" src="/user-page"></iframe>
+                <iframe style="height: 500px; width: 100%" id="user-page-window" src="/defaultOutput"></iframe>
 
             </div>
             <div id="user-page-window-container" class="mat-layout-grid-cell mat-layout-grid-cell-span-8">

@@ -1,6 +1,6 @@
 ﻿namespace BlazorApp.Shared.RazorCompileService
 {
-    public static class CoreConstants
+    public static class DefaultStrings
     {
         public const string MainComponentFilePath = "__RazorOutput.razor";
         public const string MainComponentDefaultFileContent = @"<h1>Hello World</h1>
@@ -10,7 +10,7 @@
 }
 ";
         public const string MainComponentCodePrefix = "@page \"/__razorOutput\"\n";
-        public const string MainUserPagePath = "/__razorOutput";
+        public const string MainComponentPagePath = "/__razorOutput";
         
     }
 }

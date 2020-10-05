@@ -18,8 +18,7 @@ namespace BlazorApp.Api.Services
 {
     public partial class CompilerService
     {
-        //private CSharpCompilation runningCompilation;
-        //private IEnumerable<MetadataReference> _references;
+
         private const string DefaultImports = @"@using System.ComponentModel.DataAnnotations
 @using System.Linq
 @using System.Net.Http

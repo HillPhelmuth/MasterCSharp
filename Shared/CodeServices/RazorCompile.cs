@@ -40,21 +40,18 @@ namespace BlazorApp.Shared.CodeServices
             configurationName: "Blazor",
             extensions: Array.Empty<RazorExtension>());
 
-        
-        //public async Task<CodeAssemblyModel> CompileToAssemblyAsync(CodeFile codeFile, string preset = "basic")
-        //{
-        //    if (codeFile == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(codeFile));
-        //    }
 
-        //    var cSharpResults = await ConvertRazorToCSharp(codeFile);
-
-        //    //await (updateStatusFunc?.Invoke("Compiling Assembly") ?? Task.CompletedTask);
-        //    var result = GetCodeAssembly(new List<RazorToCSharpModel>(cSharpResults));
-
-        //    return result;
-        //}
+        public async Task<CodeAssemblyModel> GetRazorAssembly(ICollection<CodeFile> codeFiles,
+            IEnumerable<MetadataReference> references, string preset = "")
+        {
+            baseCompilation = CSharpCompilation.Create(
+                "BlazorApp.OutputRCL",
+                Array.Empty<SyntaxTree>(),
+                references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            _references = references;
+            return await CompileToAssemblyAsync(codeFiles);
+        }
         public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ICollection<CodeFile> codeFiles, string preset = "basic")
         {
             if (codeFiles == null)
