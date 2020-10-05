@@ -32,10 +32,14 @@ namespace BlazorApp.Client.Pages.Practice
         public EventCallback<string> OnCodeSubmit { get; set; }
         [Parameter]
         public string ButtonLabel { get; set; }
+        [Parameter]
+        public string Language { get; set; }
+        
        
         //private string currentCode = "";
         protected override Task OnInitializedAsync()
         {
+            Language ??= "csharp";
             Editor = new MonacoEditor();
             CodeEditorService.PropertyChanged += UpdateSnippet;
             return base.OnInitializedAsync();
@@ -48,18 +52,19 @@ namespace BlazorApp.Client.Pages.Practice
 
         protected async void UpdateSnippet(object sender, PropertyChangedEventArgs args)
         {
-            if (!args.PropertyName.Contains("CodeSnippet")) return;
+            if (!args.PropertyName.Contains("CodeSnippet") && !args.PropertyName.Contains("Language"))
+                return;
             CodeSnippet = CodeEditorService.CodeSnippet;
+            Language = CodeEditorService.Language;
             await Editor.SetValue(CodeSnippet);
             Console.WriteLine("Snippet Updated");
-            await InvokeAsync(StateHasChanged);
+            StateHasChanged();
         }
         private async Task AddSnippetToUser()
         {
             var snippetClip = await Editor.GetValue();
             await OnSaveUserSnippet.InvokeAsync(snippetClip);
         }
-
         #region Monaco Editor
 
         protected StandaloneEditorConstructionOptions EditorOptionsRoslyn(MonacoEditor editor)
@@ -68,14 +73,14 @@ namespace BlazorApp.Client.Pages.Practice
             {
                 AutomaticLayout = true,
                 AutoIndent = true,
-                HighlightActiveIndentGuide = true,
+                //HighlightActiveIndentGuide = true,
                 ColorDecorators = true,
                 Minimap = new MinimapOptions{Enabled = false},
                 Hover = new HoverOptions { Delay = 400 },
                 Find = new FindOptions{AutoFindInSelection = true,SeedSearchStringFromSelection = true,AddExtraSpaceOnTop = true},
                 Lightbulb = new LightbulbOptions{Enabled = true},
                 AcceptSuggestionOnEnter = "smart",
-                Language = "csharp",
+                Language = Language,
                 Value = CodeEditorService.CodeSnippet ?? "private string MyProgram() \n" +
                         "{\n" +
                         "    string input = \"this does not\"; \n" +

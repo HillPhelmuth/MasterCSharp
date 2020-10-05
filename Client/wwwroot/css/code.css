@@ -1,5 +1,5 @@
 ﻿.editor {
-    height: 40em;
+    height: 35em;
     flex-direction: column
 }
 .diff-editor {
@@ -19,6 +19,14 @@
     background-color: black;
     color: white;
     text-align: left
+}
+.before-compile {
+    height: 100px;
+    width: 100%
+}
+.after-compile {
+    height: 500px;
+    width: 100%
 }
 /*TEMP CSS FOR REPL CONSOLE*/
 /*#outer-screen {
@@ -92,6 +100,10 @@
 
 .decorationContentClass {
     background: lightblue;
+}
+.user-page-window-container {
+    height:auto;
+    width:100%
 }
 @media screen and (max-width: 649px) {
     #outer-screen {

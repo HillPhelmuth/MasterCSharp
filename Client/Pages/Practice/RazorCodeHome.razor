@@ -1,0 +1,47 @@
+﻿@page "/razorHome"
+@layout MainLayout
+<MatH4 Class="text-center">Build a project with Razor Components</MatH4>
+<MatButton Link="/">Home</MatButton>
+@*<button @onclick="@(() => isready = true)">Ready</button>*@
+@if (isready)
+{
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatButton OnClick="ExecuteProject" Raised="true">Execute Project</MatButton>
+                <MatButton OnClick="SelectSampleSnippet">Get Razor File Sample</MatButton>
+                <MatButton OnClick="UpdateFromPublicRepo">Get From Repo</MatButton>
+                <MatButton OnClick="@(async () => await AddCodeFile())">Start New Component</MatButton>
+                <MatButton OnClick="SelectActiveFile">Select and Modify Component</MatButton>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="@language" OnCodeSubmit="HandleSave"></MonacoEdit>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <MatH5>Active Component: @CodeEditorService.ActiveCodeFile.Path</MatH5>
+                @if (isCodeCompiling)
+                {
+                    <hr />
+                    <MatH4 Class="text-center" Style="color: blue">Executing...</MatH4>
+                    <SpinKitFadingCircle />
+                    <hr />
+                }
+                <iframe style="height: 500px; width: 100%" id="user-page-window" src="/defaultOutput"></iframe>
+
+            </div>
+            <div id="user-page-window-container" class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+                <MatH4 Class="text-center">Compilation Diagnostics</MatH4>
+                <MatList>
+                    @foreach (var diag in Diagnostics)
+                    {
+                        <MatListItem>@diag</MatListItem>
+                    }
+                </MatList>
+
+            </div>
+
+        </div>
+    </div>
+  
+}
+
