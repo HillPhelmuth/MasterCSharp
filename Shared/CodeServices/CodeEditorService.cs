@@ -16,17 +16,17 @@ namespace BlazorApp.Shared.CodeServices
         private string _sharedCodeSnippet;
         private string _currentOutput;
         private string _language;
-        private CodeFile _activeCodeFile;
-        private List<CodeFile> _codeFiles;
-        public List<CodeFile> CodeFiles
+        private ProjectFile _activeProjectFile;
+        private List<ProjectFile> _codeFiles;
+        public List<ProjectFile> CodeFiles
         {
             get => _codeFiles;
             set { _codeFiles = value; OnPropertyChanged(); }
         }
-        public CodeFile ActiveCodeFile
+        public ProjectFile ActiveProjectFile
         {
-            get => _activeCodeFile;
-            set { _activeCodeFile = value; OnPropertyChanged(); }
+            get => _activeProjectFile;
+            set { _activeProjectFile = value; OnPropertyChanged(); }
         }
         public string Language
         {
@@ -57,19 +57,19 @@ namespace BlazorApp.Shared.CodeServices
             set { _currentOutput = value; OnPropertyChanged();}
         }
 
-        public void SaveCode(CodeFile codeFile)
+        public void SaveCode(ProjectFile projectFile)
         {
-            CodeFiles ??= new List<CodeFile>();
-            if (CodeFiles.All(x => x.Path != codeFile.Path))
+            CodeFiles ??= new List<ProjectFile>();
+            if (CodeFiles.All(x => x.Path != projectFile.Path))
             {
-                CodeFiles.Add(codeFile);
+                CodeFiles.Add(projectFile);
                 OnPropertyChanged(nameof(CodeFiles));
                 return;
             }
 
-            foreach (var file in CodeFiles.Where(file => file.Path == codeFile.Path))
+            foreach (var file in CodeFiles.Where(file => file.Path == projectFile.Path))
             {
-                file.Content = codeFile.Content;
+                file.Content = projectFile.Content;
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

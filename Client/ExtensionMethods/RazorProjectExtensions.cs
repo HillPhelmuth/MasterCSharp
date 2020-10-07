@@ -8,7 +8,7 @@ namespace BlazorApp.Client.ExtensionMethods
 {
     public static class RazorProjectExtensions
     {
-        public static List<CodeFile> PagifyMainComponent(this List<CodeFile> codeFiles)
+        public static List<ProjectFile> PagifyMainComponent(this List<ProjectFile> codeFiles)
         {
             var mainComponent = codeFiles.FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath);
             if (!mainComponent.Content.Contains("@page"))
@@ -19,7 +19,7 @@ namespace BlazorApp.Client.ExtensionMethods
             return codeFiles;
         }
 
-        public static List<CodeFile> UnPagifyMainComponent(this List<CodeFile> codeFiles, string originalContent)
+        public static List<ProjectFile> UnPagifyMainComponent(this List<ProjectFile> codeFiles, string originalContent)
         {
             var mainComponent = codeFiles.FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath);
             if (mainComponent.Content.Contains("@page"))

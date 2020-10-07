@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using BlazorApp.Shared.RazorCompileService;
 using Newtonsoft.Json;
 
 namespace BlazorApp.Shared.UserModels
@@ -44,5 +45,14 @@ namespace BlazorApp.Shared.UserModels
         public string Name { get; set; }
         [JsonProperty("snippet")]
         public string Snippet { get; set; }
+    }
+
+    public class UserProject
+    {
+        public int ID { get; set; }
+        public int UserAppDataID { get; set; }
+        public string Name { get; set; }
+        public List<ProjectFile> Files { get; set; }
+
     }
 }

@@ -41,18 +41,18 @@ namespace BlazorApp.Shared.CodeServices
             extensions: Array.Empty<RazorExtension>());
 
 
-        public async Task<CodeAssemblyModel> GetRazorAssembly(ICollection<CodeFile> codeFiles,
-            IEnumerable<MetadataReference> references, string preset = "")
-        {
-            baseCompilation = CSharpCompilation.Create(
-                "BlazorApp.OutputRCL",
-                Array.Empty<SyntaxTree>(),
-                references,
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-            _references = references;
-            return await CompileToAssemblyAsync(codeFiles);
-        }
-        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ICollection<CodeFile> codeFiles, string preset = "basic")
+        //public async Task<CodeAssemblyModel> GetRazorAssembly(ICollection<CodeFile> codeFiles,
+        //    IEnumerable<MetadataReference> references, string preset = "")
+        //{
+        //    baseCompilation = CSharpCompilation.Create(
+        //        "BlazorApp.OutputRCL",
+        //        Array.Empty<SyntaxTree>(),
+        //        references,
+        //        new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        //    _references = references;
+        //    return await CompileToAssemblyAsync(codeFiles);
+        //}
+        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ICollection<ProjectFile> codeFiles, string preset = "basic")
         {
             if (codeFiles == null)
             {
@@ -67,17 +67,17 @@ namespace BlazorApp.Shared.CodeServices
             return result;
         }
 
-        private async Task<ICollection<RazorToCSharpModel>> ConvertRazorToCSharp(ICollection<CodeFile> codeFiles)
+        private async Task<ICollection<RazorToCSharpModel>> ConvertRazorToCSharp(ICollection<ProjectFile> codeFiles)
         {
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
             var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>());
             var declarations = new List<RazorToCSharpModel>();
-            foreach (var codeFile in codeFiles)
+            foreach (var codeFile in codeFiles.Where(x => x.FileType == FileType.Razor))
             {
-                var projectItem = CreateRazorProjectItem(codeFile.Path, codeFile.Content);
+                RazorProjectItem projectItem = CreateRazorProjectItem(codeFile.Path, codeFile.Content);
 
-                var codeDocument = projectEngine.ProcessDeclarationOnly(projectItem);
-                var cSharpDocument = codeDocument.GetCSharpDocument();
+                RazorCodeDocument codeDocument = projectEngine.ProcessDeclarationOnly(projectItem);
+                RazorCSharpDocument cSharpDocument = codeDocument.GetCSharpDocument();
 
                 declarations.Add(new RazorToCSharpModel
                 {
@@ -86,7 +86,15 @@ namespace BlazorApp.Shared.CodeServices
                     Diagnostics = cSharpDocument.Diagnostics.Select(diagnostic => new CustomDiag(diagnostic)),
                 });
             }
-
+            //ToDo Likely Solution
+            foreach (var codeFile in codeFiles.Where(x => x.FileType == FileType.Class))
+            {
+                declarations.Add(new RazorToCSharpModel
+                {
+                    Code = codeFile.Content,
+                    Diagnostics = new List<CustomDiag>()
+                });
+            }
             // Get initial core assembly
             var tempAssembly = GetCodeAssembly(declarations);
             if (tempAssembly.Diagnostics.Any(d => d.Severity == DiagnosticSeverity.Error))
@@ -97,8 +105,8 @@ namespace BlazorApp.Shared.CodeServices
             var references = new List<MetadataReference>(baseCompilation.References) { tempAssembly.Compilation.ToMetadataReference() };
             projectEngine = this.CreateRazorProjectEngine(references);
             var results = new List<RazorToCSharpModel>();
-            // Iterates through raw c# code and converts to members of generated Razor project
-            foreach (var declaration in declarations)
+            // Iterates through c# code docs and converts to members of generated Razor project
+            foreach (var declaration in declarations.Where(x => x.ProjectItem != null))
             {
                 var codeDocument = projectEngine.Process(declaration.ProjectItem);
                 var cSharpDocument = codeDocument.GetCSharpDocument();
@@ -108,6 +116,15 @@ namespace BlazorApp.Shared.CodeServices
                     ProjectItem = declaration.ProjectItem,
                     Code = cSharpDocument.GeneratedCode,
                     Diagnostics = cSharpDocument.Diagnostics.Select(x => new CustomDiag(x))
+                });
+            }
+
+            foreach (var declaration in declarations.Where(x => x.ProjectItem == null))
+            {
+                results.Add(new RazorToCSharpModel
+                {
+                    Code = declaration.Code,
+                    Diagnostics = new List<CustomDiag>()
                 });
             }
             return results;
@@ -222,7 +239,7 @@ namespace BlazorApp.Shared.CodeServices
                 .ToList();
 
             baseCompilation = CSharpCompilation.Create(
-                "BlazorRepl.UserComponents",
+                "BlazorApp.OutputRCL",
                 Array.Empty<SyntaxTree>(),
                 basicReferenceAssemblies,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
