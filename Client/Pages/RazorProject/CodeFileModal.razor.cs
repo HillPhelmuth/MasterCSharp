@@ -12,17 +12,17 @@ namespace BlazorApp.Client.Pages.RazorProject
     public partial class CodeFileModal
     {
         [Parameter]
-        public CodeFile ActiveCodeFile { get; set; }
+        public ProjectFile ActiveProjectFile { get; set; }
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         [Inject]
         protected CodeEditorService CodeEditorService { get; set; }
         
 
-        protected void UpdateActiveFile(CodeFile selectedFile)
+        protected void UpdateActiveFile(ProjectFile selectedFile)
         {
             var parameters = new ModalDialogParameters();
-            ActiveCodeFile = selectedFile;
+            ActiveProjectFile = selectedFile;
             parameters.Add("ActiveCodeFile", selectedFile);
             ModalService.Close(true, parameters);
         }

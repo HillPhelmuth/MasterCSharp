@@ -20,6 +20,8 @@
     <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
     <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
     <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
+    <Compile Remove="Services\CompilerService.Razor.cs" />
+    <Compile Remove="Services\CompilerService.RazorTemplate.cs" />
     <Compile Remove="UserDbFunction.cs" />
   </ItemGroup>
   <ItemGroup>

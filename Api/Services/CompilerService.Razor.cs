@@ -36,7 +36,7 @@ namespace BlazorApp.Api.Services
             configurationName: "Blazor",
             extensions: Array.Empty<RazorExtension>());
 
-        public async Task<CodeAssemblyModel> GetRazorAssembly(CodeFile codeFile,
+        public async Task<CodeAssemblyModel> GetRazorAssembly(ProjectFile projectFile,
             IEnumerable<MetadataReference> references, string preset = "")
         {
             runningCompilation = CSharpCompilation.Create(
@@ -45,16 +45,16 @@ namespace BlazorApp.Api.Services
                 references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
             _references = references;
-            return await CompileToAssemblyAsync(codeFile);
+            return await CompileToAssemblyAsync(projectFile);
         }
-        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(CodeFile codeFile, string preset = "basic")
+        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ProjectFile projectFile, string preset = "basic")
         {
-            if (codeFile == null)
+            if (projectFile == null)
             {
-                throw new ArgumentNullException(nameof(codeFile));
+                throw new ArgumentNullException(nameof(projectFile));
             }
 
-            var cSharpResults = await ConvertRazorToCSharp(codeFile);
+            var cSharpResults = await ConvertRazorToCSharp(projectFile);
 
             //await (updateStatusFunc?.Invoke("Compiling Assembly") ?? Task.CompletedTask);
             var result = GetCodeAssembly(new List<RazorToCSharpModel>(cSharpResults));
@@ -62,13 +62,13 @@ namespace BlazorApp.Api.Services
             return result;
         }
 
-        private async Task<ICollection<RazorToCSharpModel>> ConvertRazorToCSharp(CodeFile codeFile)
+        private async Task<ICollection<RazorToCSharpModel>> ConvertRazorToCSharp(ProjectFile projectFile)
         {
             // The first phase won't include any metadata references for component discovery. This mirrors what the build does.
             var projectEngine = CreateRazorProjectEngine(Array.Empty<MetadataReference>());
             var declarations = new List<RazorToCSharpModel>();
 
-            var projectItem = CreateRazorProjectItem(codeFile.Path, codeFile.Content);
+            var projectItem = CreateRazorProjectItem(projectFile.Path, projectFile.Content);
 
             var codeDocument = projectEngine.ProcessDeclarationOnly(projectItem);
             var cSharpDocument = codeDocument.GetCSharpDocument();
@@ -128,9 +128,7 @@ namespace BlazorApp.Api.Services
             {
                 Compilation = finalCompilation,
                 Diagnostics = compilationDiagnostics.Select(diag => new CustomDiag(diag)),
-                //.Select(CompilationDiagnostic.FromCSharpDiagnostic)
-                //.Concat(cSharpResults.SelectMany(r => r.Diagnostics))
-                //.ToList(),
+               
             };
 
             if (result.Diagnostics.All(x => x.Severity != DiagnosticSeverity.Error))
@@ -151,10 +149,7 @@ namespace BlazorApp.Api.Services
             {
                 b.SetRootNamespace(DefaultRootNamespace);
                 b.AddDefaultImports(DefaultImports);
-
-                // Features that use Roslyn are mandatory for components
                 CompilerFeatures.Register(b);
-
                 b.Features.Add(new CompilationTagHelperFeature());
                 b.Features.Add(new DefaultMetadataReferenceFeature { References = references });
             });

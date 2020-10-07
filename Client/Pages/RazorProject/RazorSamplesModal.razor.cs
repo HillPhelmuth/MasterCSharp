@@ -12,7 +12,7 @@ namespace BlazorApp.Client.Pages.RazorProject
     public partial class RazorSamplesModal
     {
         [Parameter]
-        public CodeFile ActiveCodeFile { get; set; }
+        public ProjectFile ActiveProjectFile { get; set; }
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         [Inject]
@@ -21,8 +21,8 @@ namespace BlazorApp.Client.Pages.RazorProject
 
         protected void UpdateActiveFile(KeyValuePair<string, string> selectedFile)
         { 
-            ActiveCodeFile = new CodeFile{Path = $"{selectedFile.Key}.razor", Content = selectedFile.Value};
-            var parameters = new ModalDialogParameters {{"ActiveCodeFile", ActiveCodeFile} };
+            ActiveProjectFile = new ProjectFile{Path = $"{selectedFile.Key}.razor", Content = selectedFile.Value, FileType = FileType.Razor};
+            var parameters = new ModalDialogParameters {{"ActiveCodeFile", ActiveProjectFile} };
             ModalService.Close(true, parameters);
         }
     }

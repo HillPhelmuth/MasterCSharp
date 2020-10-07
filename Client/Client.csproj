@@ -9,6 +9,7 @@
     <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="GeneratedAssemblyModel.cs" />
     <Compile Remove="Pages\Interactive\HubSource.razor.cs" />
     <Compile Remove="Pages\Interactive\HubStart.razor.cs" />
     <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />

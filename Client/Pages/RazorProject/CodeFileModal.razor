@@ -1,7 +1,7 @@
 ﻿@using BlazorApp.Shared.RazorCompileService
 <MatH3>Available Files</MatH3>
 
-@foreach (var file in CodeEditorService.CodeFiles ?? new List<CodeFile>())
+@foreach (var file in CodeEditorService.CodeFiles ?? new List<ProjectFile>())
 {
     <MatButton OnClick="@(() => UpdateActiveFile(file))">@file.Path</MatButton>
 }

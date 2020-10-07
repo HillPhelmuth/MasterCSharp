@@ -252,11 +252,12 @@ app {
     }
 
 .listPrimary {
-    font-weight: 800;
+    background-color: black;
+    color:white;
 }
 
 .listSecondary {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .mainIcon {

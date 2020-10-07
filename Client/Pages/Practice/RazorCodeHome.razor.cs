@@ -12,7 +12,7 @@ using BlazorApp.Client.Pages.RazorProject;
 using BlazorApp.Client.Pages.ShareCode;
 using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.CodeServices;
-
+using BlazorApp.Shared.ExtensionMethods;
 using BlazorApp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -40,7 +40,7 @@ namespace BlazorApp.Client.Pages.Practice
         private const string MainComponentCodePrefix = "@page \"/__razorOutput\"\n";
         private const string MainUserPagePath = "/__razorOutput";
         public const string MainComponentFilePath = "__RazorOutput.razor";
-        public List<CodeFile> Files { get; set; } = new List<CodeFile>();
+        public List<ProjectFile> Files { get; set; } = new List<ProjectFile>();
         private DotNetObjectReference<RazorCodeHome> dotNetInstance;
         private string language = "razor";
         private bool isready;
@@ -48,11 +48,12 @@ namespace BlazorApp.Client.Pages.Practice
        
         private List<string> Diagnostics { get; set; } = new List<string>();
         private bool isCodeCompiling;
+        private bool isCSharp;
         protected override async Task OnInitializedAsync()
         {
             CodeEditorService.CodeSnippet = sampleSnippet;
-            var mainCodeFile = new CodeFile { Path = MainComponentFilePath, Content = MainComponentCodePrefix + sampleSnippet };
-            CodeEditorService.ActiveCodeFile = mainCodeFile;
+            var mainCodeFile = new ProjectFile { Path = MainComponentFilePath, Content = sampleSnippet, FileType = FileType.Razor};
+            CodeEditorService.ActiveProjectFile = mainCodeFile;
             CodeEditorService.SaveCode(mainCodeFile);
             CodeEditorService.PropertyChanged += HandlePropertyChanged;
             await Task.Delay(100);
@@ -74,8 +75,8 @@ namespace BlazorApp.Client.Pages.Practice
         
         protected void HandleSave(string content)
         {
-            CodeEditorService.ActiveCodeFile.Content = content;
-            var currentFile = CodeEditorService.ActiveCodeFile;
+            CodeEditorService.ActiveProjectFile.Content = content;
+            var currentFile = CodeEditorService.ActiveProjectFile;
             currentFile.Content = content;
             CodeEditorService.SaveCode(currentFile);
 
@@ -84,7 +85,9 @@ namespace BlazorApp.Client.Pages.Practice
         {
             var inputForm = new ModalDataInputForm("Create new conponent", "what should we call this component?");
             var snippetField = inputForm.AddStringField("Name", "Component Name", "");
+            var languageField = inputForm.AddEnumField("FileType", "File type", FileType.Razor);
             string filename = string.Empty;
+            string fileType = "razor";
             var options = new ModalDialogOptions()
             {
                 Style = "small-modal"
@@ -92,18 +95,26 @@ namespace BlazorApp.Client.Pages.Practice
             if (await inputForm.ShowAsync(ModalService, options))
             {
                 filename = snippetField.Value;
+                fileType = languageField.Value.AsString();
             }
 
-            if (string.IsNullOrEmpty(filename)) return;
-            var newCodeFile = new CodeFile();
-            if (!filename.Contains(".razor"))
+            if (languageField.Value == FileType.Class)
             {
-                newCodeFile.Path = $"{filename}.razor";
+                isCSharp = true;
+                await InvokeAsync(StateHasChanged);
             }
-            sampleSnippet = $"<h1>{filename}</h1>";
+            if (string.IsNullOrEmpty(filename)) return;
+            var newCodeFile = new ProjectFile();
+            if (!filename.Contains(".razor") && !filename.Contains(".cs"))
+            {
+                newCodeFile.Path = $"{filename}.{fileType}";
+                newCodeFile.FileType = languageField.Value;
+            }
+            sampleSnippet = languageField.Value == FileType.Razor ? $"<h1>{filename}</h1>" : $"class {filename}\r{{\r\t\r}}";
+
             CodeEditorService.CodeSnippet = sampleSnippet;
             newCodeFile.Content = sampleSnippet;
-            CodeEditorService.ActiveCodeFile = newCodeFile;
+            CodeEditorService.ActiveProjectFile = newCodeFile;
             await InvokeAsync(StateHasChanged);
         }
 
@@ -112,9 +123,13 @@ namespace BlazorApp.Client.Pages.Practice
             var result = await ModalService.ShowDialogAsync<CodeFileModal>("Select a code snippet");
             if (result.Success)
             {
-                var snippet = result.ReturnParameters.Get<CodeFile>("ActiveCodeFile");
-                CodeEditorService.ActiveCodeFile = snippet;
-                CodeEditorService.CodeSnippet = snippet.Content;
+                
+                var codeFile = result.ReturnParameters.Get<ProjectFile>("ActiveCodeFile");
+                isCSharp = codeFile.FileType == FileType.Class;
+                await InvokeAsync(StateHasChanged);
+                await Task.Delay(50);
+                CodeEditorService.ActiveProjectFile = codeFile;
+                CodeEditorService.CodeSnippet = codeFile.Content;
                 
             }
 
@@ -126,12 +141,22 @@ namespace BlazorApp.Client.Pages.Practice
             var result = await ModalService.ShowDialogAsync<RazorSamplesModal>("Select a code snippet");
             if (result.Success)
             {
-                var snippet = result.ReturnParameters.Get<CodeFile>("ActiveCodeFile");
-                CodeEditorService.ActiveCodeFile = snippet;
+                var snippet = result.ReturnParameters.Get<ProjectFile>("ActiveCodeFile");
+                CodeEditorService.ActiveProjectFile = snippet;
                 CodeEditorService.CodeSnippet = snippet.Content;
             }
 
             await InvokeAsync(StateHasChanged);
+        }
+
+        private Task LoadSampleProject()
+        {
+            var sampleProject = SampleProjects.IntroProject;
+            var sampleMain = sampleProject.FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath);
+            CodeEditorService.CodeFiles = sampleProject;
+            CodeEditorService.ActiveProjectFile = sampleMain;
+            CodeEditorService.CodeSnippet = sampleMain?.Content;
+            return InvokeAsync(StateHasChanged);
         }
         protected async Task ExecuteProject()
         {
@@ -139,7 +164,7 @@ namespace BlazorApp.Client.Pages.Practice
             Diagnostics = new List<string>();
             StateHasChanged();
             CodeAssemblyModel compilationResult = null;
-            CodeFile mainComponent = null;
+            ProjectFile mainComponent = null;
             string originalMainComponentContent = null;
             originalMainComponentContent = CodeEditorService.CodeFiles
                 .FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath)
@@ -176,7 +201,7 @@ namespace BlazorApp.Client.Pages.Practice
         private void HandlePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName != "ActiveCodeFile") return;
-            CodeEditorService.CodeSnippet = CodeEditorService.ActiveCodeFile.Content;
+            CodeEditorService.CodeSnippet = CodeEditorService.ActiveProjectFile.Content;
             StateHasChanged();
 
         }
@@ -186,14 +211,14 @@ namespace BlazorApp.Client.Pages.Practice
         {
 
             CodeAssemblyModel compilationResult = null;
-            var codeFiles = new List<CodeFile>
+            var codeFiles = new List<ProjectFile>
             {
-                new CodeFile
+                new ProjectFile
                 {
                     Path = MainComponentFilePath,
                     Content = MainComponentCodePrefix + CodeSnippets.RazorSnippets["RazorParent"]
                 },
-                new CodeFile
+                new ProjectFile
                 {
                     Path = $"RazorChild.razor", Content = CodeSnippets.RazorSnippets["RazorChild"]
                 }
