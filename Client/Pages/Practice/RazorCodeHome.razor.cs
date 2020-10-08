@@ -10,6 +10,7 @@ using Blazor.ModalDialog;
 using BlazorApp.Client.ExtensionMethods;
 using BlazorApp.Client.Pages.RazorProject;
 using BlazorApp.Client.Pages.ShareCode;
+using BlazorApp.Client.Shared;
 using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.ExtensionMethods;
@@ -49,6 +50,7 @@ namespace BlazorApp.Client.Pages.Practice
         private List<string> Diagnostics { get; set; } = new List<string>();
         private bool isCodeCompiling;
         private bool isCSharp;
+        private string buttonCss = "";
         protected override async Task OnInitializedAsync()
         {
             CodeEditorService.CodeSnippet = sampleSnippet;
@@ -56,7 +58,7 @@ namespace BlazorApp.Client.Pages.Practice
             CodeEditorService.ActiveProjectFile = mainCodeFile;
             CodeEditorService.SaveCode(mainCodeFile);
             CodeEditorService.PropertyChanged += HandlePropertyChanged;
-            await Task.Delay(100);
+            await Task.Delay(50);
             isready = true;
             await base.OnInitializedAsync();
         }
@@ -173,7 +175,7 @@ namespace BlazorApp.Client.Pages.Practice
             
             compilationResult = await RazorCompile.CompileToAssemblyAsync(codeFiles);
             Diagnostics.AddRange(compilationResult?.Diagnostics?.Select(x => x.ToString()) ?? new List<string> { "None" });
-           
+            buttonCss = Diagnostics.Any() ? "alert_output" : "";
             if (compilationResult?.AssemblyBytes?.Length > 0)
             {
                 await JsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
@@ -206,43 +208,22 @@ namespace BlazorApp.Client.Pages.Practice
 
         }
 
-        #region TextExecution
-        private async Task ExecuteProjectTest()
+        private async Task ShowDiags()
         {
-
-            CodeAssemblyModel compilationResult = null;
-            var codeFiles = new List<ProjectFile>
+            buttonCss = "";
+            var asMarkups = Diagnostics.Select(diagnostic => $"<li>{diagnostic}</li>");
+            var content = $"<ol>{string.Join(' ', asMarkups)}</ol>";
+            var parameters = new ModalDialogParameters
             {
-                new ProjectFile
-                {
-                    Path = MainComponentFilePath,
-                    Content = MainComponentCodePrefix + CodeSnippets.RazorSnippets["RazorParent"]
-                },
-                new ProjectFile
-                {
-                    Path = $"RazorChild.razor", Content = CodeSnippets.RazorSnippets["RazorChild"]
-                }
+                {"CodeOutput", content}
             };
-            foreach (var codeFile in codeFiles)
-            {
-                Console.WriteLine($"Name: {codeFile.Path}");
-                Console.WriteLine($"Content: {codeFile.Content}");
-            }
-            compilationResult = await RazorCompile.CompileToAssemblyAsync(codeFiles);
-            Diagnostics.AddRange(compilationResult?.Diagnostics?.Select(x => x.ToString()) ?? new List<string> { "None" });
-            if (compilationResult?.AssemblyBytes?.Length > 0)
-            {
-                await JsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
-
-                await JsRuntime.InvokeVoidAsync("App.reloadIFrame", "user-page-window", MainUserPagePath);
-                isCodeCompiling = false;
-                await InvokeAsync(StateHasChanged);
-            }
-
+            await ModalService.ShowDialogAsync<CodeOutModal>("Current diagnostics are displayed here.",
+                parameters: parameters);
         }
-
-
-        #endregion
+        [JSInvokable("ShowCacheError")]
+        public async void ShowCacheError() =>
+            await ModalService.ShowMessageBoxAsync("Project Not Found",
+                "Hmm... It appears that the project is longer in your browser cache. I blame you, but perhaps refreshing the app and trying again will resolve it.");
 
         public void Dispose()
         {

@@ -40,13 +40,11 @@ namespace BlazorApp.Client.Pages
                     Console.WriteLine($"user {userName} found");
                     var currentUser = await PublicClient.GetOrAddUserAppData(userName);
                     AppStateService.UpdateUserAppData(currentUser);
-                    isPageReady = true;
-                    await InvokeAsync(StateHasChanged);
                 }
+                isPageReady = true;
+                await InvokeAsync(StateHasChanged);
                 await RazorCompile.InitAsync(BrowserClient.Client);
             }
-            isPageReady = true;
-            await InvokeAsync(StateHasChanged);
             await base.OnAfterRenderAsync(firstRender);
         }
 

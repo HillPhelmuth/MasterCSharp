@@ -38,14 +38,14 @@
                 <iframe style="height: 500px; width: 100%" id="user-page-window" src="/defaultOutput"></iframe>
 
             </div>
-            <div id="user-page-window-container" class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-                <MatH4 Class="text-center">Compilation Diagnostics</MatH4>
-                <MatList>
+            <div id="user-page-window-container" class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <button class="mat-elevation-z24 output-button @buttonCss" @onclick="ShowDiags">Click to view compilation errors.</button>
+                @*<MatList>
                     @foreach (var diag in Diagnostics)
                     {
                         <MatListItem>@diag</MatListItem>
                     }
-                </MatList>
+                </MatList>*@
 
             </div>
 

@@ -41,7 +41,7 @@ window.App.Razor = window.App.Razor || (function () {
 
             caches.open('blazor-resources-/').then(function (cache) {
                 if (!cache) {
-                    // TODO: alert user
+                    _dotNetInstance.invokeMethodAsync('BlazorApp.Client', 'ShowCacheError');
                     return;
                 }
 
@@ -57,9 +57,6 @@ window.App.Razor = window.App.Razor || (function () {
         },
         dispose: function () {
             _dotNetInstance = null;
-           
-            
-            window.removeEventListener('resize', onWindowResize);
             window.removeEventListener('keydown', onKeyDown);
         }
     };
