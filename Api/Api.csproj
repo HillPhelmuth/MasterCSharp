@@ -9,19 +9,7 @@
     <EmbeddedResource Remove="Functions\DuelHub\**" />
     <None Remove="Functions\DuelHub\**" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="ChallengeDbFunction.cs" />
-    <Compile Remove="CompileChallenge.cs" />
-    <Compile Remove="CompileCode.cs" />
-    <Compile Remove="CompileConsole.cs" />
-    <Compile Remove="CompileResources.cs" />
-    <Compile Remove="Data\ArenaDbClient.cs" />
-    <Compile Remove="Data\CSharpDuelsDbContext.cs" />
-    <Compile Remove="Functions\ChallengeFunctions\CodeWarsCompleted.cs" />
-    <Compile Remove="Functions\Duels\DuelCosmosBound.cs" />
-    <Compile Remove="Functions\Duels\DuelHttpBound.cs" />
-    <Compile Remove="UserDbFunction.cs" />
-  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Direct" Version="3.13.2" />
