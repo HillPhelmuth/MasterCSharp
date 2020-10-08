@@ -46,7 +46,7 @@ namespace BlazorApp.Client.Pages
                 await RazorCompile.InitAsync(BrowserClient.Client);
             }
             isPageReady = true;
-
+            await InvokeAsync(StateHasChanged);
             await base.OnAfterRenderAsync(firstRender);
         }
 
