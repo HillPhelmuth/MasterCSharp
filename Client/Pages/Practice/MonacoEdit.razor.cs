@@ -41,6 +41,7 @@ namespace BlazorApp.Client.Pages.Practice
         {
             Language ??= "csharp";
             Editor = new MonacoEditor();
+            
             CodeEditorService.PropertyChanged += UpdateSnippet;
             return base.OnInitializedAsync();
         }
@@ -117,7 +118,7 @@ namespace BlazorApp.Client.Pages.Practice
                     Range = new BlazorMonaco.Bridge.Range(3,1,3,1),
                     Options = new ModelDecorationOptions
                     {
-                        IsWholeLine = true,
+                        IsWholeLine = false,
                         ClassName = "decorationContentClass",
                         GlyphMarginClassName = "decorationGlyphMarginClass"
                     }
@@ -127,6 +128,7 @@ namespace BlazorApp.Client.Pages.Practice
             decorationIds = await Editor.DeltaDecorations(null, newDecorations);
         }
         private string[] decorationIds;
+        
         protected void OnContextMenu(EditorMouseEvent eventArg)
         {
             
