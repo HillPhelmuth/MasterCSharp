@@ -1,4 +1,5 @@
 ﻿using BlazorApp.Shared.CodeModels;
+using BlazorApp.Shared.RazorCompileService;
 using BlazorApp.Shared.UserModels;
 using BlazorApp.Shared.VideoModels;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace BlazorApp.Api.Data
         public DbSet<UserAppData> UserAppData { get; set; }
         public DbSet<UserSnippet> UserSnippets { get; set; }
         public DbSet<ArenaDuel> UserDuels { get; set; }
+        public DbSet<UserProject> UserProject { get; set; }
+        public DbSet<ProjectFile> ProjectFile { get; set; }
         public ChallengeContext(DbContextOptions<ChallengeContext> options)
             : base(options)
         {

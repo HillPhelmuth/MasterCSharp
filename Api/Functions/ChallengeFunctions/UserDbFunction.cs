@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using BlazorApp.Api.Data;
+using BlazorApp.Shared.RazorCompileService;
 using BlazorApp.Shared.UserModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,10 +42,18 @@ namespace BlazorApp.Api.Functions.ChallengeFunctions
             if (users.Any(x => x.Name == userName))
             {
                 var currentUser = users.FirstOrDefault(x => x.Name == userName);
-                var userSnippets = await context.UserSnippets.ToListAsync();
-                var userDuels = await context.UserDuels.ToListAsync();
-                currentUser.Snippets = userSnippets.Where(x => x.UserAppDataID == currentUser.ID).ToList();
-                currentUser.CompletedDuels = userDuels.Where(x => x.UserAppDataID == currentUser.ID).ToList();
+                var userSnippets = await context.UserSnippets.Where(x => x.UserAppDataID == currentUser.ID).ToListAsync();
+                var userDuels = await context.UserDuels.Where(x => x.UserAppDataID == currentUser.ID).ToListAsync();
+                var userProjects = await context.UserProject.Where(x => x.UserAppDataID == currentUser.ID).ToListAsync();
+                foreach (var project in userProjects)
+                {
+                    project.Files = await context.ProjectFile.Where(x => x.UserProjectID == project.ID).ToListAsync();
+                }
+                currentUser.RazorProjects = userProjects;
+                currentUser.Snippets = userSnippets;
+                currentUser.CompletedDuels = userDuels;
+                //currentUser.Snippets = userSnippets.Where(x => x.UserAppDataID == currentUser.ID).ToList();
+                //currentUser.CompletedDuels = userDuels.Where(x => x.UserAppDataID == currentUser.ID).ToList();
                 JsonSerializerSettings settings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
                 var logString = JsonConvert.SerializeObject(currentUser, Formatting.Indented, settings);
                 log.LogInformation(logString);
@@ -129,5 +139,6 @@ namespace BlazorApp.Api.Functions.ChallengeFunctions
             await context.SaveChangesAsync();
             return new OkResult();
         }
+       
     }
 }

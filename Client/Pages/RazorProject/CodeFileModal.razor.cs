@@ -17,7 +17,6 @@ namespace BlazorApp.Client.Pages.RazorProject
         protected IModalDialogService ModalService { get; set; }
         [Inject]
         protected CodeEditorService CodeEditorService { get; set; }
-        
 
         protected void UpdateActiveFile(ProjectFile selectedFile)
         {
@@ -25,6 +24,7 @@ namespace BlazorApp.Client.Pages.RazorProject
             ActiveProjectFile = selectedFile;
             parameters.Add("ActiveCodeFile", selectedFile);
             ModalService.Close(true, parameters);
+
         }
     }
 }

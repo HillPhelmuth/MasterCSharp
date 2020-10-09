@@ -197,5 +197,25 @@ namespace BlazorApp.Client
         {
             await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/sendOut/{group}", output);
         }
+
+        public async Task<bool> CreateUserProject(UserProject project, string userName)
+        {
+           var apiResult = await Client.PostAsJsonAsync($"api/CreateProject/{userName}", project);
+           return apiResult.IsSuccessStatusCode;
+
+        }
+
+        public async Task<bool> SaveCurrentFiles(UserProject project, string userName)
+        {
+            var projectName = project.Name;
+            var apiResult = await Client.PostAsJsonAsync($"api/UpdateProject/{userName}/{projectName}", project.Files);
+            return apiResult.IsSuccessStatusCode;
+        }
+        public async Task<bool> DeleteUserProject(UserProject project, string userName)
+        {
+            var apiResult = await Client.PostAsJsonAsync($"api/DeleteProject/{userName}/{project.Name}", userName);
+            return apiResult.IsSuccessStatusCode;
+
+        }
     }
 }

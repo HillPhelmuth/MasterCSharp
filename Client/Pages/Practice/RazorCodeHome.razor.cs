@@ -11,10 +11,12 @@ using BlazorApp.Client.ExtensionMethods;
 using BlazorApp.Client.Pages.RazorProject;
 using BlazorApp.Client.Pages.ShareCode;
 using BlazorApp.Client.Shared;
+using BlazorApp.Shared;
 using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.ExtensionMethods;
 using BlazorApp.Shared.RazorCompileService;
+using BlazorApp.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
@@ -31,6 +33,8 @@ namespace BlazorApp.Client.Pages.Practice
         public CodeEditorService CodeEditorService { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
+        [Inject]
+        public AppStateService AppStateService { get; set; }
         [Inject]
         public IJSRuntime JsRuntime { get; set; }
         [Inject]
@@ -57,7 +61,7 @@ namespace BlazorApp.Client.Pages.Practice
             var mainCodeFile = new ProjectFile { Path = MainComponentFilePath, Content = sampleSnippet, FileType = FileType.Razor};
             CodeEditorService.ActiveProjectFile = mainCodeFile;
             CodeEditorService.SaveCode(mainCodeFile);
-            CodeEditorService.PropertyChanged += HandlePropertyChanged;
+            CodeEditorService.PropertyChanged += HandleCodePropertyChanged;
             await Task.Delay(50);
             isready = true;
             await base.OnInitializedAsync();
@@ -83,6 +87,50 @@ namespace BlazorApp.Client.Pages.Practice
             CodeEditorService.SaveCode(currentFile);
 
         }
+
+        private void HandleSaveToProject(string content)
+        {
+           
+            CodeEditorService.ActiveProjectFile.Content = content;
+            var currentFile = CodeEditorService.ActiveProjectFile;
+            currentFile.Content = content;
+            CodeEditorService.SaveCode(currentFile);
+            if (!AppStateService.HasActiveProject) return;
+
+            AppStateService.ActiveProject.Files = CodeEditorService.CodeFiles;
+
+        }
+
+        private async Task SaveProject()
+        {
+            if (!AppStateService.HasActiveProject) return;
+            var projectFiles = AppStateService.ActiveProject;
+            var apiResponse = await PublicClient.SaveCurrentFiles(projectFiles, AppStateService.UserName);
+        }
+        private async Task CreateProject()
+        {
+            var inputForm = new ModalDataInputForm("Create new Project", "Please give your project a name");
+            var snippetField = inputForm.AddStringField("Name", "Project Name", "");
+            var useCurrentFiles = inputForm.AddBoolField("UseCurrentFiles", "Add current files to project", true);
+            string projectName = "";
+            bool useFiles = true;
+            var options = new ModalDialogOptions()
+            {
+                Style = "small-modal"
+            };
+            if (!await inputForm.ShowAsync(ModalService, options)) return;
+            projectName = snippetField.Value;
+            useFiles = useCurrentFiles.Value;
+            var newProject = new UserProject
+            {
+                Name = projectName,
+                Files = useFiles ? CodeEditorService.CodeFiles : new List<ProjectFile>{ new ProjectFile { Path = MainComponentFilePath, Content = sampleSnippet, FileType = FileType.Razor }}
+            };
+            AppStateService.ActiveProject = newProject;
+            CodeEditorService.CodeFiles = AppStateService.ActiveProject.Files;
+            var isSuccess = await PublicClient.CreateUserProject(newProject, AppStateService.UserName);
+        }
+        
         protected async Task AddCodeFile()
         {
             var inputForm = new ModalDataInputForm("Create new conponent", "what should we call this component?");
@@ -120,8 +168,14 @@ namespace BlazorApp.Client.Pages.Practice
             await InvokeAsync(StateHasChanged);
         }
 
-        protected async void SelectActiveFile()
+        protected async Task SelectActiveFile()
         {
+            if (AppStateService.HasActiveProject)
+            {
+                CodeEditorService.CodeFiles = AppStateService.ActiveProject.Files;
+            }
+
+            await Task.Delay(10);
             var result = await ModalService.ShowDialogAsync<CodeFileModal>("Select a code snippet");
             if (result.Success)
             {
@@ -132,10 +186,13 @@ namespace BlazorApp.Client.Pages.Practice
                 await Task.Delay(50);
                 CodeEditorService.ActiveProjectFile = codeFile;
                 CodeEditorService.CodeSnippet = codeFile.Content;
-                
             }
-
             await InvokeAsync(StateHasChanged);
+        }
+
+        protected async Task SelectActiveProject()
+        {
+            await ModalService.ShowDialogAsync<ProjectCrudModal>("Select a project");
         }
 
         protected async void SelectSampleSnippet()
@@ -200,14 +257,18 @@ namespace BlazorApp.Client.Pages.Practice
             CodeEditorService.CodeSnippet = code;
 
         }
-        private void HandlePropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void HandleCodePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName != "ActiveCodeFile") return;
             CodeEditorService.CodeSnippet = CodeEditorService.ActiveProjectFile.Content;
             StateHasChanged();
-
         }
-
+        private void HandleAppPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName != "ActiveProject") return;
+            CodeEditorService.CodeFiles = AppStateService.ActiveProject.Files;
+            StateHasChanged();
+        }
         private async Task ShowDiags()
         {
             buttonCss = "";
@@ -228,7 +289,7 @@ namespace BlazorApp.Client.Pages.Practice
         public void Dispose()
         {
             dotNetInstance?.Dispose();
-            CodeEditorService.PropertyChanged -= HandlePropertyChanged;
+            CodeEditorService.PropertyChanged -= HandleCodePropertyChanged;
             _ = JsRuntime.InvokeVoidAsync("App.Razor.dispose");
             Console.WriteLine("RazorCodeHome.razor disposed");
         }
