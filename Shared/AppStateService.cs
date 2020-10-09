@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BlazorApp.Shared.CodeModels;
+using BlazorApp.Shared.RazorCompileService;
 using BlazorApp.Shared.UserModels;
 using BlazorApp.Shared.VideoModels;
 
@@ -20,7 +21,7 @@ namespace BlazorApp.Shared
         private string otherUser;
         private string shareTeam;
         private int tabIndex;
-
+        private UserProject activeProject;
         public CodeChallenges CodeChallenges
         {
             get => codeChallenges;
@@ -48,7 +49,7 @@ namespace BlazorApp.Shared
         public CodeOutputModel CodeOutput
         {
             get => codeOutput;
-            set { codeOutput = value; OnPropertyChanged();}
+            set { codeOutput = value; OnPropertyChanged(); }
         }
 
         public bool HasUser { get; set; }
@@ -56,19 +57,41 @@ namespace BlazorApp.Shared
         public string ShareUser
         {
             get => shareUser;
-            set { shareUser = value; OnPropertyChanged();}
+            set { shareUser = value; OnPropertyChanged(); }
+        }
+        public UserProject ActiveProject
+        {
+            get => activeProject;
+            set { activeProject = value; OnPropertyChanged(); }
         }
 
+        public bool HasActiveProject => ActiveProject != null || activeProject != null;
+        public void SaveFileToProject(ProjectFile file)
+        {
+            if (ActiveProject == null) return;
+            ActiveProject.Files ??= new List<ProjectFile>();
+            var alteredFile = ActiveProject.Files.FirstOrDefault(x => x.Path == file.Path);
+            if (alteredFile == null)
+            {
+                ActiveProject.Files?.Add(file);
+            }
+            else
+            {
+                alteredFile.Content = file.Content;
+            }
+            OnPropertyChanged(nameof(ActiveProject));
+
+        }
         public string OtherUser
         {
             get => otherUser;
-            set { otherUser = value; OnPropertyChanged();}
+            set { otherUser = value; OnPropertyChanged(); }
         }
 
         public string ShareTeam
         {
             get => shareTeam;
-            set { shareTeam = value; OnPropertyChanged();}
+            set { shareTeam = value; OnPropertyChanged(); }
         }
 
         public int TabIndex
@@ -113,13 +136,13 @@ namespace BlazorApp.Shared
             UserName = userData.Name;
             HasUser = true;
         }
-       
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-       
+
     }
 }

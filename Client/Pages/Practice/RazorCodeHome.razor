@@ -9,20 +9,27 @@
         <div class="mat-layout-grid-inner">
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                 <MatButton OnClick="ExecuteProject" Raised="true">Execute Project</MatButton>
-                <MatButton OnClick="LoadSampleProject">Load a Sample Project</MatButton>
-                <MatButton OnClick="SelectSampleSnippet">Get Razor File Sample</MatButton>
+                <MatButton OnClick="LoadSampleProject">Sample Project</MatButton>
+                <MatButton OnClick="SelectSampleSnippet">Sample Components</MatButton>
                 <MatButton OnClick="UpdateFromPublicRepo">Get From Repo</MatButton>
                 <MatButton OnClick="@(async () => await AddCodeFile())">Start New Component</MatButton>
                 <MatButton OnClick="SelectActiveFile">Select and Modify Component</MatButton>
+                @if (AppStateService.HasUser)
+                {
+                    <MatButton OnClick="CreateProject">Create Project</MatButton>
+                    <MatButton OnClick="SaveProject">Save Project</MatButton>
+                    <MatButton OnClick="SelectActiveProject">Load Project</MatButton>
+                }
+               
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
                 @if (isCSharp)
                 {
-                    <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="csharp" OnCodeSubmit="HandleSave"></MonacoEdit>
+                    <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="csharp" OnCodeSubmit="HandleSaveToProject"></MonacoEdit>
                 }
                 else
                 {
-                    <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="@language" OnCodeSubmit="HandleSave"></MonacoEdit>
+                    <MonacoEdit ButtonLabel="Save To Project" CodeSnippet="@CodeEditorService.CodeSnippet" OnSaveUserSnippet="HandleSave" Language="@language" OnCodeSubmit="HandleSaveToProject"></MonacoEdit>
                 }
 
             </div>
@@ -40,12 +47,7 @@
             </div>
             <div id="user-page-window-container" class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
                 <button class="mat-elevation-z24 output-button @buttonCss" @onclick="ShowDiags">Click to view compilation errors.</button>
-                @*<MatList>
-                    @foreach (var diag in Diagnostics)
-                    {
-                        <MatListItem>@diag</MatListItem>
-                    }
-                </MatList>*@
+               
 
             </div>
 

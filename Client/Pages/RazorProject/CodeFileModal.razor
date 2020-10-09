@@ -4,4 +4,5 @@
 @foreach (var file in CodeEditorService.CodeFiles ?? new List<ProjectFile>())
 {
     <MatButton OnClick="@(() => UpdateActiveFile(file))">@file.Path</MatButton>
+
 }

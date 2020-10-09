@@ -1,0 +1,4 @@
+﻿@foreach (var project in AppStateService.UserAppData.RazorProjects)
+{
+    <MatButton OnClick="@(() => SelectUserProject(project))">@project.Name</MatButton>
+}
