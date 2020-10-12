@@ -73,8 +73,7 @@ namespace BlazorApp.Client.Pages.Practice
             {
                 CodeEditorService.CodeSnippet = sampleSnippet;
                 dotNetInstance = DotNetObjectReference.Create(this);
-
-                await JsRuntime.InvokeVoidAsync("App.Razor.init", dotNetInstance);
+                await JsRuntime.RazorAppInit(dotNetInstance);
             }
             await base.OnAfterRenderAsync(firstRender);
         }
@@ -228,7 +227,6 @@ namespace BlazorApp.Client.Pages.Practice
         {
             await Task.Delay(50);
             Diagnostics = new List<string>();
-            //StateHasChanged();
             CodeAssemblyModel compilationResult = null;
             ProjectFile mainComponent = null;
             string originalMainComponentContent = null;
@@ -241,11 +239,7 @@ namespace BlazorApp.Client.Pages.Practice
             Diagnostics.AddRange(compilationResult?.Diagnostics?.Select(x => x.ToString()) ?? new List<string> { "None" });
             buttonCss = Diagnostics.Any() ? "alert_output" : "";
             if (compilationResult?.AssemblyBytes?.Length > 0)
-            {
-                await JsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", compilationResult.AssemblyBytes);
-
-                await JsRuntime.InvokeVoidAsync("App.reloadIFrame", "user-page-window", MainUserPagePath);
-            }
+                await JsRuntime.RazorCacheAndDisplay(compilationResult.AssemblyBytes);
 
             isCodeCompiling = false;
             CodeEditorService.CodeFiles = codeFiles.UnPagifyMainComponent(originalMainComponentContent);

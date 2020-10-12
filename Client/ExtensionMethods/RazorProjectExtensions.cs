@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Client.Pages.Practice;
 using BlazorApp.Shared.RazorCompileService;
+using Microsoft.JSInterop;
 
 namespace BlazorApp.Client.ExtensionMethods
 {
@@ -28,6 +30,19 @@ namespace BlazorApp.Client.ExtensionMethods
             }
 
             return codeFiles;
+        }
+
+        public static async Task RazorAppInit(this IJSRuntime jsRuntime,
+            DotNetObjectReference<RazorCodeHome> dotNetInstance)
+        {
+            await jsRuntime.InvokeVoidAsync("App.Razor.init", dotNetInstance);
+        }
+
+        public static async Task RazorCacheAndDisplay(this IJSRuntime jsRuntime, byte[] assemblyBytes)
+        {
+            await jsRuntime.InvokeVoidAsync("App.Razor.updateUserAssemblyInCacheStorage", assemblyBytes);
+
+            await jsRuntime.InvokeVoidAsync("App.reloadIFrame", "user-page-window", DefaultStrings.MainComponentPagePath);
         }
     }
 }
