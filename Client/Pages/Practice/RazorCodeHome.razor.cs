@@ -217,11 +217,18 @@ namespace BlazorApp.Client.Pages.Practice
             CodeEditorService.CodeSnippet = sampleMain?.Content;
             return InvokeAsync(StateHasChanged);
         }
+
+        private void StartExecute()
+        {
+            isCodeCompiling = true; 
+            StateHasChanged();
+            _ = ExecuteProject();
+        }
         protected async Task ExecuteProject()
         {
-            isCodeCompiling = true;
+            await Task.Delay(50);
             Diagnostics = new List<string>();
-            StateHasChanged();
+            //StateHasChanged();
             CodeAssemblyModel compilationResult = null;
             ProjectFile mainComponent = null;
             string originalMainComponentContent = null;
