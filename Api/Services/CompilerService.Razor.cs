@@ -4,17 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BlazorApp.Shared.CodeModels;
-//using BlazorApp.Shared.CodeModels;
-//using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Razor;
+using Microsoft.CodeAnalysis.Razor; //using BlazorApp.Shared.CodeModels;
+//using BlazorApp.Shared.CodeModels;
 using SyntaxTree = Microsoft.CodeAnalysis.SyntaxTree;
 
-namespace BlazorApp.Api.Services
+namespace MasterCSharp.Api.Services
 {
     public partial class CompilerService
     {

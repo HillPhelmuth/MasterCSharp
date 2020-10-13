@@ -1,8 +1,8 @@
 ﻿using Blazor.ModalDialog;
-using BlazorApp.Shared;
+using MasterCSharp.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class SnippetMenu : ComponentBase
     {

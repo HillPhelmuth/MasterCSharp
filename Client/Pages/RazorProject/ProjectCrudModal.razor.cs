@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.RazorCompileService;
-using BlazorApp.Shared.UserModels;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.RazorCompileService;
+using MasterCSharp.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.RazorProject
+namespace MasterCSharp.Client.Pages.RazorProject
 {
     public partial class ProjectCrudModal
     {

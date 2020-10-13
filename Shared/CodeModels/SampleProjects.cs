@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BlazorApp.Shared.RazorCompileService;
+﻿using System.Collections.Generic;
+using MasterCSharp.Shared.RazorCompileService;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     public class SampleProjects
     {

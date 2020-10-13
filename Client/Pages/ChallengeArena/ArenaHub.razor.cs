@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.ArenaChallenge;
-using BlazorApp.Shared.StaticAuth.Interfaces;
-using BlazorApp.Shared.UserModels;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.StaticAuth.Interfaces;
+using MasterCSharp.Shared.UserModels;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json.Linq;
 
-namespace BlazorApp.Client.Pages.ChallengeArena
+namespace MasterCSharp.Client.Pages.ChallengeArena
 {
     public partial class ArenaHub : IDisposable
     {

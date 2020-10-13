@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     public class ChallengeForm : Challenge
     {

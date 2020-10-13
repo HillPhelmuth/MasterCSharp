@@ -1,4 +1,4 @@
-namespace BlazorApp.Shared.StaticAuth.Models
+namespace MasterCSharp.Shared.StaticAuth.Models
 {
     public class AuthenticationData
     {

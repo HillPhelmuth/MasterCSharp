@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     public class CodeOutputModel
     {

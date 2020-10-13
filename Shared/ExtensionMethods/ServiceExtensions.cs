@@ -1,11 +1,11 @@
-﻿using BlazorApp.Shared.ArenaChallenge;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.StaticAuth;
-using BlazorApp.Shared.StaticAuth.Interfaces;
+﻿using MasterCSharp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.StaticAuth;
+using MasterCSharp.Shared.StaticAuth.Interfaces;
 using MatBlazor;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorApp.Shared.ExtensionMethods
+namespace MasterCSharp.Shared.ExtensionMethods
 {
     public static class ServiceExtensions
     {

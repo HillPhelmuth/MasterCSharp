@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Razor.Language;
 
-namespace BlazorApp.Api.Services
+namespace MasterCSharp.Api.Services
 {
     public partial class CompilerService
     {

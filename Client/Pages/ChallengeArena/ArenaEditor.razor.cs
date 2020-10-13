@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.ArenaChallenge;
-using BlazorApp.Shared.CodeModels;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ChallengeArena
+namespace MasterCSharp.Client.Pages.ChallengeArena
 {
     public partial class ArenaEditor : IDisposable
     {

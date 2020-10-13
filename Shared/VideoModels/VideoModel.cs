@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.VideoModels
+namespace MasterCSharp.Shared.VideoModels
 {
     public class Videos
     {

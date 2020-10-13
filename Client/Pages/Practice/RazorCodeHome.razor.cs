@@ -2,30 +2,24 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http.Json;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Client.ExtensionMethods;
-using BlazorApp.Client.Pages.RazorProject;
-using BlazorApp.Client.Pages.ShareCode;
-using BlazorApp.Client.Shared;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.ExtensionMethods;
-using BlazorApp.Shared.RazorCompileService;
-using BlazorApp.Shared.UserModels;
+using MasterCSharp.Client.Pages.RazorProject;
+using MasterCSharp.Client.Pages.ShareCode;
+using MasterCSharp.Client.Shared;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeModels;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.ExtensionMethods;
+using MasterCSharp.Shared.RazorCompileService;
+using MasterCSharp.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
-using Assembly = System.Reflection.Assembly;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 //using Newtonsoft.Json;
 
-namespace BlazorApp.Client.Pages.Practice
+namespace MasterCSharp.Client.Pages.Practice
 {
     public partial class RazorCodeHome : IDisposable
     {
@@ -234,8 +228,13 @@ namespace BlazorApp.Client.Pages.Practice
                 .FirstOrDefault(x => x.Path == DefaultStrings.MainComponentFilePath)
                 ?.Content ?? DefaultStrings.MainComponentDefaultFileContent;
             var codeFiles = CodeEditorService.CodeFiles.PagifyMainComponent();
-            
-            compilationResult = await RazorCompile.CompileToAssemblyAsync(codeFiles);
+            var serviceFiles = codeFiles;
+            var apiResult = await PublicClient.Client.PostAsJsonAsync("api/CompileRazorCode", serviceFiles);
+            var resultString = await apiResult.Content.ReadAsStringAsync();
+
+            compilationResult = JsonConvert.DeserializeObject<CodeAssemblyModel>(resultString);
+            compilationResult.AssemblyBytes ??= Convert.FromBase64String(compilationResult.AssemblyString);
+            //compilationResult = await RazorCompile.CompileToAssemblyAsync(codeFiles);
             Diagnostics.AddRange(compilationResult?.Diagnostics?.Select(x => x.ToString()) ?? new List<string> { "None" });
             buttonCss = Diagnostics.Any() ? "alert_output" : "";
             if (compilationResult?.AssemblyBytes?.Length > 0)

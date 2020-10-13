@@ -1,4 +1,4 @@
-﻿@foreach (var project in AppStateService.UserAppData.RazorProjects)
+﻿@foreach (var project in MasterCSharp.Shared.AppStateService.UserAppData.RazorProjects)
 {
     <MatButton OnClick="@(() => SelectUserProject(project))">@project.Name</MatButton>
 }

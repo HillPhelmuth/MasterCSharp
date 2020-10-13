@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorApp.Client.ExtensionMethods;
-using BlazorApp.Shared;
-using BlazorApp.Shared.VideoModels;
+using MasterCSharp.Client.ExtensionMethods;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.VideoModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Videos
+namespace MasterCSharp.Client.Pages.Videos
 {
     public partial class AddVideo
     {

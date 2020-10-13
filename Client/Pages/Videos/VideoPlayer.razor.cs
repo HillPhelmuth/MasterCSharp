@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorApp.Client.ExtensionMethods;
+using MasterCSharp.Client.ExtensionMethods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace BlazorApp.Client.Pages.Videos
+namespace MasterCSharp.Client.Pages.Videos
 {
     public partial class VideoPlayer : ComponentBase, IDisposable
     {

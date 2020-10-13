@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     public static class CodeSnippets
     {

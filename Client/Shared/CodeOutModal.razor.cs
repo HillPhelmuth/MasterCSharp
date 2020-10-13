@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Blazor.ModalDialog;
-using BlazorApp.Shared.CodeServices;
+﻿using Blazor.ModalDialog;
+using MasterCSharp.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Shared
+namespace MasterCSharp.Client.Shared
 {
     public partial class CodeOutModal
     {

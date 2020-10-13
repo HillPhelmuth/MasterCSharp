@@ -1,4 +1,5 @@
 ﻿@page "/codeHome"
+@using MasterCSharp.Shared.CodeModels
 
 <MatH4 Class="text-center">Practice your c#</MatH4>
 @*<MatButton OnClick="GetCodeFromGitHubFile">Try Get Gihub</MatButton>*@
@@ -84,11 +85,11 @@
 
                 <AuthorizeView>
                     <Authorized>
-                        @if (AppStateService.UserAppData?.Snippets?.Any() ?? false)
+                        @if (MasterCSharp.Shared.AppStateService.UserAppData?.Snippets?.Any() ?? false)
                         {
                             <MatTab Label="Your Snippets">
                                 <hr />
-                                @foreach (var snippet in AppStateService.UserAppData.Snippets)
+                                @foreach (var snippet in MasterCSharp.Shared.AppStateService.UserAppData.Snippets)
                                 {
                                     <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Snippet))"></MatButton>
                                 }

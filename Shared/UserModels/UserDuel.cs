@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.UserModels
+namespace MasterCSharp.Shared.UserModels
 {
     public class UserDuel
     {

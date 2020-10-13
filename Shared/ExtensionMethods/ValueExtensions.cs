@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.RazorCompileService;
 
-namespace BlazorApp.Shared.ExtensionMethods
+namespace MasterCSharp.Shared.ExtensionMethods
 {
     public static class ValueExtensions
     {

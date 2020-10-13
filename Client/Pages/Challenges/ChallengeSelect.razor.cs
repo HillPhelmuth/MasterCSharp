@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorApp.Shared.CodeModels;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Challenges
+namespace MasterCSharp.Client.Pages.Challenges
 {
     public partial class ChallengeSelect
     {

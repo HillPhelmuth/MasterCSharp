@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared;
+using MasterCSharp.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class GitHubForm
     {

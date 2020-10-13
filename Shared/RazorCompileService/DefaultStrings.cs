@@ -1,4 +1,4 @@
-﻿namespace BlazorApp.Shared.RazorCompileService
+﻿namespace MasterCSharp.Shared.RazorCompileService
 {
     public static class DefaultStrings
     {

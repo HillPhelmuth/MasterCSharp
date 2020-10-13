@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <RootNamespace>BlazorApp.Api</RootNamespace>
+    <RootNamespace>MasterCSharp.Api</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Functions\DuelHub\**" />

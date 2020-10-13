@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RootNamespace>BlazorApp.OutputRCL</RootNamespace>
+    <RootNamespace>MasterCSharp.OutputRCL</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

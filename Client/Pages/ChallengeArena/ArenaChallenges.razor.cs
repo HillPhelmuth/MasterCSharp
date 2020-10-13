@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeModels;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ChallengeArena
+namespace MasterCSharp.Client.Pages.ChallengeArena
 {
     public partial class ArenaChallenges
     {

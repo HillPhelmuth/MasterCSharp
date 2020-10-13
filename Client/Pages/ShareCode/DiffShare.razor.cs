@@ -2,12 +2,12 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared.CodeServices;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
+using MasterCSharp.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class DiffShare : IDisposable
     {

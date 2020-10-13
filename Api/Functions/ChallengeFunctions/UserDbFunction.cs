@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using BlazorApp.Api.Data;
-using BlazorApp.Shared.RazorCompileService;
-using BlazorApp.Shared.UserModels;
+using MasterCSharp.Api.Data;
+using MasterCSharp.Shared.UserModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -16,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace BlazorApp.Api.Functions.ChallengeFunctions
+namespace MasterCSharp.Api.Functions.ChallengeFunctions
 {
     public class UserDbFunction
     {

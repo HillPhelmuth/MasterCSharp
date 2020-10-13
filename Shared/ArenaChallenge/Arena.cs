@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using BlazorApp.Shared.CodeModels;
+using MasterCSharp.Shared.CodeModels;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.ArenaChallenge
+namespace MasterCSharp.Shared.ArenaChallenge
 {
     public class Arena
     {

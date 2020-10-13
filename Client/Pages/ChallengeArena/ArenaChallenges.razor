@@ -1,6 +1,4 @@
-﻿@using BlazorApp.Shared.CodeModels
-
-@if (CodeChallenges != null)
+﻿@if (MasterCSharp.Shared.CodeModels.CodeChallenges != null)
 {
     <div class="text-center">
         <div>
@@ -11,7 +9,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easiest"))
+                            @foreach (var easy in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Easiest"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -33,7 +31,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easier"))
+                            @foreach (var easy in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Easier"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -55,7 +53,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easy"))
+                            @foreach (var easy in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Easy"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -77,7 +75,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var medium in CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
+                            @foreach (var medium in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -99,7 +97,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
+                            @foreach (var hard in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -121,7 +119,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Harder"))
+                            @foreach (var hard in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Harder"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>
@@ -143,7 +141,7 @@
                     </MatExpansionPanelSummary>
                     <MatExpansionPanelDetails>
                         <MatList SingleSelection="true">
-                            @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hardest"))
+                            @foreach (var hard in MasterCSharp.Shared.CodeModels.CodeChallenges.Challenges.Where(x => x.Difficulty == "Hardest"))
                             {
                                 <MatListDivider></MatListDivider>
                                 <MatListItem>

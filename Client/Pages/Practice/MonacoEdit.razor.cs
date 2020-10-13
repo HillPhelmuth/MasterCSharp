@@ -1,15 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeServices;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using TextCopy;
 
-namespace BlazorApp.Client.Pages.Practice
+namespace MasterCSharp.Client.Pages.Practice
 {
     public partial class MonacoEdit : ComponentBase, IDisposable
     {

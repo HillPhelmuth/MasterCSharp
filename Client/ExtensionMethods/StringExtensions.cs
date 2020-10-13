@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BlazorApp.Client.ExtensionMethods
+namespace MasterCSharp.Client.ExtensionMethods
 {
     public static class StringExtensions
     {

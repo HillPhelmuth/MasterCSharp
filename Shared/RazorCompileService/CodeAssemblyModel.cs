@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 
-namespace BlazorApp.Shared.RazorCompileService
+namespace MasterCSharp.Shared.RazorCompileService
 {
     public class CodeAssemblyModel
     {

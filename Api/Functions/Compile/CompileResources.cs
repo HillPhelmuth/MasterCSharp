@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Runtime;
-using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.CodeAnalysis;
-using Microsoft.JSInterop;
 
-namespace BlazorApp.Api.Functions.Compile
+namespace MasterCSharp.Api.Functions.Compile
 {
     public class CompileResources
     {

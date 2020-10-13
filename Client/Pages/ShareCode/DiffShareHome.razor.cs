@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Client.Pages.Interactive;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeServices;
+using MasterCSharp.Client.Pages.Interactive;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class DiffShareHome
     {

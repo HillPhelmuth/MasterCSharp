@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Blazor.ModalDialog;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class ChatDisplay
     {

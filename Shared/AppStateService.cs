@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.RazorCompileService;
-using BlazorApp.Shared.UserModels;
-using BlazorApp.Shared.VideoModels;
+using MasterCSharp.Shared.CodeModels;
+using MasterCSharp.Shared.RazorCompileService;
+using MasterCSharp.Shared.UserModels;
+using MasterCSharp.Shared.VideoModels;
 
-namespace BlazorApp.Shared
+namespace MasterCSharp.Shared
 {
     public class AppStateService : INotifyPropertyChanged
     {

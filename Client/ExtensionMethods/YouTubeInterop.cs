@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace BlazorApp.Client.ExtensionMethods
+namespace MasterCSharp.Client.ExtensionMethods
 {
     public static class YouTubeInterop
     {

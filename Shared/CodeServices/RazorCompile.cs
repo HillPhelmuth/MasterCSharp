@@ -3,13 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Text;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime;
+using System.Text;
 using System.Threading.Tasks;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
@@ -17,7 +17,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Razor;
 using Microsoft.JSInterop;
 
-namespace BlazorApp.Shared.CodeServices
+namespace MasterCSharp.Shared.CodeServices
 {
     public class RazorCompile
     {
@@ -41,29 +41,22 @@ namespace BlazorApp.Shared.CodeServices
             extensions: Array.Empty<RazorExtension>());
 
 
-        //public async Task<CodeAssemblyModel> GetRazorAssembly(ICollection<CodeFile> codeFiles,
-        //    IEnumerable<MetadataReference> references, string preset = "")
-        //{
-        //    baseCompilation = CSharpCompilation.Create(
-        //        "BlazorApp.OutputRCL",
-        //        Array.Empty<SyntaxTree>(),
-        //        references,
-        //        new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-        //    _references = references;
-        //    return await CompileToAssemblyAsync(codeFiles);
-        //}
-        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ICollection<ProjectFile> codeFiles, string preset = "basic")
+        public async Task<CodeAssemblyModel> GetRazorProjectAssembly(ICollection<ProjectFile> codeFiles,
+            List<PortableExecutableReference> references)
         {
-            if (codeFiles == null)
-            {
-                throw new ArgumentNullException(nameof(codeFiles));
-            }
-
+            baseCompilation = CSharpCompilation.Create(
+                "BlazorApp.OutputRCL",
+                Array.Empty<SyntaxTree>(),
+                references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            _references = references;
+            return await CompileToAssemblyAsync(codeFiles);
+        }
+        public async Task<CodeAssemblyModel> CompileToAssemblyAsync(ICollection<ProjectFile> codeFiles)
+        {
+            if (codeFiles == null) throw new ArgumentNullException(nameof(codeFiles));
             var cSharpResults = await ConvertRazorToCSharp(codeFiles);
-
-            //await (updateStatusFunc?.Invoke("Compiling Assembly") ?? Task.CompletedTask);
             var result = GetCodeAssembly(new List<RazorToCSharpModel>(cSharpResults));
-
             return result;
         }
 
@@ -207,6 +200,27 @@ namespace BlazorApp.Shared.CodeServices
                 FileKinds.Component,
                 Encoding.UTF8.GetBytes(fileContent.TrimStart()));
         }
+        public Task<List<PortableExecutableReference>> GetRequiredReferences()
+        {
+            var basicAssemblies = new[]
+            {
+                typeof(AssemblyTargetedPatchBandAttribute).Assembly, // System.Runtime
+                typeof(NavLink).Assembly, // Microsoft.AspNetCore.Components.Web
+                typeof(IQueryable).Assembly, // System.Linq
+                typeof(HttpClientJsonExtensions).Assembly, // System.Net.Http.Json
+                typeof(HttpClient).Assembly, // System.Net.Http
+                typeof(IJSRuntime).Assembly, // Microsoft.JSInterop
+                typeof(RequiredAttribute).Assembly, // System.ComponentModel.Annotations
+            };
+
+            var assemblyNames = basicAssemblies
+                .SelectMany(assembly => assembly.GetReferencedAssemblies().Concat(new[] { assembly.GetName() }))
+                .Select(x => x.Name)
+                .Distinct()
+                .ToList();
+            var requiredRefs = basicAssemblies.Select(ass => MetadataReference.CreateFromFile(ass.Location)).ToList();
+            return Task.FromResult(requiredRefs);
+        }
         public static async Task InitAsync(HttpClient httpClient)
         {
             var basicReferenceAssemblyRoots = new[]
@@ -244,6 +258,8 @@ namespace BlazorApp.Shared.CodeServices
                 basicReferenceAssemblies,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         }
+
+        
         private static async Task<IDictionary<string, Stream>> GetAssemblyStreams(HttpClient httpClient, IEnumerable<string> assemblyNames)
         {
             var streams = new ConcurrentDictionary<string, Stream>();

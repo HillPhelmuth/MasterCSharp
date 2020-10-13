@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.RazorCompileService;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.UserModels
+namespace MasterCSharp.Shared.UserModels
 {
     public class UserAppData
     {

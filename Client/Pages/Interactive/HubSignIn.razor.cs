@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared;
+using MasterCSharp.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Interactive
+namespace MasterCSharp.Client.Pages.Interactive
 {
     public partial class HubSignIn
     {

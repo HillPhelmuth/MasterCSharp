@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BlazorApp.Shared.StaticAuth.Interfaces
+namespace MasterCSharp.Shared.StaticAuth.Interfaces
 {
     public interface ICustomAuthenticationStateProvider
     {

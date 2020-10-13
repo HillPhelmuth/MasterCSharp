@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorApp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.ArenaChallenge;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
@@ -11,9 +11,9 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 
-namespace BlazorApp.Api.Functions.Duels
+namespace MasterCSharp.Api.Functions.Duels
 {
     public class ActiveArenaFunction
     {

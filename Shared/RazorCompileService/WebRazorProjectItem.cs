@@ -1,7 +1,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Razor.Language;
 
-namespace BlazorApp.Shared.RazorCompileService
+namespace MasterCSharp.Shared.RazorCompileService
 {
     public class WebRazorProjectItem : RazorProjectItem
     {

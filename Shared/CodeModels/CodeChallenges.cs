@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     
     public class CodeChallenges

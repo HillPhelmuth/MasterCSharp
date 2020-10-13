@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorApp.Shared.StaticAuth
+namespace MasterCSharp.Shared.StaticAuth
 {
     public static class AuthServiceExtension
     {

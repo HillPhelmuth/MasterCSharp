@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeModels;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Challenges
+namespace MasterCSharp.Client.Pages.Challenges
 {
     public partial class CreateChallenge
     {

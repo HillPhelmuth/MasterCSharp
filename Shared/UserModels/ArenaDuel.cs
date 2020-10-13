@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.UserModels
+namespace MasterCSharp.Shared.UserModels
 {
     public class ArenaDuel
     {

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Scripting.Hosting; 
+using Microsoft.CodeAnalysis.CSharp.Scripting.Hosting;
 
-namespace BlazorApp.Api.Services
+namespace MasterCSharp.Api.Services
 {
     public partial class CompilerService
     {

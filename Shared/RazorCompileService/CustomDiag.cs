@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Shared.RazorCompileService
+namespace MasterCSharp.Shared.RazorCompileService
 {
     public class CustomDiag
     {

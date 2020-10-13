@@ -4,13 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BlazorApp.Shared.StaticAuth.Interfaces;
-using BlazorApp.Shared.StaticAuth.Models;
+using MasterCSharp.Shared.StaticAuth.Interfaces;
+using MasterCSharp.Shared.StaticAuth.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace BlazorApp.Shared.StaticAuth
+namespace MasterCSharp.Shared.StaticAuth
 {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider, ICustomAuthenticationStateProvider
     {

@@ -14,7 +14,7 @@
                 <MatButton OnClick="UpdateFromPublicRepo">Get From Repo</MatButton>
                 <MatButton OnClick="@(async () => await AddCodeFile())">Start New Component</MatButton>
                 <MatButton OnClick="SelectActiveFile">Select and Modify Component</MatButton>
-                @if (AppStateService.HasUser)
+                @if (MasterCSharp.Shared.AppStateService.HasUser)
                 {
                     <MatButton OnClick="CreateProject">Create Project</MatButton>
                     <MatButton OnClick="SaveProject">Save Project</MatButton>

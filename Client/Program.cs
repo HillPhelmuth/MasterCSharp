@@ -2,14 +2,14 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.ExtensionMethods;
-using BlazorApp.Shared.StaticAuth;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.ExtensionMethods;
+using MasterCSharp.Shared.StaticAuth;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using TextCopy;
 
-namespace BlazorApp.Client
+namespace MasterCSharp.Client
 {
    
     public class Program

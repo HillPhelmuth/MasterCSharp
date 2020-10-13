@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorApp.Client.Pages.Practice;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Client.Pages.Practice;
+using MasterCSharp.Shared.RazorCompileService;
 using Microsoft.JSInterop;
 
-namespace BlazorApp.Client.ExtensionMethods
+namespace MasterCSharp.Client.ExtensionMethods
 {
     public static class RazorProjectExtensions
     {

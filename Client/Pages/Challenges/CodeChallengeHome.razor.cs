@@ -3,16 +3,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.UserModels;
-using BlazorMonaco;
-using BlazorMonaco.Bridge;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeModels;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
-using TextCopy;
 
-namespace BlazorApp.Client.Pages.Challenges
+namespace MasterCSharp.Client.Pages.Challenges
 {
     public partial class CodeChallengeHome : ComponentBase, IDisposable
     {

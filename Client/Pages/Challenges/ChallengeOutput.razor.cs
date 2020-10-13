@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeModels;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Challenges
+namespace MasterCSharp.Client.Pages.Challenges
 {
     public partial class ChallengeOutput : IDisposable
     {

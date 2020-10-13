@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Client.Pages.Challenges;
-using BlazorApp.Shared;
-using BlazorApp.Shared.ArenaChallenge;
-using BlazorApp.Shared.CodeModels;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Client.Pages.ChallengeArena
+namespace MasterCSharp.Client.Pages.ChallengeArena
 {
     public partial class TheArena: IDisposable
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BlazorApp.Shared.CodeModels
+namespace MasterCSharp.Shared.CodeModels
 {
     public class CodeSample
     {

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.StaticAuth.Interfaces;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.StaticAuth.Interfaces;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages
+namespace MasterCSharp.Client.Pages
 {
     public partial class Index
     {

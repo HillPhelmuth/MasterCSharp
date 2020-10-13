@@ -6,7 +6,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Api.Functions.ShareHub
+namespace MasterCSharp.Api.Functions.ShareHub
 {
     public class ShareHub : ServerlessHub
     {

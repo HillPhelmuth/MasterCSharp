@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Blazor.ModalDialog;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.RazorProject
+namespace MasterCSharp.Client.Pages.RazorProject
 {
     public partial class RazorSamplesModal
     {

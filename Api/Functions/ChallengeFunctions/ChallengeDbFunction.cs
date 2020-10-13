@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using BlazorApp.Api.Data;
-using BlazorApp.Shared.VideoModels;
+using MasterCSharp.Api.Data;
+using MasterCSharp.Shared.VideoModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Api.Functions.ChallengeFunctions
+namespace MasterCSharp.Api.Functions.ChallengeFunctions
 {
     public class ChallengeDbFunction
     {

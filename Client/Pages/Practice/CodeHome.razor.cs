@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
-using BlazorApp.Client.ExtensionMethods;
-using BlazorApp.Client.Pages.ShareCode;
-using BlazorApp.Client.Shared;
-using BlazorApp.Shared;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.UserModels;
+using MasterCSharp.Client.ExtensionMethods;
+using MasterCSharp.Client.Pages.ShareCode;
+using MasterCSharp.Client.Shared;
+using MasterCSharp.Shared;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Client.Pages.Practice
+namespace MasterCSharp.Client.Pages.Practice
 {
     public partial class CodeHome : IDisposable
     {

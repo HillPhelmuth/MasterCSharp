@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using BlazorApp.Shared;
+using MasterCSharp.Shared;
 using Microsoft.AspNetCore.Components;
-using VideoModels = BlazorApp.Shared.VideoModels.Videos;
+using VideoModels = MasterCSharp.Shared.VideoModels.Videos;
 
-namespace BlazorApp.Client.Pages.Videos
+namespace MasterCSharp.Client.Pages.Videos
 {
     public partial class VideoHome : IDisposable
     {

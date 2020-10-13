@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlazorApp.Shared.RazorCompileService
+namespace MasterCSharp.Shared.RazorCompileService
 {
     public class ProjectFile
     {

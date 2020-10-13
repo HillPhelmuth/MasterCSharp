@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.StaticAuth.Interfaces;
+using MasterCSharp.Shared.CodeServices;
+using MasterCSharp.Shared.StaticAuth.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace BlazorApp.Client.Pages.ShareCode
+namespace MasterCSharp.Client.Pages.ShareCode
 {
     public partial class DiffShareHub : IDisposable
     {

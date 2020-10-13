@@ -5,13 +5,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApp.Shared.ArenaChallenge;
-using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.UserModels;
-using BlazorApp.Shared.VideoModels;
+using MasterCSharp.Shared.ArenaChallenge;
+using MasterCSharp.Shared.CodeModels;
+using MasterCSharp.Shared.UserModels;
+using MasterCSharp.Shared.VideoModels;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Client
+namespace MasterCSharp.Client
 {
     public class PublicClient
     {

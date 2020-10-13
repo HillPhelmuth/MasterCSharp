@@ -1,11 +1,12 @@
-﻿using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.RazorCompileService;
-using BlazorApp.Shared.UserModels;
-using BlazorApp.Shared.VideoModels;
+﻿using MasterCSharp.Shared.CodeModels;
+using MasterCSharp.Shared.RazorCompileService;
+using MasterCSharp.Shared.UserModels;
+using MasterCSharp.Shared.VideoModels;
 using Microsoft.EntityFrameworkCore;
+
 //using ArenaDuel = ChallengeFunction.Models.ArenaDuel;
 
-namespace BlazorApp.Api.Data
+namespace MasterCSharp.Api.Data
 {
     public class ChallengeContext : DbContext
     {

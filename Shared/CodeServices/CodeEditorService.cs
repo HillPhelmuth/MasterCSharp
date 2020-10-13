@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using BlazorApp.Shared.RazorCompileService;
+using MasterCSharp.Shared.RazorCompileService;
 
-
-namespace BlazorApp.Shared.CodeServices
+namespace MasterCSharp.Shared.CodeServices
 {
     public class CodeEditorService : INotifyPropertyChanged
     {
