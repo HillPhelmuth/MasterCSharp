@@ -92,9 +92,12 @@ namespace BlazorApp.Client.Pages.Challenges
             if (isChallengeSucceed)
             {
                 SelectedChallenge.UserCompleted = true;
-                UserAppData.ChallengeSuccessIds.Add(SelectedChallenge.ID);
-                await PublicClient.AddSuccessfulChallenge(AppStateService.UserName, SelectedChallenge.ID);
-                AppStateService.UpdateUserAppData(UserAppData);
+                UserAppData?.ChallengeSuccessIds?.Add(SelectedChallenge.ID);
+                if (AppStateService.HasUser)
+                {
+                    await PublicClient.AddSuccessfulChallenge(AppStateService.UserName, SelectedChallenge.ID);
+                    AppStateService.UpdateUserAppData(UserAppData);
+                }
             }
             StateHasChanged();
         }
