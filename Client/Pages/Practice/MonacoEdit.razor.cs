@@ -21,7 +21,7 @@ namespace BlazorApp.Client.Pages.Practice
         [Inject]
         public IClipboard Clipboard { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         protected MonacoEditor Editor { get; set; }
       
         [Parameter]
@@ -70,7 +70,7 @@ namespace BlazorApp.Client.Pages.Practice
 
         protected StandaloneEditorConstructionOptions EditorOptionsRoslyn(MonacoEditor editor)
         {
-            return new StandaloneEditorConstructionOptions
+            return new()
             {
                 AutomaticLayout = true,
                 AutoIndent = true,

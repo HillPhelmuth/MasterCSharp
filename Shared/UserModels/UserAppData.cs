@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using BlazorApp.Shared.RazorCompileService;
+using BlazorApp.Shared.CodeModels;
 using Newtonsoft.Json;
 
 namespace BlazorApp.Shared.UserModels
@@ -17,7 +17,6 @@ namespace BlazorApp.Shared.UserModels
         [JsonProperty("snippets")]
         public List<UserSnippet> Snippets { get; set; }
         public List<ArenaDuel> CompletedDuels { get; set; }
-        public List<UserProject> RazorProjects { get; set; }
         [JsonProperty("challengeSuccessIds")]
         [NotMapped]
         public List<int> ChallengeSuccessIds

@@ -12,7 +12,7 @@ namespace BlazorApp.Shared.ExtensionMethods
         public static IServiceCollection AddMasterSharpServices(this IServiceCollection service)
         {
             service.AddSingleton<CodeEditorService>();
-            service.AddSingleton<AppStateService>();
+            service.AddSingleton<AppState>();
             service.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
             service.AddSingleton<ArenaService>();
             service.AddMatToaster(config =>

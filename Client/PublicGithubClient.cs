@@ -7,7 +7,7 @@ namespace BlazorApp.Client
 {
     public class PublicGithubClient
     {
-        private HttpClient client;
+        private readonly HttpClient client;
         private readonly string baseUrl = @"https://api.github.com/repos";
 
         private readonly string reposUrl =

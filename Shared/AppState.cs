@@ -4,13 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.RazorCompileService;
 using BlazorApp.Shared.UserModels;
 using BlazorApp.Shared.VideoModels;
 
 namespace BlazorApp.Shared
 {
-    public class AppStateService : INotifyPropertyChanged
+    public class AppState : INotifyPropertyChanged
     {
         private CodeChallenges codeChallenges;
         private Videos videos;
@@ -19,9 +18,9 @@ namespace BlazorApp.Shared
         private CodeOutputModel codeOutput;
         private string shareUser;
         private string otherUser;
-        private string shareTeam;
         private int tabIndex;
-        private UserProject activeProject;
+        private bool hasUser;
+
         public CodeChallenges CodeChallenges
         {
             get => codeChallenges;
@@ -52,48 +51,22 @@ namespace BlazorApp.Shared
             set { codeOutput = value; OnPropertyChanged(); }
         }
 
-        public bool HasUser { get; set; }
+        public bool HasUser
+        {
+            get => hasUser;
+            set { hasUser = value; OnPropertyChanged(); }
+        }
 
         public string ShareUser
         {
             get => shareUser;
             set { shareUser = value; OnPropertyChanged(); }
         }
-        public UserProject ActiveProject
-        {
-            get => activeProject;
-            set { activeProject = value; OnPropertyChanged(); }
-        }
-
-        public bool HasActiveProject => ActiveProject != null || activeProject != null;
-        public void SaveFileToProject(ProjectFile file)
-        {
-            if (ActiveProject == null) return;
-            ActiveProject.Files ??= new List<ProjectFile>();
-            var alteredFile = ActiveProject.Files.FirstOrDefault(x => x.Path == file.Path);
-            if (alteredFile == null)
-            {
-                ActiveProject.Files?.Add(file);
-            }
-            else
-            {
-                alteredFile.Content = file.Content;
-            }
-            OnPropertyChanged(nameof(ActiveProject));
-
-        }
         public string OtherUser
         {
             get => otherUser;
             set { otherUser = value; OnPropertyChanged(); }
         }
-
-        public string ShareTeam
-        {
-            get => shareTeam;
-            set { shareTeam = value; OnPropertyChanged(); }
-        }
-
         public int TabIndex
         {
             get => tabIndex;
@@ -111,12 +84,12 @@ namespace BlazorApp.Shared
         public void AddVideo(Video video)
         {
             if (video.VideoSectionID == 0) return;
-            var videos = Videos;
-            foreach (var section in videos.VideoSections.Where(section => section.ID == video.VideoSectionID))
+            var vids = Videos;
+            foreach (var section in vids.VideoSections.Where(section => section.ID == video.VideoSectionID))
             {
                 section.Videos?.Add(video);
             }
-            Videos = videos;
+            Videos = vids;
             OnPropertyChanged(nameof(Videos));
         }
         public void UpdateChallenges(Challenge challenge)

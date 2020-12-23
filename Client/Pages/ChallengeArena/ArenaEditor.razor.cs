@@ -14,7 +14,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         [Inject]
         protected ArenaService ArenaService { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         private string codeSnippet;
         private bool takeChallenge = false;
 

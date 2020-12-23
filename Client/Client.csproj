@@ -4,26 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>    
     <RootNamespace>BlazorApp.Client</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup>
-    <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="GeneratedAssemblyModel.cs" />
-    <Compile Remove="Pages\Interactive\HubSource.razor.cs" />
-    <Compile Remove="Pages\Interactive\HubStart.razor.cs" />
-    <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
-    <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
-    <Compile Remove="Pages\TestChat.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Pages\Interactive\HubSource.razor" />
-    <Content Remove="Pages\Interactive\HubStart.razor" />
-    <Content Remove="Pages\Practice\ConsoleApp.razor" />
-    <Content Remove="Pages\Practice\ReplShell.razor" />
-    <Content Remove="Pages\TestChat.razor" />
-  </ItemGroup>
-
+ 
+ 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.1" />
@@ -39,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OutputRCL\OutputRCL.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
@@ -57,7 +38,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\AppIcon2-512.png">
+    <Content Update="wwwroot\Icons\AppIcon2-512.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -173,7 +154,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\indexRvrLoad.png">
+    <Content Update="wwwroot\Icons\indexRvrLoad.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -189,7 +170,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\seo-and-web.png">
+    <Content Update="wwwroot\Icons\seo-and-web.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

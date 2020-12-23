@@ -15,7 +15,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         [Inject]
         public ArenaService ArenaService { get; set; }
         [Inject]
-        public AppStateService AppStateService { get; set; }
+        public AppState AppState { get; set; }
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         private List<Arena> OpenArenas { get; set; }
@@ -38,7 +38,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
 
         private void JoinArena(Arena arena)
         {
-            var userName = AppStateService.UserName;
+            var userName = AppState.UserName;
             //ArenaService.JoinArena(arena.Name, userName);
             SelectedArena = arena;
             CreatedArena = false;
@@ -48,7 +48,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         private void JoinArena(object arena)
         {
             var arenaType = (Arena)arena;
-            var userName = AppStateService.UserName;
+            var userName = AppState.UserName;
             //ArenaService.JoinArena(arenaType.Name, userName);
             SelectedArena = arenaType;
             CreatedArena = false;
@@ -57,7 +57,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         }
         private void CreateArena()
         {
-            var userName = AppStateService.UserName;
+            var userName = AppState.UserName;
             NewArena.Creator = userName;
             SelectedArena = NewArena;
             //ArenaService.CreateArena(NewArena);

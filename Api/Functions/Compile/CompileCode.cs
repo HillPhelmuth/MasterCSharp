@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using BlazorApp.Api.Services;
 using BlazorApp.Shared.CodeModels;
-using BlazorApp.Shared.CodeServices;
-using BlazorApp.Shared.RazorCompileService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
@@ -17,13 +13,8 @@ namespace BlazorApp.Api.Functions.Compile
 {
     public class CompileCode
     {
-        private readonly CompilerService _compilerService;
+        private static CompilerService CompilerService => new CompilerService();
       
-        public CompileCode(CompilerService compilerService)
-        {
-            _compilerService = compilerService;
-        }
-
         [FunctionName("CompileCode")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "code")] HttpRequest req,
@@ -35,7 +26,7 @@ namespace BlazorApp.Api.Functions.Compile
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var codeInput = JsonConvert.DeserializeObject<CodeInputModel>(requestBody);
             var testCode = codeInput.Solution;
-            var result = await _compilerService.SubmitCode(testCode, executableReferences);
+            var result = await CompilerService.SubmitCode(testCode, executableReferences);
             
             return new OkObjectResult(result);
         }

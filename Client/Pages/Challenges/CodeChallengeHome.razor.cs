@@ -18,8 +18,8 @@ namespace BlazorApp.Client.Pages.Challenges
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        [CascadingParameter(Name = nameof(AppStateService))]
-        protected AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        protected AppState AppState { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
         [Inject]
@@ -42,8 +42,8 @@ namespace BlazorApp.Client.Pages.Challenges
 
         protected override async Task OnInitializedAsync()
         {
-            CodeChallenges = AppStateService.CodeChallenges ?? await PublicClient.GetChallenges();
-            UserAppData = AppStateService.UserAppData;
+            CodeChallenges = AppState.CodeChallenges ?? await PublicClient.GetChallenges();
+            UserAppData = AppState.UserAppData;
             foreach (var challenge in CodeChallenges.Challenges)
             {
                 Console.WriteLine($"user challenges found: {UserAppData?.ChallengeSuccessData}");
@@ -52,8 +52,8 @@ namespace BlazorApp.Client.Pages.Challenges
                     challenge.UserCompleted = true;
                 }
             }
-            AppStateService.CodeChallenges ??= CodeChallenges;
-            AppStateService.PropertyChanged += UpdateUserChallenges;
+            AppState.CodeChallenges ??= CodeChallenges;
+            AppState.PropertyChanged += UpdateUserChallenges;
             isChallengeReady = true;
         }
 
@@ -77,7 +77,7 @@ namespace BlazorApp.Client.Pages.Challenges
                 Tests = SelectedChallenge.Tests
             };
             var output = await PublicClient.SubmitChallenge(submitChallenge);
-            AppStateService.CodeOutput = output;
+            AppState.CodeOutput = output;
             foreach (var result in output.Outputs)
             {
                 Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
@@ -93,10 +93,10 @@ namespace BlazorApp.Client.Pages.Challenges
             {
                 SelectedChallenge.UserCompleted = true;
                 UserAppData?.ChallengeSuccessIds?.Add(SelectedChallenge.ID);
-                if (AppStateService.HasUser)
+                if (AppState.HasUser)
                 {
-                    await PublicClient.AddSuccessfulChallenge(AppStateService.UserName, SelectedChallenge.ID);
-                    AppStateService.UpdateUserAppData(UserAppData);
+                    await PublicClient.AddSuccessfulChallenge(AppState.UserName, SelectedChallenge.ID);
+                    AppState.UpdateUserAppData(UserAppData);
                 }
             }
             StateHasChanged();
@@ -129,15 +129,15 @@ namespace BlazorApp.Client.Pages.Challenges
         {
             if (args.PropertyName != "CodeChallenges" && args.PropertyName != "UserAppData")
                 return;
-            CodeChallenges = AppStateService.CodeChallenges;
-            UserAppData = AppStateService.UserAppData;
+            CodeChallenges = AppState.CodeChallenges;
+            UserAppData = AppState.UserAppData;
             StateHasChanged();
         }
 
         public void Dispose()
         {
             Console.WriteLine("CodeChallengeHome.razor Disposed");
-            AppStateService.PropertyChanged -= UpdateUserChallenges;
+            AppState.PropertyChanged -= UpdateUserChallenges;
         }
     }
 }

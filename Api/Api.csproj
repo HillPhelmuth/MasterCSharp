@@ -4,12 +4,7 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <RootNamespace>BlazorApp.Api</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Functions\DuelHub\**" />
-    <EmbeddedResource Remove="Functions\DuelHub\**" />
-    <None Remove="Functions\DuelHub\**" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
     <PackageReference Include="Microsoft.Azure.Cosmos.Direct" Version="3.13.2" />

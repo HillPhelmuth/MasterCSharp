@@ -26,7 +26,7 @@ namespace BlazorApp.Client.Pages.Practice
         [Inject]
         private PublicGithubClient GithubClient { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         //[Inject]
         //private ICustomAuthenticationStateProvider AuthProvider { get; set; }
         private bool isCodeCompiling;
@@ -59,7 +59,7 @@ namespace BlazorApp.Client.Pages.Practice
 
         private async Task SaveUserSnippet(string snippet)
         {
-            if (!AppStateService.HasUser)
+            if (!AppState.HasUser)
             {
                 var result = await ModalService.ShowDialogAsync<LoginProvider>("Sign-in to Save");
                 if (!result.Success)
@@ -81,10 +81,10 @@ namespace BlazorApp.Client.Pages.Practice
                 Name = snippetName,
                 Snippet = snippet
             };
-            var userData = AppStateService.UserAppData;
+            var userData = AppState.UserAppData;
             userData.Snippets.Add(newSnippet);
-            AppStateService.UpdateUserAppData(userData);
-            var requestResult = await PublicClient.AddUserSnippet(AppStateService.UserName, newSnippet);
+            AppState.UpdateUserAppData(userData);
+            var requestResult = await PublicClient.AddUserSnippet(AppState.UserName, newSnippet);
             isSnippetSaving = false;
             message = requestResult ? $"Successfully saved snippet: {snippetName}" : "Save snippet failed";
             StateHasChanged();

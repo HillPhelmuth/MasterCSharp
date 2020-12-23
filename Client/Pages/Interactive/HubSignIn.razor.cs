@@ -11,12 +11,12 @@ namespace BlazorApp.Client.Pages.Interactive
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         private SignInForm SignInForm { get; set; } = new SignInForm();
         protected override Task OnInitializedAsync()
         {
-            if (!string.IsNullOrEmpty(AppStateService.UserName))
-                SignInForm.UserName = AppStateService.UserName;
+            if (!string.IsNullOrEmpty(AppState.UserName))
+                SignInForm.UserName = AppState.UserName;
             return base.OnInitializedAsync();
         }
 

@@ -1,5 +1,5 @@
 ﻿@using BlazorApp.Shared
-@inject AppStateService AppStateService
+@inject AppState AppState
 
 @if (!isUserAdded)
 {
@@ -32,7 +32,7 @@ else
     void AddUser(string user)
     {
         username = user;
-        AppStateService.UpdateUserName(username);
+        AppState.UpdateUserName(username);
         isUserAdded = true;
         StateHasChanged();
     }

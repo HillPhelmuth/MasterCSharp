@@ -84,11 +84,11 @@
 
                 <AuthorizeView>
                     <Authorized>
-                        @if (AppStateService.UserAppData?.Snippets?.Any() ?? false)
+                        @if (AppState.UserAppData?.Snippets?.Any() ?? false)
                         {
                             <MatTab Label="Your Snippets">
                                 <hr />
-                                @foreach (var snippet in AppStateService.UserAppData.Snippets)
+                                @foreach (var snippet in AppState.UserAppData.Snippets)
                                 {
                                     <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Snippet))"></MatButton>
                                 }

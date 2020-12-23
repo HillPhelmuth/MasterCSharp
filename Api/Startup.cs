@@ -1,8 +1,6 @@
 ﻿using System;
 using BlazorApp.Api;
 using BlazorApp.Api.Data;
-using BlazorApp.Api.Services;
-using BlazorApp.Shared.CodeServices;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +22,6 @@ namespace BlazorApp.Api
             string connectionStringCosmos = Environment.GetEnvironmentVariable("ConnectionString") ?? "";
             builder.Services.AddSingleton(s => new CosmosClient(connectionStringCosmos));
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddSingleton<CompilerService>();
-            builder.Services.AddSingleton<RazorCompile>();
         }
     }
 }
