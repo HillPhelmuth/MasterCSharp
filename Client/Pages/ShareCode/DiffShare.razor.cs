@@ -48,14 +48,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         };
         private async Task EditorOnDidInit(MonacoEditorBase editor)
         {
-            await DiffEditor.AddCommand((int)KeyCode.Enter, (editorBase, keyCode) =>
-            {
-                if (isShareMode)
-                {
-                    SendSnippetToUser();
-                }
-                Console.WriteLine("Ctrl+H : Initial DiffEditor command is triggered.");
-            });
+            
             await DiffEditor.AddAction("shareAction", "Share Code", new[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_S }, null, null, "navigation", 1.5, (editorBase, keyCodes) =>
             {
                 isShareMode = !isShareMode;
@@ -175,6 +168,9 @@ namespace BlazorApp.Client.Pages.ShareCode
             {
                 case KeyCode.Enter when keyboardEvent.CtrlKey:
                     SubmitCode();
+                    break;
+                case KeyCode.Enter:
+                    SendSnippetToUser();
                     break;
                 case KeyCode.KEY_S when keyboardEvent.CtrlKey && keyboardEvent.ShiftKey:
                     SendSnippetToUser();

@@ -49,13 +49,13 @@ namespace BlazorApp.Client.Pages.ShareCode
         {
             if (!message.Contains("::"))
             {
-                ChatContent += $"<div class='text'>{message}</div><br/>";
+                ChatContent += $"<div class='text'><pre>{message}</pre></div><br/>";
                 InvokeAsync(StateHasChanged);
                 return;
             }
             var userMessage = message.Split("::");
             ChatContent +=
-                $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'>{userMessage[1]}</div><br/>";
+                $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'><pre>{userMessage[1]}</pre></div><br/>";
             isNewChat = true;
             InvokeAsync(StateHasChanged);
         }
