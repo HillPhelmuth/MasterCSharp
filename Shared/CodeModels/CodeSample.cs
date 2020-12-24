@@ -8,30 +8,32 @@ namespace BlazorApp.Shared.CodeModels
         {
         }
 
-        public CodeSample(string key, string value, string description, string toolTip)
+        public CodeSample(string name, string code, string description, string toolTip)
         {
-            Key = key;
-            Value = value;
+            Name = name;
+            Code = code;
             Description = description;
             ToolTip = toolTip;
         }
 
-        public CodeSample(string key, string value, string description)
+        public CodeSample(string name, string code, string description)
         {
-            Key = key;
-            Value = value;
+            Name = name;
+            Code = code;
             Description = description;
         }
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
         public string ToolTip { get; set; }
+        
     }
 
     public class CodeSamples
     {
         public SampleSection Section { get; set; }
         public List<CodeSample> Samples { get; set; }
+        public Dictionary<string,string> ResourceURLs { get; set; }
     }
 
     public enum SampleSection

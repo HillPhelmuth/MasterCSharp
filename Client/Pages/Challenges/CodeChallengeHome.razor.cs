@@ -16,10 +16,11 @@ namespace BlazorApp.Client.Pages.Challenges
 {
     public partial class CodeChallengeHome : ComponentBase, IDisposable
     {
-        [Inject]
-        public CodeEditorService CodeEditorService { get; set; }
         [CascadingParameter(Name = nameof(AppState))]
         protected AppState AppState { get; set; }
+        [Inject]
+        public CodeEditorService CodeEditorService { get; set; }
+        
         [Inject]
         public PublicClient PublicClient { get; set; }
         [Inject]

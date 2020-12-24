@@ -13,7 +13,7 @@ namespace BlazorApp.Client.Pages.Challenges
 {
     public partial class CreateChallenge
     {
-        [Inject]
+        [CascadingParameter(Name = nameof(AppState))]
         public AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }

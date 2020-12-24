@@ -25,10 +25,9 @@ namespace BlazorApp.Client.Pages.Practice
         public PublicClient PublicClient { get; set; }
         [Inject]
         private PublicGithubClient GithubClient { get; set; }
-        [Inject]
+        [CascadingParameter(Name = nameof(AppState))]
         protected AppState AppState { get; set; }
-        //[Inject]
-        //private ICustomAuthenticationStateProvider AuthProvider { get; set; }
+    
         private bool isCodeCompiling;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
@@ -200,13 +199,13 @@ namespace BlazorApp.Client.Pages.Practice
             return code;
 
         }
-        public async Task DisplayCodeDescription(string content)
+        public async Task DisplayCodeDescription(string content, Dictionary<string, string> resourceUrls)
         {
             var parameters = new ModalDialogParameters
             {
-                {"Description", content}
+                {"Description", content},{"ResourceUrls", resourceUrls}
             };
-            await ModalService.ShowDialogAsync<CodeDescription>("More about this code", parameters: parameters);
+            await ModalService.ShowDialogAsync<CodeDescription>("More about this section", parameters: parameters);
         }
 
         public async Task DisplayCodeOutput()
