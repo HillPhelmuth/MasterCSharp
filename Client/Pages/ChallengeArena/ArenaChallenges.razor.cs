@@ -9,7 +9,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
     public partial class ArenaChallenges
     {
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
         [Inject]
@@ -22,7 +22,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
 
         protected override async Task OnInitializedAsync()
         {
-            CodeChallenges = AppStateService?.CodeChallenges ?? await PublicClient.GetChallenges();
+            CodeChallenges = AppState?.CodeChallenges ?? await PublicClient.GetChallenges();
         }
 
         protected void SelectChallenge(Challenge challenge)

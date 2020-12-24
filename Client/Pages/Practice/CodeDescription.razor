@@ -1,27 +1,37 @@
-﻿@using BlazorApp.Shared.CodeModels
-<h3>Description</h3>
+﻿@inject IModalDialogService ModalDialog
+
 <div style="font-size:1.3em">
     @((MarkupString) Description)
 </div>
 <p style="font-size:1.1em">Other Resources:</p>
-<div style="font-size: .9em">
-  @foreach (var lnk in LinkUrls)
-  {
-      <MatButton Target="_blank" Link="@lnk">@lnk</MatButton>
-  }
+<div style="font-size: .9em;max-height:10rem;overflow-y:scroll">
+    <MatList>
+        <MatListItem><MatH6>Topic Resources</MatH6></MatListItem>
+        <MatDivider />
+        @foreach ((string displayString, string url) in ResourceUrls)
+        {
+            <MatListItem>
+                <MatButton Target="_blank" Link="@url">@displayString</MatButton>
+            </MatListItem>
+        }
+        <MatListItem><MatH6>Genearl c# Resources</MatH6></MatListItem>
+        <MatDivider />
+        @foreach ((string displayString, string url) in CommonUrls)
+        {
+            <MatListItem>
+                <MatButton Target="_blank" Link="@url">@displayString</MatButton>
+            </MatListItem>
+        }
+    </MatList>
 </div>
 @code {
     [Parameter]
     public string Description { get; set; }
     [Parameter]
     public SampleSection Section { get; set; }
-    private List<string> LinkUrls { get; set; } = new List<string>();
+    [Parameter]
+    public Dictionary<string, string> ResourceUrls { get; set; } = new();
 
-    protected override Task OnInitializedAsync()
-    {
-        LinkUrls.Add("https://docs.microsoft.com/en-us/dotnet/csharp/");
-        LinkUrls.Add("https://docs.microsoft.com/en-us/visualstudio/get-started/csharp/tutorial-aspnet-core?view=vs-2019");
-        return base.OnInitializedAsync();
-    }
+    private static Dictionary<string, string> CommonUrls => new(){{ "General C# documentation", "https://docs.microsoft.com/en-us/dotnet/csharp/" },{ "Get started with C# and ASP.NET Core in Visual Studio", "https://docs.microsoft.com/en-us/visualstudio/get-started/csharp/tutorial-aspnet-core?view=vs-2019" } };
 
 }

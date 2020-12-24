@@ -9,23 +9,23 @@ namespace BlazorApp.Client.Pages.Challenges
 {
     public partial class ChallengeOutput : IDisposable
     {
-        [CascadingParameter(Name = nameof(AppStateService))]
-        protected AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        protected AppState AppState { get; set; }
 
         protected CodeOutputModel CodeOutput { get; set; } = new CodeOutputModel();
 
         protected override Task OnInitializedAsync()
         {
-            CodeOutput = AppStateService.CodeOutput;
-            AppStateService.PropertyChanged += UpdatePropertyState;
+            CodeOutput = AppState.CodeOutput;
+            AppState.PropertyChanged += UpdatePropertyState;
             return base.OnInitializedAsync();
         }
 
         private void UpdatePropertyState(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName != "CodeOutput") return;
-            CodeOutput = AppStateService.CodeOutput;
+            CodeOutput = AppState.CodeOutput;
         }
-        public void Dispose() => AppStateService.PropertyChanged -= UpdatePropertyState;
+        public void Dispose() => AppState.PropertyChanged -= UpdatePropertyState;
     }
 }

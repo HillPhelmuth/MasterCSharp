@@ -15,11 +15,8 @@ namespace BlazorApp.Api.Functions.Compile
 {
     public class CompileChallenge
     {
-        private readonly CompilerService _compilerService;
-        public CompileChallenge(CompilerService compilerService)
-        {
-            _compilerService = compilerService;
-        }
+        private CompilerService CompilerService => new CompilerService();
+        
         [FunctionName("CompileChallenge")]
         public async Task<IActionResult> RunSubmitChallenge(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "challenge")] HttpRequest req,
@@ -33,7 +30,7 @@ namespace BlazorApp.Api.Functions.Compile
             int index = 1;
             if (testCode == "TestPing")
             {
-                _ = _compilerService.SubmitCode("return -1;", executableReferences).Result;
+                _ = CompilerService.SubmitCode("return -1;", executableReferences).Result;
                 return new OkObjectResult("PingBack");
             }
             var swTot = new Stopwatch();
@@ -52,12 +49,12 @@ namespace BlazorApp.Api.Functions.Compile
                     log.LogInformation("Start task 1");
                     sw.Start();
 
-                    output.Codeout = _compilerService.SubmitCode(code, executableReferences).Result;
+                    output.Codeout = CompilerService.SubmitCode(code, executableReferences).Result;
                     sw.Stop();
                     log.LogInformation($"Complete task 1 in {sw.ElapsedMilliseconds}ms");
                     log.LogInformation("\nStart task 2");
                     sw.Restart();
-                    output.TestResult = _compilerService.SubmitSolution(code, executableReferences, expected).Result;
+                    output.TestResult = CompilerService.SubmitSolution(code, executableReferences, expected).Result;
                     sw.Stop();
                     log.LogInformation($"Complete task 2 in {sw.ElapsedMilliseconds}ms");
                     index++;

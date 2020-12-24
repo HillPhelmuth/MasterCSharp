@@ -1,47 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <TargetFramework>net5.0</TargetFramework>    
     <RootNamespace>BlazorApp.Client</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup>
-    <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
-  </PropertyGroup>
+ 
+ 
   <ItemGroup>
-    <Compile Remove="GeneratedAssemblyModel.cs" />
-    <Compile Remove="Pages\Interactive\HubSource.razor.cs" />
-    <Compile Remove="Pages\Interactive\HubStart.razor.cs" />
-    <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
-    <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
-    <Compile Remove="Pages\TestChat.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Pages\Interactive\HubSource.razor" />
-    <Content Remove="Pages\Interactive\HubStart.razor" />
-    <Content Remove="Pages\Practice\ConsoleApp.razor" />
-    <Content Remove="Pages\Practice\ReplShell.razor" />
-    <Content Remove="Pages\TestChat.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.6" />
-    <PackageReference Include="BlazorMonaco" Version="1.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.1" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="BlazorMonaco" Version="1.6.0" />
     <PackageReference Include="Faso.Blazor.SpinKit" Version="1.0.1" />
-    <PackageReference Include="MatBlazor" Version="2.7.0" />
+    <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="TextCopy" Version="4.2.0" />
     <PackageReference Include="LiquidTechnologies.Blazor.ModalDialog" Version="0.9.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OutputRCL\OutputRCL.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
@@ -59,7 +38,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\AppIcon2-512.png">
+    <Content Update="wwwroot\Icons\AppIcon2-512.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -175,7 +154,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\indexRvrLoad.png">
+    <Content Update="wwwroot\Icons\indexRvrLoad.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -191,7 +170,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\seo-and-web.png">
+    <Content Update="wwwroot\Icons\seo-and-web.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

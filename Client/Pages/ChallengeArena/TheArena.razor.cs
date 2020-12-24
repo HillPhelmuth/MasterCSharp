@@ -20,7 +20,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         [Inject]
         protected ArenaService ArenaService { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
         public Arena CurrentArena { get; set; }

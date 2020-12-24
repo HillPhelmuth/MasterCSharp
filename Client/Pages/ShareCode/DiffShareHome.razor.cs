@@ -14,7 +14,7 @@ namespace BlazorApp.Client.Pages.ShareCode
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
         protected string CodeSnippet { get; set; }
@@ -35,11 +35,11 @@ namespace BlazorApp.Client.Pages.ShareCode
                 userName = result.ReturnParameters.Get<string>("UserName");
                 otherUser = result.ReturnParameters.Get<string>("OtherUser");
                 teamname = result.ReturnParameters.Get<string>("TeamName");
-                AppStateService.ShareUser = userName;
+                AppState.ShareUser = userName;
                 if (!string.IsNullOrEmpty(otherUser))
-                    AppStateService.OtherUser = otherUser;
+                    AppState.OtherUser = otherUser;
                 if (!string.IsNullOrEmpty(teamname))
-                    AppStateService.ShareUser = teamname;
+                    AppState.ShareUser = teamname;
                 userSubmitted = true;
 
             }
@@ -49,13 +49,13 @@ namespace BlazorApp.Client.Pages.ShareCode
         {
             if (!message.Contains("::"))
             {
-                ChatContent += $"<div class='text'>{message}</div><br/>";
+                ChatContent += $"<div class='text'><pre>{message}</pre></div><br/>";
                 InvokeAsync(StateHasChanged);
                 return;
             }
             var userMessage = message.Split("::");
             ChatContent +=
-                $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'>{userMessage[1]}</div><br/>";
+                $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'><pre>{userMessage[1]}</pre></div><br/>";
             isNewChat = true;
             InvokeAsync(StateHasChanged);
         }
@@ -102,7 +102,8 @@ namespace BlazorApp.Client.Pages.ShareCode
             };
             var options = new ModalDialogOptions
             {
-                Position = ModalDialogPositionOptions.TopRight
+                Position = ModalDialogPositionOptions.TopRight,
+                BackgroundClickToClose = false
             };
             bool isClear = false;
             var result = await ModalService.ShowDialogAsync<ChatDisplay>("Chat Messages", options, parameters);

@@ -11,8 +11,8 @@ namespace BlazorApp.Client.Pages.Videos
     {
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        [CascadingParameter(Name = nameof(AppStateService))]
-        protected AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        protected AppState AppState { get; set; }
         public VideoModels Videos { get; set; }
         protected string selectedVideoId { get; set; }
         protected bool IsVideoReady;
@@ -21,9 +21,9 @@ namespace BlazorApp.Client.Pages.Videos
         protected override async Task OnInitializedAsync()
         {
 
-            Videos = AppStateService.Videos ?? await PublicClient.GetVideos();
-            AppStateService.Videos = Videos;
-            AppStateService.PropertyChanged += UpdateVideos;
+            Videos = AppState.Videos ?? await PublicClient.GetVideos();
+            AppState.Videos = Videos;
+            AppState.PropertyChanged += UpdateVideos;
             IsPageVideosReady = true;
         }
         protected void HandleVideoEnd(bool isEnd)
@@ -50,13 +50,13 @@ namespace BlazorApp.Client.Pages.Videos
 
         private void UpdateVideos(object sender, PropertyChangedEventArgs args)
         {
-            Videos = AppStateService.Videos;
+            Videos = AppState.Videos;
             StateHasChanged();
         }
         public void Dispose()
         {
             Console.WriteLine("VideoHome.razor disposed");
-            AppStateService.PropertyChanged -= UpdateVideos;
+            AppState.PropertyChanged -= UpdateVideos;
         }
     }
 }

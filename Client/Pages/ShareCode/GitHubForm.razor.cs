@@ -12,7 +12,7 @@ namespace BlazorApp.Client.Pages.ShareCode
     public partial class GitHubForm
     {
         [Inject]
-        public AppStateService AppStateService { get; set; }
+        public AppState AppState { get; set; }
         [Inject]
         public IModalDialogService ModalService { get; set; }
         [Inject]

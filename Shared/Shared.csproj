@@ -6,25 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CodeShareModels\**" />
-    <Compile Remove="Core\**" />
-    <EmbeddedResource Remove="CodeShareModels\**" />
-    <EmbeddedResource Remove="Core\**" />
-    <None Remove="CodeShareModels\**" />
-    <None Remove="Core\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="CodeModels\CodeHttpModel.cs" />
-    <Compile Remove="CodeModels\GeneratedAssemblyModel.cs" />
-    <Compile Remove="CodeServices\CompilerService.Console.cs" />
-    <Compile Remove="CodeServices\CompilerService.cs" />
-    <Compile Remove="UserModels\DuelModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MatBlazor" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.Extensions" Version="3.1.8" />
     <PackageReference Include="Microsoft.JSInterop" Version="3.1.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />

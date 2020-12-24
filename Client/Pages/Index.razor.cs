@@ -12,20 +12,17 @@ namespace BlazorApp.Client.Pages
     public partial class Index
     {
         [Inject]
-        public AppStateService AppStateService { get; set; }
+        public AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
         [Inject]
-        protected BrowserClient BrowserClient { get; set; }
-        [Inject]
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
-       
-        private int tabIndex = 0;
+
         private bool isPageReady;
 
         protected override Task OnInitializedAsync()
         {
-            AppStateService.PropertyChanged += HandleTabNavigation;
+            AppState.PropertyChanged += HandlePropertyChanged;
             return base.OnInitializedAsync();
         }
 
@@ -39,11 +36,10 @@ namespace BlazorApp.Client.Pages
                     var userName = authInfo.User.Identity.Name;
                     Console.WriteLine($"user {userName} found");
                     var currentUser = await PublicClient.GetOrAddUserAppData(userName);
-                    AppStateService.UpdateUserAppData(currentUser);
+                    AppState.UpdateUserAppData(currentUser);
                 }
                 isPageReady = true;
                 await InvokeAsync(StateHasChanged);
-                await RazorCompile.InitAsync(BrowserClient.Client);
             }
             await base.OnAfterRenderAsync(firstRender);
         }
@@ -51,12 +47,12 @@ namespace BlazorApp.Client.Pages
         private void SetTab(int tab)
         {
             if (!isPageReady) return;
-            AppStateService.TabIndex = tab;
+            AppState.TabIndex = tab;
         }
-        protected void HandleTabNavigation(object sender, PropertyChangedEventArgs args)
+        protected void HandlePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName != "TabIndex") return;
-            tabIndex = AppStateService.TabIndex;
+            //tabIndex = AppStateService.TabIndex;
             StateHasChanged();
         }
     }

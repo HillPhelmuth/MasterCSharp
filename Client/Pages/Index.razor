@@ -7,7 +7,7 @@
     <MatH4 Class="text-center">Loading App Services</MatH4>
     @*<MatH6 Class="text-center">In order to dynamically compile and execute any c# code you write, we have to load several assemblies. Almost done...</MatH6>*@
     <SpinKitFadingCircle />
-    @*<div class="mainIcon" style="background-image: url('indexRvrLoad.png')"></div>*@
+    @*<div class="mainIcon" style="background-image: url('Icons/indexRvrLoad.png')"></div>*@
         }
     @*<div>
             else if(isPageReady || !isPageReady)
@@ -16,8 +16,8 @@
 
             }
         </div>*@
-    <CascadingValue Name="AppStateService" Value="AppStateService">
-        <MatTabGroup @bind-ActiveIndex="tabIndex" disabled="@(!isPageReady)">
+    <CascadingValue Name="AppState" Value="AppState">
+        <MatTabGroup @bind-ActiveIndex="AppState.TabIndex" disabled="@(!isPageReady)">
             <MatTab Label="Home">
                 <div>
                     <MatH4>Check out some c# learning tools, including:</MatH4>
@@ -80,16 +80,6 @@
                                             </MatListItemSecondaryText>
                                         </MatListItemText>
                                     </MatListItem>
-                                    <MatListItem Href="/razorHome">
-                                        <MatListItemText>
-                                            <MatListItemPrimaryText>
-                                                Razor Components
-                                            </MatListItemPrimaryText>
-                                            <MatListItemSecondaryText>
-                                                Create a Blazor project of interactive razor components (Experimental)
-                                            </MatListItemSecondaryText>
-                                        </MatListItemText>
-                                    </MatListItem>
                                 </Authorized>
                                 <NotAuthorized>
                                     <MatListItem OnClick="@(() =>  SetTab(4))">
@@ -116,9 +106,6 @@
             <MatTab Label="Watch c# Videos">
                 <VideoHome />
             </MatTab>
-            <MatTab Label="Razor Builder">
-                <RazorCodeHome/>
-            </MatTab>
             <AuthorizeView>
                 <Authorized>
                     <MatTab Label="Add c# Challenge">
@@ -133,5 +120,6 @@
             </AuthorizeView>
         </MatTabGroup>
     </CascadingValue>
-    <div style="font-size: .7rem; bottom:0; right:100%; position: sticky; margin-top:10em">Icons made by <a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a><a href="https://icons8.com/icon/67343/checkmark">Checkmark icon by Icons8</a></div>
+    <div style="font-size: .7rem; bottom:0; right:100%; position: fixed; margin-top:10em">Icons made by <a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+        <br /><a href="https://icons8.com/icon/67343/checkmark">Checkmark icon by Icons8</a></div>
 </CascadingAuthenticationState>

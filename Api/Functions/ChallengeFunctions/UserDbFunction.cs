@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using BlazorApp.Api.Data;
-using BlazorApp.Shared.RazorCompileService;
 using BlazorApp.Shared.UserModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +48,7 @@ namespace BlazorApp.Api.Functions.ChallengeFunctions
                 {
                     project.Files = await context.ProjectFile.Where(x => x.UserProjectID == project.ID).ToListAsync();
                 }
-                currentUser.RazorProjects = userProjects;
+                
                 currentUser.Snippets = userSnippets;
                 currentUser.CompletedDuels = userDuels;
                 //currentUser.Snippets = userSnippets.Where(x => x.UserAppDataID == currentUser.ID).ToList();
