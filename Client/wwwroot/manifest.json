@@ -7,7 +7,7 @@
   "theme_color": "#03173d",
   "icons": [
     {
-      "src": "seo-and-web.png",
+      "src": "Icons/seo-and-web.png",
       "type": "image/png",
       "sizes": "512x512"
     },

@@ -345,6 +345,15 @@ app {
     color: white;
     outline-color: red
 }
+.credits {
+    font-size: .7rem;
+    bottom: 0;
+    right: 100%;
+    position: fixed;
+    height: 2rem;
+    background-color: lightblue;
+
+}
 .blink_me {
     animation: blinker 1s linear infinite;
 }

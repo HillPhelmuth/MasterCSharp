@@ -7,7 +7,7 @@ namespace BlazorApp.Client.Pages.ShareCode
     public partial class SnippetMenu : ComponentBase
     {
         [Inject]
-        protected AppStateService AppStateService { get; set; }
+        protected AppState AppState { get; set; }
         [Inject]
         protected IModalDialogService ModalService { get; set; }
         [Parameter]

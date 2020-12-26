@@ -13,8 +13,8 @@ namespace BlazorApp.Client.Pages.Challenges
 {
     public partial class CreateChallenge
     {
-        [Inject]
-        public AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        public AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
         private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm { ExampleList = new List<string> { "" } };
@@ -64,7 +64,7 @@ namespace BlazorApp.Client.Pages.Challenges
                 StateHasChanged();
                 return;
             }
-            var userName = AppStateService.UserName;
+            var userName = AppState.UserName;
             var returnTypeFull = GetSignatureReturnType();
             Challenge = new Challenge
             {
@@ -112,13 +112,13 @@ namespace BlazorApp.Client.Pages.Challenges
             isCodeCompiling = true;
             StateHasChanged();
             Challenge.Solution = await Editor.GetValue();
-            var userName = AppStateService.UserName;
+            var userName = AppState.UserName;
 
             var sw = new Stopwatch();
             sw.Start();
 
             var output = await PublicClient.SubmitChallenge(Challenge);
-            AppStateService.CodeOutput = output;
+            AppState.CodeOutput = output;
             isSolved = output.Outputs.All(x => x.TestResult);
             foreach (var result in output.Outputs)
             {
@@ -139,12 +139,12 @@ namespace BlazorApp.Client.Pages.Challenges
             apiResponse = apiResult ? "Submission Successful!" : "Sorry, something went wrong. Submission failed";
             if (apiResult)
             {
-                AppStateService.UpdateChallenges(Challenge);
+                AppState.UpdateChallenges(Challenge);
                 isSubmittedToDb = true;
             }
             StateHasChanged();
         }
-        private void GoToChallenges() => AppStateService.TabIndex = 1;
+        private void GoToChallenges() => AppState.TabIndex = 1;
         private bool AreTestsValid()
         {
             if (InputTests.Count < 2)

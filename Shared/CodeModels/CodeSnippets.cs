@@ -7,12 +7,13 @@ namespace BlazorApp.Shared.CodeModels
     {
         public static Dictionary<string, Dictionary<string, string>> AllSnippets()
         {
-            var snippetsDictionary = new Dictionary<string, Dictionary<string, string>>();
-            snippetsDictionary.Add("Collections", CollectionsSnippets);
-            snippetsDictionary.Add("Strings",StringsSnippets);
-            snippetsDictionary.Add("Conditionals", ConditionalSnippets);
-            snippetsDictionary.Add("Extension methods", ExtensionSnippets);
-            return snippetsDictionary;
+            return new Dictionary<string, Dictionary<string, string>>
+            {
+                {"Collections", CollectionsSnippets},
+                {"Strings", StringsSnippets},
+                {"Conditionals", ConditionalSnippets},
+                {"Extension methods", ExtensionSnippets}
+            };
         }
         public static readonly CodeSamples LinqFromGithubSamples = new CodeSamples
         {
@@ -24,7 +25,8 @@ namespace BlazorApp.Shared.CodeModels
                 new CodeSample("Linq with Numbers", "LinqMaths", "<p>.Average() calculates the average of the numeric items in the collection.</p><p>.Count Counts the elements in a collection.</p><p>.Max() Finds the largest value in the collection.</p><p>.Sum Calculates sum of the values in the collection.</p>", "Do a some simple math operations with .Average(), .Sum(), .Max(), .Min()"),
                 new CodeSample("Distinct and Except", "LinqSet1", "<p>.Distinct() The Distinct extension method returns a new collection of unique elements from the given collection.</p><p>Except() method requires two collections. It returns a new collection with elements from the first collection which do not exist in the second collection (parameter collection).</p>", "Negative Set: Distinct() and Except()"),
                 new CodeSample("Intersect and Union", "LinqSet2", "<p>The Intersect() extension method requires two collections. It returns a new collection that includes common elements that exists in both the collection. Consider the following example.</p><p>The Union() extension method requires two collections and returns a new collection that includes distinct elements from both the collections. Consider the following example.</p>", "Positive Sets: Intersect() and Union()"),
-            }
+            },
+            ResourceURLs = new Dictionary<string, string> { { "Language Integrated Query (LINQ)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/linq/" }, { "Work with Language-Integrated Query (LINQ)", "https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/working-with-linq" },{ "System.Linq Enumerable Class", "https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable?view=net-5.0#methods" } }
         };
         public static readonly Dictionary<string, string> LinqFromGithubSnippets = new Dictionary<string, string>
         {
@@ -40,7 +42,8 @@ namespace BlazorApp.Shared.CodeModels
                 new CodeSample("HashTable", HASHTABLE,"<p>A hash table is used when you need to access elements by using key, and you can identify a useful key value. Each item in the hash table has a key/value pair. The key is used to access the items in the collection.</p><p>It optimizes lookups by computing the hash code of each key and stores it in a different bucket internally and then matches the hash code of the specified key at the time of accessing values.</p>"),
                 new CodeSample("List", LIST,"<p>The List<T> is a collection of strongly typed objects that can be accessed by index and having methods for sorting, searching, and modifying list. It is the generic version of the ArrayList that comes under System.Collection.Generic namespace.</p>"),
                 new CodeSample("Dictionary", DICTIONARY,"<p>The <code>Dictionary<TKey, TValue></code> is a generic collection that stores <code>key-value pairs</code> in no particular order.</p>"),
-            }
+            },
+            ResourceURLs = new Dictionary<string, string> { { "Collections (C#)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/collections" }, { "Generics (C# Programming Guide)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/" } }
         };
         public static readonly Dictionary<string, string> CollectionsSnippets = new Dictionary<string, string>
         {
@@ -57,7 +60,8 @@ namespace BlazorApp.Shared.CodeModels
                 new CodeSample("SubString", SUBSTRING,"<p>In C#, Substring() is a string method. It is used to retrieve a substring from the current instance of the string.</p><p> This method can be overloaded by passing the different number of parameters to it as follows:</p><p>String.Substring(Int32) - Substring(int startIndex) partial string from char at startIndex to end of the string.</p><p>String.Substring(Int32, Int32) Method Substring(int startIndex, int length) partial string from char at startIndex until the string end or reachs 'length' of chars</p>","string.Substring() is used to retrieve a substring from the current instance of the string."),
                 new CodeSample("Array to string", ARRAYTOSTRING,"<p>Using Join() Method: This method is used to concatenate the members of a collection or the elements of the specified array, using the specified separator between each member or element. It can be used to create a new string from the character array.</p><p> Syntax: string str = string.Join(string seperator, collection or object)</p>","A common way to merge a char[] into a string Type"),
                 new CodeSample("String to array", STRINGTOARRAY,"<p>In C#, ToCharArray() is a string method. This method is used to copy the characters from a specified string in the current instance to a Unicode character array or the characters of a specified substring in the current instance to a Unicode character array.</p> ","string.ToCharArray() turns a string into a char[]")
-            }
+            },
+            ResourceURLs = new Dictionary<string, string> { { "Strings (C# Programming Guide)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/strings/" },{ "String Class", "https://docs.microsoft.com/en-us/dotnet/api/system.string?view=net-5.0" } }
         };
         public static readonly Dictionary<string, string> StringsSnippets = new Dictionary<string, string>
         {
@@ -73,7 +77,8 @@ namespace BlazorApp.Shared.CodeModels
                 new CodeSample("Switch Statement", SWITCH,"<p>The switch statement can be used instead of <code>if else</code> statement when you want to test a variable against three or more conditions.</p><p>The switch statement starts with the <code>switch</code> keyword that contains a match expression or a variable in the bracket switch(match expression). The result of this match expression or a variable will be tested against conditions specified as cases, inside the curly braces <code> { }</code>. A case must be specified with the unique constant value and ends with the colon :.</p><p>The switch statement can also contain an optional <code>default</code> label. The default label will be executed if no cases executed. The <code>break</code>, <code>return</code>, or <code>goto</code> keyword is used to exit the program control from a <code>switch</code> case.</p>"),
                 new CodeSample("For Loop", FORLOOP,"<p>The for loop contains the following three optional sections, separated by a semicolon ; </p><p><code>Initializer</code> -- The initializer section is used to initialize a variable that will be local to a for loop and cannot be accessed outside loop. It can also be zero or more assignment statements, method call, increment, or decrement expression e.g., ++i or i++, and await expression.</p><p><code>Condition</code> -- The condition is a boolean expression that will return either true or false. If an expression evaluates to true, then it will execute the loop again; otherwise, the loop is exited.</p><p><code>Iterator</code> -- The iterator defines the incremental or decremental of the loop variable.</p>"),
                 new CodeSample("Foreach Loop", FOREACHLOOP,"<p>The foreach statement executes a statement or a block of statements for each element in an instance of the type</p><p>The in keyword used along with foreach loop is used to iterate over the iterable-item. The in keyword selects an item from the iterable-item on each iteration and store it in the variable element.</p><p>On first iteration, the first item of iterable-item is stored in element. On second iteration, the second element is selected and so on.</p><p>The number of times the foreach loop will execute is equal to the number of elements in the array or collection.</p>")
-            }
+            },
+            ResourceURLs = new Dictionary<string, string> { { "Learn conditional logic with branch and loop statements", "https://docs.microsoft.com/en-us/dotnet/csharp/tutorials/intro-to-csharp/branches-and-loops-local" }, { "Statements (C# Programming Guide)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/statements" } }
         };
         public static readonly Dictionary<string, string> ConditionalSnippets = new Dictionary<string, string>
         {
@@ -93,7 +98,8 @@ namespace BlazorApp.Shared.CodeModels
                 new CodeSample("Extend Double to Description", DoubleToText,"<p>Extension methods enable you to \"add\" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are static methods, but they're called as if they were instance methods on the extended type. For client code written in C#, F# and Visual Basic, there's no apparent difference between calling an extension method and the methods defined in a type.</p><p>The most common extension methods are the LINQ standard query operators that add query functionality to the existing <code>System.Collections.IEnumerable</code> and <code>System.Collections.Generic.IEnumerable<T></code> types. To use the standard query operators, first bring them into scope with a <code>using System.Linq</code> directive. Then any type that implements IEnumerable<T> appears to have instance methods such as GroupBy, OrderBy, Average, and so on. You can see these additional methods in IntelliSense statement completion when you type \"dot\" after an instance of an IEnumerable<T> type such as List<T> or Array.</p>"),
                 new CodeSample("Extend String to Index list", StringToCharIndexList,"<p>Extension methods enable you to \"add\" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are static methods, but they're called as if they were instance methods on the extended type. For client code written in C#, F# and Visual Basic, there's no apparent difference between calling an extension method and the methods defined in a type.</p><p>The most common extension methods are the LINQ standard query operators that add query functionality to the existing <code>System.Collections.IEnumerable</code> and <code>System.Collections.Generic.IEnumerable<T></code> types. To use the standard query operators, first bring them into scope with a <code>using System.Linq</code> directive. Then any type that implements IEnumerable<T> appears to have instance methods such as GroupBy, OrderBy, Average, and so on. You can see these additional methods in IntelliSense statement completion when you type \"dot\" after an instance of an IEnumerable<T> type such as List<T> or Array.</p>"),
                 new CodeSample("Extend Generic and Shuffle", ShuffleGeneric,"<p>Extension methods enable you to \"add\" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are static methods, but they're called as if they were instance methods on the extended type. For client code written in C#, F# and Visual Basic, there's no apparent difference between calling an extension method and the methods defined in a type.</p><p>The most common extension methods are the LINQ standard query operators that add query functionality to the existing <code>System.Collections.IEnumerable</code> and <code>System.Collections.Generic.IEnumerable<T></code> types. To use the standard query operators, first bring them into scope with a <code>using System.Linq</code> directive. Then any type that implements IEnumerable<T> appears to have instance methods such as GroupBy, OrderBy, Average, and so on. You can see these additional methods in IntelliSense statement completion when you type \"dot\" after an instance of an IEnumerable<T> type such as List<T> or Array.</p>")
-            }
+            },
+            ResourceURLs = new Dictionary<string, string> { { "Extension Methods (C# Programming Guide)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods" }, { "How to implement and call a custom extension method (C# Programming Guide)", "https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/how-to-implement-and-call-a-custom-extension-method" } }
         };
         public static readonly Dictionary<string, string> ExtensionSnippets = new Dictionary<string, string>
         {

@@ -9,6 +9,6 @@
 <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Compile and run</MatButton>
 <MatButton Icon="save" OnClick="SendSnippetToUser">Share code</MatButton>
 <MatButton Icon="find_replace" OnClick="TakeDiff">Replace code with Diff</MatButton>
-<p style="font-size:.8em">CTRL+Enter to run, CTRL+SHIFT+S to share</p>
+<p style="font-size:.8em">CTRL+Enter to run, CTRL+SHIFT+S to share, @(isShareMode ? "Share Mode" : "Private Mode")</p>
 <MonacoDiffEditor @ref="DiffEditor" CssClass="editor" Id="sample-diff-editor-123" ConstructionOptions="DiffEditorConstructionOptions" OnDidInit="EditorOnDidInit" OnKeyUpOriginal="EditorOnKeyUpOriginal" OnKeyUpModified="EditorOnKeyUpModified" />
 

@@ -25,10 +25,9 @@ namespace BlazorApp.Client.Pages.Practice
         public PublicClient PublicClient { get; set; }
         [Inject]
         private PublicGithubClient GithubClient { get; set; }
-        [Inject]
-        protected AppStateService AppStateService { get; set; }
-        //[Inject]
-        //private ICustomAuthenticationStateProvider AuthProvider { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        protected AppState AppState { get; set; }
+    
         private bool isCodeCompiling;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
@@ -59,7 +58,7 @@ namespace BlazorApp.Client.Pages.Practice
 
         private async Task SaveUserSnippet(string snippet)
         {
-            if (!AppStateService.HasUser)
+            if (!AppState.HasUser)
             {
                 var result = await ModalService.ShowDialogAsync<LoginProvider>("Sign-in to Save");
                 if (!result.Success)
@@ -81,10 +80,10 @@ namespace BlazorApp.Client.Pages.Practice
                 Name = snippetName,
                 Snippet = snippet
             };
-            var userData = AppStateService.UserAppData;
+            var userData = AppState.UserAppData;
             userData.Snippets.Add(newSnippet);
-            AppStateService.UpdateUserAppData(userData);
-            var requestResult = await PublicClient.AddUserSnippet(AppStateService.UserName, newSnippet);
+            AppState.UpdateUserAppData(userData);
+            var requestResult = await PublicClient.AddUserSnippet(AppState.UserName, newSnippet);
             isSnippetSaving = false;
             message = requestResult ? $"Successfully saved snippet: {snippetName}" : "Save snippet failed";
             StateHasChanged();
@@ -200,13 +199,13 @@ namespace BlazorApp.Client.Pages.Practice
             return code;
 
         }
-        public async Task DisplayCodeDescription(string content)
+        public async Task DisplayCodeDescription(string content, Dictionary<string, string> resourceUrls)
         {
             var parameters = new ModalDialogParameters
             {
-                {"Description", content}
+                {"Description", content},{"ResourceUrls", resourceUrls}
             };
-            await ModalService.ShowDialogAsync<CodeDescription>("More about this code", parameters: parameters);
+            await ModalService.ShowDialogAsync<CodeDescription>("More about this section", parameters: parameters);
         }
 
         public async Task DisplayCodeOutput()

@@ -20,7 +20,7 @@ namespace BlazorApp.Client
         private const string CompileFunctionUrl = "api";
         private const string DuelsCosmosFunctionUrl = "api";
         private const string RealtimeFunctionUrl = "https://csharprealtimefunction.azurewebsites.net/api";
-        //private const string DUELS_COSMOS_FUNCTION_URL = "https://csharpduels.azurewebsites.net/api";
+        
         
         public HttpClient Client { get; }
 
@@ -89,7 +89,7 @@ namespace BlazorApp.Client
         {
             var sw = new Stopwatch();
             sw.Start();
-            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"{ChallengeFunctionUrl}/GetChallenges");
+            var codeChallengeList = await Client.GetFromJsonAsync<List<Challenge>>($"{ChallengeFunctionUrl}/GetChallenges") ?? new List<Challenge>();
             sw.Stop();
             Console.WriteLine($"challenges from function: {sw.ElapsedMilliseconds}ms");
             var codeChallenges = new CodeChallenges { Challenges = codeChallengeList };
@@ -196,26 +196,6 @@ namespace BlazorApp.Client
         public async Task SendCodeOutput(string group, string output)
         {
             await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/sendOut/{group}", output);
-        }
-
-        public async Task<bool> CreateUserProject(UserProject project, string userName)
-        {
-           var apiResult = await Client.PostAsJsonAsync($"api/CreateProject/{userName}", project);
-           return apiResult.IsSuccessStatusCode;
-
-        }
-
-        public async Task<bool> SaveCurrentFiles(UserProject project, string userName)
-        {
-            var projectName = project.Name;
-            var apiResult = await Client.PostAsJsonAsync($"api/UpdateProject/{userName}/{projectName}", project.Files);
-            return apiResult.IsSuccessStatusCode;
-        }
-        public async Task<bool> DeleteUserProject(UserProject project, string userName)
-        {
-            var apiResult = await Client.PostAsJsonAsync($"api/DeleteProject/{userName}/{project.Name}", userName);
-            return apiResult.IsSuccessStatusCode;
-
         }
     }
 }

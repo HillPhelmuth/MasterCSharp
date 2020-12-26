@@ -21,7 +21,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         [Inject]
         public ArenaService ArenaService { get; set; }
         [Inject]
-        public AppStateService AppStateService { get; set; }
+        public AppState AppState { get; set; }
         [Inject]
         protected IMatToaster Toaster { get; set; }
         [Inject]
@@ -40,7 +40,7 @@ namespace BlazorApp.Client.Pages.ChallengeArena
         
         protected override async Task OnInitializedAsync()
         {
-            UserName = AppStateService.UserName;
+            UserName = AppState.UserName;
             if (string.IsNullOrEmpty(UserName))
             {
                 var auth = await AuthenticationState.GetAuthenticationStateAsync();

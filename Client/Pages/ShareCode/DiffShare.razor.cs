@@ -21,31 +21,46 @@ namespace BlazorApp.Client.Pages.ShareCode
         public EventCallback<string> OnSubmitCode { get; set; }
         [Parameter]
         public EventCallback<string> OnSendCode { get; set; }
-        //private string SharedSnippet { get; set; }
         private MonacoDiffEditor DiffEditor { get; set; }
         private string ValueToSetOriginal { get; set; }
         private string ValueToSetModified { get; set; }
+        private bool isShareMode;
 
         protected override Task OnInitializedAsync()
         {
             CodeEditorService.PropertyChanged += UpdateSnippet;
-            //CodeEditorService.OnSharedSnippetChange += UpdateSharedSnippet;
-            return base.OnInitializedAsync();
+           return base.OnInitializedAsync();
         }
         private async Task ChangeTheme(ChangeEventArgs e)
         {
             Console.WriteLine($"setting theme to: {e.Value}");
             await MonacoEditorBase.SetTheme(e.Value.ToString());
         }
-        private DiffEditorConstructionOptions DiffEditorConstructionOptions(MonacoDiffEditor editor)
+
+        private void ToggleShareMode()
         {
-            return new DiffEditorConstructionOptions
-            {
-                OriginalEditable = true
-            };
+            isShareMode = !isShareMode;
         }
+        private DiffEditorConstructionOptions DiffEditorConstructionOptions(MonacoDiffEditor editor) => new()
+        {
+            OriginalEditable = true,
+            AutoIndent = true,
+        };
         private async Task EditorOnDidInit(MonacoEditorBase editor)
         {
+            
+            await DiffEditor.AddAction("shareAction", "Share Code", new[] { (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_D, (int)KeyMode.CtrlCmd | (int)KeyCode.KEY_S }, null, null, "navigation", 1.5, (editorBase, keyCodes) =>
+            {
+                isShareMode = !isShareMode;
+                Console.WriteLine("Ctrl+D : Editor action is triggered.");
+            });
+            await DiffEditor.AddAction("executeAction", "Execute Code",
+                new int[] { (int)KeyMode.CtrlCmd | (int)KeyCode.Enter }, null, null, "navigation", 2.5, 
+                (editorBase, keyCodes) =>
+                {
+                    SubmitCode();
+                    Console.WriteLine("Code Executed from Editor Command");
+                });
             // Get or create the original model
             TextModel originalModel = await MonacoEditorBase.GetModel("sample-diff-editor-originalModel");
             if (originalModel == null)
@@ -91,12 +106,20 @@ namespace BlazorApp.Client.Pages.ShareCode
                     await DiffEditor.OriginalEditor.SetValue(CodeSnippet);
                     break;
                 case nameof(CodeEditorService.SharedCodeSnippet):
-                    var result = await ModalService.ShowMessageBoxAsync("Confirm Replace",
-                        "Your teammate is sharing their code. Replace the code in your Modfied code window (The right side of the code editor) with shared code?",
-                        MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
-                    if (result == MessageBoxDialogResult.Yes)
+                    if (isShareMode)
                     {
                         await DiffEditor.ModifiedEditor.SetValue(ValueToSetModified);
+                    }
+                    else
+                    {
+                        var result = await ModalService.ShowMessageBoxAsync("Confirm Replace",
+                            "Your teammate is sharing their code. Accept Share Mode?",
+                            MessageBoxButtons.YesNo, MessageBoxDefaultButton.Button2);
+                        if (result == MessageBoxDialogResult.Yes)
+                        {
+                            isShareMode = true;
+                            await DiffEditor.ModifiedEditor.SetValue(ValueToSetModified);
+                        }
                     }
                     break;
             }
@@ -145,6 +168,9 @@ namespace BlazorApp.Client.Pages.ShareCode
             {
                 case KeyCode.Enter when keyboardEvent.CtrlKey:
                     SubmitCode();
+                    break;
+                case KeyCode.Enter:
+                    SendSnippetToUser();
                     break;
                 case KeyCode.KEY_S when keyboardEvent.CtrlKey && keyboardEvent.ShiftKey:
                     SendSnippetToUser();

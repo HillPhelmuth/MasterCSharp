@@ -20,8 +20,8 @@
                     <hr />
                     @foreach (var snippet in (CodeSnippets.CollectionSamples.Samples))
                     {
-                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
-                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Code))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description, CodeSnippets.CollectionSamples.ResourceURLs))"></MatIconButton>
                     }
 
                 </MatTab>
@@ -31,9 +31,9 @@
                     {
                         var tooltip = snippet.ToolTip;
                         <MatTooltip Tooltip="@tooltip">
-                             <MatButton RefBack="@context" Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                             <MatButton RefBack="@context" Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Code))"></MatButton>
                         </MatTooltip>
-                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description, CodeSnippets.StringSamples.ResourceURLs))"></MatIconButton>
                     }
 
                 </MatTab>
@@ -42,8 +42,8 @@
                     @foreach (var snippet in (CodeSnippets.ConditionalSamples.Samples))
                     {
 
-                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
-                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Code))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description, CodeSnippets.ConditionalSamples.ResourceURLs))"></MatIconButton>
 
                     }
 
@@ -54,8 +54,8 @@
                     {
                         var toolTip = snippet.ToolTip;
                         <MatTooltip Tooltip="@toolTip">
-                            <MatButton RefBack="@context" Label="@snippet.Key" OnClick="@(() => GetCodeFromGitHubFile(snippet.Value))"></MatButton>
-                            <MatIconButton RefBack="@context" Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                            <MatButton RefBack="@context" Label="@snippet.Name" OnClick="@(() => GetCodeFromGitHubFile(snippet.Code))"></MatButton>
+                            <MatIconButton RefBack="@context" Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description, CodeSnippets.LinqFromGithubSamples.ResourceURLs))"></MatIconButton>
                         </MatTooltip>
                     }
                 </MatTab>
@@ -63,8 +63,8 @@
                     <hr />
                     @foreach (var snippet in (CodeSnippets.ExtensionSamples.Samples))
                     {
-                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
-                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Code))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description, CodeSnippets.ExtensionSamples.ResourceURLs))"></MatIconButton>
                     }
 
                 </MatTab>
@@ -84,11 +84,11 @@
 
                 <AuthorizeView>
                     <Authorized>
-                        @if (AppStateService.UserAppData?.Snippets?.Any() ?? false)
+                        @if (AppState.UserAppData?.Snippets?.Any() ?? false)
                         {
                             <MatTab Label="Your Snippets">
                                 <hr />
-                                @foreach (var snippet in AppStateService.UserAppData.Snippets)
+                                @foreach (var snippet in AppState.UserAppData.Snippets)
                                 {
                                     <MatButton Label="@snippet.Name" @onclick="@(() => UpdateCodeSnippet(snippet.Snippet))"></MatButton>
                                 }

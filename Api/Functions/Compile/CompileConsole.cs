@@ -13,13 +13,8 @@ namespace BlazorApp.Api.Functions.Compile
 {
     public class CompileConsole
     {
-        private readonly CompilerService _compilerService;
-
-        public CompileConsole(CompilerService compilerService)
-        {
-            _compilerService = compilerService;
-        }
-
+        private static CompilerService CompilerService => new CompilerService();
+        
         [FunctionName("CompileConsole")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "console")] HttpRequest req,
@@ -31,7 +26,7 @@ namespace BlazorApp.Api.Functions.Compile
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var codeInput = JsonConvert.DeserializeObject<CodeInputModel>(requestBody);
             var testCode = codeInput.Solution;
-            var result = await _compilerService.RunConsole(testCode, executableReferences);
+            var result = await CompilerService.RunConsole(testCode, executableReferences);
 
             return new OkObjectResult(result);
         }

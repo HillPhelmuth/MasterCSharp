@@ -1,7 +1,5 @@
-
-
    
-    <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="@(new List<System.Reflection.Assembly> { typeof(OutputRCL.__RazorOutput).Assembly })">
+    <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(DefaultLayout)"/>
         </Found>

@@ -10,8 +10,8 @@ namespace BlazorApp.Client.Pages.Videos
 {
     public partial class AddVideo
     {
-        [CascadingParameter(Name = nameof(AppStateService))]
-        protected AppStateService AppStateService { get; set; }
+        [CascadingParameter(Name = nameof(AppState))]
+        protected AppState AppState { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
         private Video Video { get; set; }
@@ -29,7 +29,7 @@ namespace BlazorApp.Client.Pages.Videos
 
         protected override Task OnInitializedAsync()
         {
-            VideoSections = AppStateService?.Videos?.VideoSections;
+            VideoSections = AppState?.Videos?.VideoSections;
             return base.OnInitializedAsync();
         }
 
@@ -59,7 +59,7 @@ namespace BlazorApp.Client.Pages.Videos
             apiResponse = apiResult ? "Submission Successful!" : "Sorry, something went wrong. Submission failed";
             if (apiResult)
             {
-                AppStateService.AddVideo(Video);
+                AppState.AddVideo(Video);
                 title = "";
                 videoUrl = "";
                 Video = null;
