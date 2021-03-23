@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Compile Remove="CodeModels\GeneratedAssemblyModel.cs" />
-    <Compile Remove="CodeModels\SourceInfo.cs" />
     <Compile Remove="CodeModels\SuggestionsModel.cs" />
   </ItemGroup>
 
