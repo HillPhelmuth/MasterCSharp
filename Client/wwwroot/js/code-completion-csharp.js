@@ -15,7 +15,7 @@ function getcsharpCompletionProvider(monaco) {
             
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: 'http://localhost:7071/api/CompleteCode',
+                    url: '/api/CompleteCode', //add function url port on local
                     data: JSON.stringify(obj),
                     type: 'POST',
                     traditional: true,
