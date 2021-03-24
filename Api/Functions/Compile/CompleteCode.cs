@@ -40,31 +40,28 @@ namespace BlazorApp.Api.Functions.Compile
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var sourceInfo = JsonConvert.DeserializeObject<SourceInfo>(requestBody);
-            var result = await GetCodeCompletion(sourceInfo, log);
-            return new OkObjectResult(result);
+
+            try
+            {
+                var result = await GetCodeCompletion(sourceInfo, log);
+                return new OkObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                log.LogError($"ERROR: {ex.Message}\r\n STACK-TRACE: {ex.StackTrace}\r\n INNER-TRACE: {ex.InnerException}");
+                return new BadRequestObjectResult($"ERROR: {ex.Message}\r\n STACK-TRACE: {ex.StackTrace}\r\n INNER-TRACE: {ex.InnerException}");
+            }
+
         }
-        private static MetadataReference[] _ref;
+        private static IEnumerable<PortableExecutableReference> _ref;
         public static async Task<dynamic> GetCodeCompletion(SourceInfo sourceInfo, ILogger log)
         {
-            var thisAssembly = typeof(CompileCode).Assembly;
+            var thisAssembly = typeof(CompleteCode).Assembly;
             var loadContext = AssemblyLoadContext.GetLoadContext(thisAssembly);
             var refs = CompileResources.PortableExecutableCompletionReferences;
 
             var usings = new List<string>();
             var allusingsInCode = sourceInfo.SourceCode.Split(new string[] { "using " }, StringSplitOptions.None);
-            //var binDir = Assembly.GetExecutingAssembly().CodeBase
-            //   .Replace(Assembly.GetExecutingAssembly().CodeBase.Split('/').Last(), "")
-            //   .Replace("file:///", "")
-            //   .Replace("/", "\\");
-            //var stackDlls = Directory.GetFiles(binDir)
-            //    .Select(i => i.ToLowerInvariant())
-            //    .Where(f => f.EndsWith("dll"))
-            //    .ToList();
-
-            //// load the missing ones
-            //var loadedAlready = loadContext.Assemblies.ToList();
-            //foreach (var assemblyPath in stackDlls.Where(assemblyPath => loadedAlready.All(a => !string.Equals(a.CodeBase, assemblyPath, StringComparison.InvariantCultureIgnoreCase))))
-            //    loadedAlready.Add(Assembly.LoadFile(assemblyPath));
 
             foreach (var item in allusingsInCode)
             {
@@ -75,7 +72,7 @@ namespace BlazorApp.Api.Functions.Compile
             }
 
             List<Assembly> assemblies = loadContext.Assemblies.Where(a => !a.IsDynamic && File.Exists(a.Location)).ToList();
-            
+
             var partTypes = MefHostServices.DefaultAssemblies.Concat(assemblies)
                     .Distinct()?
                     .SelectMany(x => x?.GetTypes())?
@@ -91,45 +88,24 @@ namespace BlazorApp.Api.Functions.Compile
             var scriptCode = sourceInfo.SourceCode;
             var _ = typeof(Microsoft.CodeAnalysis.CSharp.Formatting.CSharpFormattingOptions);
             var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, usings: usings);
-            if (_ref == null || _ref.Length == 0)
+            if (_ref == null || !_ref.Any())
             {
-                MetadataReference[] _refs = assemblies
+                var _refs = assemblies
                  .Select(asm => MetadataReference.CreateFromFile(asm.Location))
                  .ToArray();
-                _ref = new MetadataReference[0];
+                _ref = new PortableExecutableReference[0];
 
-                try
-                {
-                    foreach (var item in DependencyContext.Default.CompileLibraries)
-                    {
-                        try
-                        {
-                            var arr = item.ResolveReferencePaths().Select(asm => MetadataReference.CreateFromFile(asm))?
-                     .ToArray();
-                            _ref = _ref.Concatenate(arr);
-                        }
-                        catch (Exception ex)
-                        {
-                            log.LogError($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.InnerException}");
 
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.LogError($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.InnerException}");
-                }
-                _ref = _ref.Concatenate(_refs);
+                _ref = _refs.Concatenate(_refs);
             }
-            if (_ref?.Length > 0)
+            if (_ref?.Count() > 0)
             {
-                _ref = _ref.Concatenate(new[]
+                var _ref = refs.Concatenate(new[]
                 {
                      MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
                 });
                 var scriptProjectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), "Script", "Script", LanguageNames.CSharp, isSubmission: true)
-                    .WithMetadataReferences(_ref)
+                    .WithMetadataReferences(refs)
                    .WithCompilationOptions(compilationOptions);
 
                 var scriptProject = workspace.AddProject(scriptProjectInfo);
@@ -186,79 +162,49 @@ namespace BlazorApp.Api.Functions.Compile
             //SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(scriptCode);
             SyntaxTree syntaxTree = sourceLanguage.ParseText(scriptCode, SourceCodeKind.Script);
             var root = (CompilationUnitSyntax)syntaxTree.GetRoot();
-            var thisAssembly = typeof(CompileCode).Assembly;
+            var thisAssembly = typeof(CompleteCode).Assembly;
             var loadContext = AssemblyLoadContext.GetLoadContext(thisAssembly);
-            try
+
+
+            var Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            var compilation = CSharpCompilation.Create("MyCompilation",
+                syntaxTrees: new[] { syntaxTree }, references: CompileResources.PortableExecutableCompletionReferences);
+
+            var model = compilation.GetSemanticModel(syntaxTree);
+
+            var theToken = syntaxTree.GetRoot().FindToken(position);
+            var theNode = theToken.Parent;
+            while (!theNode.IsKind(SyntaxKind.InvocationExpression))
             {
-                if (_ref == null)
+                theNode = theNode.Parent;
+                if (theNode == null) break; // There isn't an InvocationExpression in this branch of the tree
+            }
+
+            if (theNode == null)
+            {
+                overloads = null;
+            }
+            else
+            {
+                var symbolInfo = model.GetSymbolInfo(theNode);
+                var symbol = symbolInfo.Symbol;
+                var containingType = symbol?.ContainingType;
+
+                if (symbolInfo.CandidateSymbols != default && symbolInfo.CandidateSymbols.Length > 0)
                 {
-                    _ref = _ref = new MetadataReference[0];
-                    var assemblies = loadContext.Assemblies.Where(a => !a.IsDynamic && File.Exists(a.Location));
-                    MetadataReference[] _refs2 = assemblies
-                     .Select(asm => MetadataReference.CreateFromFile(asm.Location))
-                     .ToArray();
-                    try
+                    foreach (var parameters in symbolInfo.CandidateSymbols)
                     {
-                        foreach (var item in DependencyContext.Default.CompileLibraries)
+                        var i = parameters.ToMinimalDisplayParts(model, position);
+                        if (parameters.Kind == SymbolKind.Method)
                         {
-
-                            var arr = item.ResolveReferencePaths().Select(asm => MetadataReference.CreateFromFile(asm))?
-                     .ToArray();
-                            _ref = _ref.Concatenate(arr);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        log.LogError($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.InnerException}");
-                    }
-                    _ref = _ref.Concatenate(_refs2);
-                }
-
-                var Mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-                var compilation = CSharpCompilation.Create("MyCompilation",
-                    syntaxTrees: new[] { syntaxTree }, references: _ref);
-
-                var model = compilation.GetSemanticModel(syntaxTree);
-                
-                var theToken = syntaxTree.GetRoot().FindToken(position);
-                var theNode = theToken.Parent;
-                while (!theNode.IsKind(SyntaxKind.InvocationExpression))
-                {
-                    theNode = theNode.Parent;
-                    if (theNode == null) break; // There isn't an InvocationExpression in this branch of the tree
-                }
-
-                if (theNode == null)
-                {
-                    overloads = null;
-                }
-                else
-                {
-                    var symbolInfo = model.GetSymbolInfo(theNode);
-                    var symbol = symbolInfo.Symbol;
-                    var containingType = symbol?.ContainingType;
-
-                    if (symbolInfo.CandidateSymbols != default && symbolInfo.CandidateSymbols.Length > 0)
-                    {
-                        foreach (var parameters in symbolInfo.CandidateSymbols)
-                        {
-                            var i = parameters.ToMinimalDisplayParts(model, position);
-                            if (parameters.Kind == SymbolKind.Method)
-                            {
-                                var mp = parameters.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-                                overloads.Add(mp);
-                            }
+                            var mp = parameters.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                            overloads.Add(mp);
                         }
                     }
                 }
-                return overloads;
             }
-            catch (Exception ex)
-            {
-                log.LogError($"{ex.Message}\r\n{ex.StackTrace}\r\n{ex.InnerException}");
-                return null;
-            }
+            return overloads;
+
         }
         public class CSharpLanguage : ILanguageService
         {

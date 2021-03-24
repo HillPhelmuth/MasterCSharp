@@ -5,6 +5,9 @@
     <RootNamespace>BlazorApp.Api</RootNamespace>
     <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Services\CodeCompletion.cs" />
+  </ItemGroup>
  
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.13.0" />
@@ -31,8 +34,7 @@
         
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.1.8" />
-
+  
     
   </ItemGroup>
   <ItemGroup>

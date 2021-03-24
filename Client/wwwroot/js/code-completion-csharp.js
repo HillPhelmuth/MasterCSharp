@@ -12,7 +12,7 @@ function getcsharpCompletionProvider(monaco) {
             var textUntilPosition = model.getValueInRange({ startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column });
             var cursor = textUntilPosition.length;
             var obj = { SourceCode: model.getValue(), lineNumberOffsetFromTemplate: cursor };
-            
+            //var funcUrl = "https://codecompletionfunction.azurewebsites.net/api/CompleteCode";
             return new Promise((resolve, reject) => {
                 $.ajax({
                     url: '/api/CompleteCode', //add function url port on local
