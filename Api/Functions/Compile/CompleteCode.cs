@@ -52,6 +52,20 @@ namespace BlazorApp.Api.Functions.Compile
 
             var usings = new List<string>();
             var allusingsInCode = sourceInfo.SourceCode.Split(new string[] { "using " }, StringSplitOptions.None);
+            //var binDir = Assembly.GetExecutingAssembly().CodeBase
+            //   .Replace(Assembly.GetExecutingAssembly().CodeBase.Split('/').Last(), "")
+            //   .Replace("file:///", "")
+            //   .Replace("/", "\\");
+            //var stackDlls = Directory.GetFiles(binDir)
+            //    .Select(i => i.ToLowerInvariant())
+            //    .Where(f => f.EndsWith("dll"))
+            //    .ToList();
+
+            //// load the missing ones
+            //var loadedAlready = loadContext.Assemblies.ToList();
+            //foreach (var assemblyPath in stackDlls.Where(assemblyPath => loadedAlready.All(a => !string.Equals(a.CodeBase, assemblyPath, StringComparison.InvariantCultureIgnoreCase))))
+            //    loadedAlready.Add(Assembly.LoadFile(assemblyPath));
+
             foreach (var item in allusingsInCode)
             {
                 if (!string.IsNullOrWhiteSpace(item))
