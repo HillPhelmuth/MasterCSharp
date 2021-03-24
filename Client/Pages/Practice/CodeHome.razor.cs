@@ -27,7 +27,7 @@ namespace BlazorApp.Client.Pages.Practice
         private PublicGithubClient GithubClient { get; set; }
         [CascadingParameter(Name = nameof(AppState))]
         protected AppState AppState { get; set; }
-    
+
         private bool isCodeCompiling;
         private bool isConsoleOpen;
         private bool isMonacoOpen;

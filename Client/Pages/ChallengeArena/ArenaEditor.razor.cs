@@ -4,7 +4,7 @@ using BlazorApp.Shared;
 using BlazorApp.Shared.ArenaChallenge;
 using BlazorApp.Shared.CodeModels;
 using BlazorMonaco;
-using BlazorMonaco.Bridge;
+
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Client.Pages.ChallengeArena

@@ -33,12 +33,6 @@ namespace BlazorApp.Shared.CodeServices
             get => _language;
             set { _language = value; OnPropertyChanged(); }
         }
-        public string MonacoCode
-        {
-            get => _monacoCode;
-            set { _monacoCode = value; OnPropertyChanged(); }
-        }
-
         public string CodeSnippet
         {
             get => _codeSnippet;

@@ -8,7 +8,7 @@ using BlazorApp.Shared.CodeModels;
 using BlazorApp.Shared.CodeServices;
 using BlazorApp.Shared.UserModels;
 using BlazorMonaco;
-using BlazorMonaco.Bridge;
+
 using Microsoft.AspNetCore.Components;
 using TextCopy;
 

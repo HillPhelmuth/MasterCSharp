@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Blazor.ModalDialog;
 using BlazorApp.Shared.CodeServices;
 using BlazorMonaco;
-using BlazorMonaco.Bridge;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Client.Pages.ShareCode
@@ -62,7 +61,7 @@ namespace BlazorApp.Client.Pages.ShareCode
                     Console.WriteLine("Code Executed from Editor Command");
                 });
             // Get or create the original model
-            TextModel originalModel = await MonacoEditorBase.GetModel("sample-diff-editor-originalModel");
+            TextModel originalModel = null/*await MonacoEditorBase.GetModel("sample-diff-editor-originalModel")*/;
             if (originalModel == null)
             {
                 var originalValue = CodeSnippet ?? "private string MyProgram() \n" +
@@ -76,7 +75,7 @@ namespace BlazorApp.Client.Pages.ShareCode
             }
 
             // Get or create the modified model
-            TextModel modifiedModel = await MonacoEditorBase.GetModel("sample-diff-editor-modifiedModel");
+            TextModel modifiedModel = null/*await MonacoEditorBase.GetModel("sample-diff-editor-modifiedModel")*/;
             if (modifiedModel == null)
             {
                 var modifiedValue = CodeSnippet ?? "private string MyProgram() \n" +
