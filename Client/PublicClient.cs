@@ -22,7 +22,7 @@ namespace BlazorApp.Client
         {
             Client = httpClient;
         }
-       
+        #region Arena Functions calls
         public async Task<List<Arena>> GetActiveArenas()
         {
             var sw = new Stopwatch();
@@ -78,7 +78,7 @@ namespace BlazorApp.Client
 
             return result.IsSuccessStatusCode;
         }
-
+        #endregion
         public async Task<CodeChallenges> GetChallenges()
         {
             var sw = new Stopwatch();
@@ -167,6 +167,7 @@ namespace BlazorApp.Client
             Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
         }
+        #region Code Share
         public async Task SendMessage(string userName, string messageInput)
         {
             await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/messages/{userName}", messageInput);
@@ -192,4 +193,5 @@ namespace BlazorApp.Client
             await Client.PostAsJsonAsync($"{RealtimeFunctionUrl}/sendOut/{group}", output);
         }
     }
+    #endregion
 }
