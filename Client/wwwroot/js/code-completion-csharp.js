@@ -24,11 +24,11 @@ function getcsharpCompletionProvider(monaco) {
                         var availableResolvers = [];
                         if (data && data.items) {
                             for (var i = 0; i < data.items.length; i++) {
-                                if (data.items[i].properties.symbolName) {
+                                if (data.items[i].properties.SymbolName) {
                                     var ob = {
-                                        label: data.items[i].properties.symbolName,
-                                        insertText: data.items[i].properties.symbolName,
-                                        kind: data.items[i].properties.symbolKind,// monaco.languages.CompletionItemKind.Property,
+                                        label: data.items[i].properties.SymbolName,
+                                        insertText: data.items[i].properties.SymbolName,
+                                        kind: convertSymbolKindToMonacoEnum(data.items[i].properties.SymbolKind),// monaco.languages.CompletionItemKind.Property,
                                         detail: data.items[i].tags[0],
                                         documentation: data.items[i].tags[1]
                                     };
@@ -46,21 +46,30 @@ function getcsharpCompletionProvider(monaco) {
 
 
                             }
-                            console.log("Completions from function: " + JSON.stringify(availableResolvers));
+                            console.log(`Completions from function: ${JSON.stringify(availableResolvers)}`);
                             var returnObj = {
                                 suggestions: availableResolvers
-                            }
+                            };
                             resolve(returnObj);
                         }
 
 
                     },
                     error: function (error) {
-                        console.log(error)
+                        console.log(error);
                     },
-                })
-            })
-            
+                });
+            });
+
         }
     };
+}
+function convertSymbolKindToMonacoEnum(kind) {
+    switch (kind) {
+    case "9": return monaco.languages.CompletionItemKind.Method;
+    case "15": return monaco.languages.CompletionItemKind.Property;
+    case "11": return monaco.languages.CompletionItemKind.Class;
+    case "6": return monaco.languages.CompletionItemKind.Field;
+    case "8": return monaco.languages.CompletionItemKind.Variable;
+    }
 }

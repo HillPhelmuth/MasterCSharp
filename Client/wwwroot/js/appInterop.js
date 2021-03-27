@@ -1,26 +1,26 @@
 ﻿window.removeMonaco = () => {
     var elem = document.querySelector('#learnCsharp');
     elem.parentNode.removeChild(elem);
-}
+};
 window.removeYouTube = () => {
     var frameElement = document.querySelector('#iframe-demo');
     frameElement.parentNode.removeChild(frameElement);
     var elem = document.querySelector('#player');
     elem.parentNode.removeChild(elem);
-}
+};
 window.addPlayer = () => {
     var maker = document.getElementById("makePlayer");
     var made = document.createElement("div");
     made.id = "player";
     maker.appendChild(made);
-}
+};
 window.startYouTube = () => {
     var tag = document.createElement('script');
     tag.id = 'iframe-demo';
     tag.src = 'https://www.youtube.com/iframe_api';
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
+};
 window.getYouTube = (instance, video) => {
     if (typeof (YT) == 'undefined' || typeof (YT.Player) == 'undefined') {
         var tag = document.createElement('script');
@@ -62,4 +62,4 @@ window.getYouTube = (instance, video) => {
         event.target.playVideo();
         console.log("player ready");
     }
-}
+};
